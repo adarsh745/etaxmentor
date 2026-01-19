@@ -1,0 +1,526 @@
+// This is your Prisma schema file
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==================== USER MANAGEMENT ====================
+
+enum UserRole {
+  ADMIN
+  USER
+  CA_EXPERT
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+}
+
+model User {
+  id                String      @id @default(cuid())
+  email             String      @unique
+  phone             String?     @unique
+  name              String
+  role              UserRole    @default(USER)
+  status            UserStatus  @default(PENDING_VERIFICATION)
+  emailVerified     DateTime?
+  phoneVerified     DateTime?
+  image             String?
+  
+  // Two-factor authentication
+  twoFactorEnabled  Boolean     @default(false)
+  twoFactorSecret   String?
+  
+  // Relationships
+  password          Password?
+  sessions          Session[]
+  documents         Document[]
+  transactions      Transaction[]
+  logs              ActivityLog[]
+  itrFilings        ITRFiling[]
+  gstFilings        GSTFiling[]
+  
+  // Section-wise access
+  accessPermissions AccessPermission[]
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  
+  @@index([email])
+  @@index([phone])
+  @@index([role])
+}
+
+model Password {
+  id              String    @id @default(cuid())
+  hash            String
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Password history for security
+  previousHashes  String[]
+  lastChanged     DateTime  @default(now())
+  mustChange      Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Session {
+  id            String   @id @default(cuid())
+  sessionToken  String   @unique
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires       DateTime
+  ipAddress     String?
+  userAgent     String?
+  
+  createdAt     DateTime @default(now())
+  
+  @@index([userId])
+}
+// ...existing code...
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String   @db.Text
+  status    String   @default("PENDING") // PENDING, REVIEWED, RESOLVED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contact_submissions")
+}
+
+// ...existing code...
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String   // email or phone
+  token      String   @unique
+  type       String   // EMAIL_VERIFY, PHONE_VERIFY, PASSWORD_RESET, TWO_FACTOR
+  expires    DateTime
+  
+  createdAt  DateTime @default(now())
+  
+  @@unique([identifier, token])
+}
+
+// ==================== ACCESS CONTROL ====================
+
+enum SectionType {
+  ITR_FILING
+  GST_FILING
+  FORM_16
+  UAN_EPFO
+  TAX_NOTICE
+  ADVANCE_TAX
+  ADMIN_PANEL
+  USER_MANAGEMENT
+  REPORTS
+  DOCUMENTS
+}
+
+model AccessPermission {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  section     SectionType
+  canView     Boolean     @default(false)
+  canCreate   Boolean     @default(false)
+  canEdit     Boolean     @default(false)
+  canDelete   Boolean     @default(false)
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  @@unique([userId, section])
+  @@index([userId])
+}
+
+// ==================== DOCUMENTS ====================
+
+enum DocumentType {
+  PAN_CARD
+  AADHAAR
+  FORM_16
+  FORM_26AS
+  AIS_TIS
+  BANK_STATEMENT
+  INVESTMENT_PROOF
+  SALARY_SLIP
+  CAPITAL_GAINS
+  RENTAL_AGREEMENT
+  LOAN_CERTIFICATE
+  GST_CERTIFICATE
+  OTHER
+}
+
+enum DocumentStatus {
+  UPLOADED
+  VERIFIED
+  REJECTED
+  PROCESSING
+}
+
+model Document {
+  id            String          @id @default(cuid())
+  userId        String
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  fileName      String
+  originalName  String
+  mimeType      String
+  size          Int
+  path          String
+  type          DocumentType
+  status        DocumentStatus  @default(UPLOADED)
+  
+  // For financial year tracking
+  financialYear String?
+  assessmentYear String?
+  
+  // Verification
+  verifiedBy    String?
+  verifiedAt    DateTime?
+  rejectionReason String?
+  
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  
+  @@index([userId])
+  @@index([type])
+  @@index([financialYear])
+}
+
+// ==================== TRANSACTIONS ====================
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  RAZORPAY
+  UPI
+  NET_BANKING
+  CARD
+  WALLET
+}
+
+enum ServiceType {
+  ITR_BASIC
+  ITR_STANDARD
+  ITR_PREMIUM
+  ITR_ENTERPRISE
+  GST_FILING
+  GST_RETURN
+  FORM_16_GENERATION
+  TAX_CONSULTATION
+  CA_ASSISTANCE
+  OTHER
+}
+
+model Transaction {
+  id              String            @id @default(cuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Payment details
+  amount          Decimal           @db.Decimal(10, 2)
+  currency        String            @default("INR")
+  status          TransactionStatus @default(PENDING)
+  paymentMethod   PaymentMethod?
+  
+  // Service details
+  serviceType     ServiceType
+  serviceName     String
+  description     String?
+  
+  // Gateway details
+  gatewayId       String?           @unique
+  gatewayResponse Json?
+  
+  // Invoice
+  invoiceNumber   String?           @unique
+  invoiceUrl      String?
+  
+  // Refund info
+  refundAmount    Decimal?          @db.Decimal(10, 2)
+  refundReason    String?
+  refundedAt      DateTime?
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  completedAt     DateTime?
+  
+  @@index([userId])
+  @@index([status])
+  @@index([serviceType])
+}
+
+// ==================== ITR FILING ====================
+
+enum ITRType {
+  ITR1
+  ITR2
+  ITR3
+  ITR4
+  ITR5
+  ITR6
+  ITR7
+}
+
+enum FilingStatus {
+  DRAFT
+  DOCUMENTS_PENDING
+  UNDER_REVIEW
+  CA_ASSIGNED
+  PROCESSING
+  VERIFICATION_PENDING
+  FILED
+  ACKNOWLEDGED
+  REFUND_INITIATED
+  COMPLETED
+  REJECTED
+}
+
+model ITRFiling {
+  id                String        @id @default(cuid())
+  userId            String
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Filing details
+  itrType           ITRType
+  financialYear     String
+  assessmentYear    String
+  status            FilingStatus  @default(DRAFT)
+  
+  // Personal details
+  pan               String?
+  aadhaar           String?
+  
+  // Income details
+  grossIncome       Decimal?      @db.Decimal(15, 2)
+  taxableIncome     Decimal?      @db.Decimal(15, 2)
+  totalDeductions   Decimal?      @db.Decimal(15, 2)
+  taxPayable        Decimal?      @db.Decimal(15, 2)
+  tdsDeducted       Decimal?      @db.Decimal(15, 2)
+  refundDue         Decimal?      @db.Decimal(15, 2)
+  
+  // Filing acknowledgment
+  acknowledgmentNo  String?
+  filedAt           DateTime?
+  
+  // CA assignment
+  assignedCAId      String?
+  assignedAt        DateTime?
+  
+  // Form data (JSON for flexibility)
+  formData          Json?
+  remarks           String?
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  @@index([userId])
+  @@index([financialYear])
+  @@index([status])
+}
+
+// ==================== GST FILING ====================
+
+enum GSTReturnType {
+  GSTR1
+  GSTR3B
+  GSTR4
+  GSTR9
+  GSTR9C
+}
+
+model GSTFiling {
+  id              String          @id @default(cuid())
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  gstin           String
+  tradeName       String?
+  returnType      GSTReturnType
+  period          String          // e.g., "Jan-2026", "Q1-2026"
+  financialYear   String
+  status          FilingStatus    @default(DRAFT)
+  
+  // Amounts
+  totalSales      Decimal?        @db.Decimal(15, 2)
+  totalPurchases  Decimal?        @db.Decimal(15, 2)
+  igst            Decimal?        @db.Decimal(15, 2)
+  cgst            Decimal?        @db.Decimal(15, 2)
+  sgst            Decimal?        @db.Decimal(15, 2)
+  itcClaimed      Decimal?        @db.Decimal(15, 2)
+  taxPayable      Decimal?        @db.Decimal(15, 2)
+  
+  // Filing details
+  acknowledgmentNo String?
+  filedAt         DateTime?
+  
+  // Form data
+  formData        Json?
+  remarks         String?
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  @@index([userId])
+  @@index([gstin])
+  @@index([period])
+}
+
+// ==================== ACTIVITY LOGS ====================
+
+enum LogAction {
+  LOGIN
+  LOGOUT
+  LOGIN_FAILED
+  PASSWORD_CHANGE
+  PROFILE_UPDATE
+  DOCUMENT_UPLOAD
+  DOCUMENT_DELETE
+  ITR_CREATE
+  ITR_SUBMIT
+  GST_CREATE
+  GST_SUBMIT
+  PAYMENT_INITIATED
+  PAYMENT_COMPLETED
+  PAYMENT_FAILED
+  ADMIN_ACTION
+  PERMISSION_CHANGE
+  TWO_FACTOR_ENABLED
+  TWO_FACTOR_DISABLED
+}
+
+model ActivityLog {
+  id          String    @id @default(cuid())
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  action      LogAction
+  description String
+  metadata    Json?
+  
+  ipAddress   String?
+  userAgent   String?
+  
+  createdAt   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// ==================== CONTACT & INQUIRIES ====================
+
+enum InquiryStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+model ContactInquiry {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  subject     String
+  message     String        
+  status      InquiryStatus @default(NEW)
+  
+  assignedTo  String?
+  resolvedAt  DateTime?
+  response    String?       
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  @@index([email])
+  @@index([status])
+}
+
+// ==================== NEWSLETTER ====================
+
+model NewsletterSubscriber {
+  id          String    @id @default(cuid())
+  email       String    @unique
+  isActive    Boolean   @default(true)
+  
+  subscribedAt DateTime @default(now())
+  unsubscribedAt DateTime?
+}
+
+// ==================== PRICING PLANS ====================
+
+model PricingPlan {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  originalPrice Decimal? @db.Decimal(10, 2)
+  currency    String   @default("INR")
+  features    String[]
+  serviceType ServiceType
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==================== BLOG ====================
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String?
+  content     String
+  coverImage  String?
+  author      String
+  tags        String[]
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([slug])
+  @@index([isPublished])
+}
+
+// ==================== FAQ ====================
+
+model FAQ {
+  id          String   @id @default(cuid())
+  question    String
+  answer      String
+  category    String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
