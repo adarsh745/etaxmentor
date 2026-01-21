@@ -85,7 +85,7 @@ export default function DashboardPage() {
       case 'PROCESSING':
         return 'info'
       case 'REJECTED':
-        return 'danger'
+        return 'error'
       default:
         return 'default'
     }
@@ -137,7 +137,7 @@ export default function DashboardPage() {
         </div>
         <div>
           <Link href="/dashboard/itr/new">
-            <Button size="default" className="w-full sm:w-auto bg-blue-700 hover:bg-blue-800 shadow-md transition-all">
+            <Button size="md" className="w-full sm:w-auto bg-blue-700 hover:bg-blue-800 shadow-md transition-all">
               <Plus className="w-4 h-4 mr-2" />
               New ITR Filing
             </Button>
@@ -259,7 +259,7 @@ export default function DashboardPage() {
                                   {filing.status}
                                 </Badge>
                                 <Link href={`/dashboard/itr/${filing.id}`}>
-                                  <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-blue-600">
+                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-400 hover:text-blue-600">
                                     <Eye className="w-4 h-4" />
                                   </Button>
                                 </Link>
