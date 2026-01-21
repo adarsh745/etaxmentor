@@ -37,7 +37,7 @@ export default function DashboardLayout({
       <aside className="w-64 bg-white border-r flex flex-col">
 
         {/* Logo */}
-        <div className="h-16 flex items-center gap-3 px-4 border-b bg-pink-50">
+        <div className="h-16 flex items-center gap-3 px-4 border-b">
           <div className="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold">
             eT
           </div>
