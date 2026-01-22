@@ -70,23 +70,50 @@ export default function HomePage() {
       </p>
 
       <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-4">
-        <Link href="/services/itr-filing">
-          <Button size="xl" variant="secondary" className="w-full sm:w-auto min-w-55">
-            Explore Services
-            <ArrowRight className="w-6 h-6" />
-          </Button>
-        </Link>
 
-        <Link href="/contact">
-          <Button
-            size="xl"
-            variant="outline"
-            className="w-full sm:w-auto min-w-55 bg-white text-[#1E3A8A]"
-          >
-            Talk to Expert
-          </Button>
-        </Link>
-      </div>
+  {/* Explore Services – outline style */}
+  <Link
+  href="/services/itr-filing"
+  className="
+    inline-flex items-center justify-center gap-2
+    min-w-[180px] h-11
+    px-7
+    bg-white text-[#1E3A8A] font-bold text-base
+    leading-none
+    border-2 border-[#1E3A8A]
+    rounded-full
+    hover:bg-blue-50
+    transition-colors
+    whitespace-nowrap
+  "
+>
+  Explore Services
+  <ArrowRight className="w-5 h-5 text-[#1E3A8A]" />
+</Link>
+
+
+
+  {/* Talk to Expert – green gradient primary */}
+  <Link
+    href="/contact"
+    className="
+      inline-flex items-center justify-center
+      min-w-[180px] h-11
+      px-7
+      bg-linear-to-r from-[#10B981] to-[#059669]
+      text-white font-bold text-base
+      leading-none
+      rounded-full
+      whitespace-nowrap
+      transition-all
+      hover:shadow-lg hover:-translate-y-0.5
+    "
+  >
+    Talk to Expert
+  </Link>
+
+</div>
+
 
     </div>
   </div>
@@ -104,50 +131,86 @@ export default function HomePage() {
 
       {/* File ITR Options */}
       <section className="py-20 md:py-28 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Start Your <span className="text-[#1E3A8A]">Tax Filing</span> Journey
-            </h2>
-            <p className="text-lg text-gray-600 font-medium">Choose your preferred filing method</p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Option 1 */}
-            <div className="bg-linear-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 md:p-10 border border-blue-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col">
-              <div className="w-16 h-16 bg-[#1E3A8A] rounded-xl flex items-center justify-center mb-6">
-                <Users className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">File ITR with eTaxMentor</h3>
-              <p className="text-gray-600 mb-8 grow leading-relaxed">
-                Get your ITR filed by expert CAs with secure, accurate, and personalized support for maximum savings.
-              </p>
-              <Link href="/services/itr-filing" className="mt-auto">
-                <Button size="lg" variant="primary" className="w-full font-semibold">
-                  File with an Expert
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
-            </div>
-            
-            {/* Option 2 */}
-            <div className="bg-linear-to-br from-green-50 to-emerald-50 rounded-2xl p-8 md:p-10 border border-green-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col">
-              <div className="w-16 h-16 bg-[#10B981] rounded-xl flex items-center justify-center mb-6">
-                <FileText className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">File ITR Yourself</h3>
-              <p className="text-gray-600 mb-8 grow leading-relaxed">
-                Quick and simple ITR filing with step-by-step guidance and complete compliance support — all done online.
-              </p>
-              <Link href="/dashboard/itr/new" className="mt-auto">
-                <Button size="lg" variant="secondary" className="w-full font-semibold">
-                  File Your ITR Now
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
-            </div>
-          </div>
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-16">
+      <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+        Start Your <span className="text-[#1E3A8A]">Tax Filing</span> Journey
+      </h2>
+      <p className="text-lg text-gray-600 font-medium">Choose your preferred filing method</p>
+    </div>
+
+    <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      {/* Option 1 - ITR Expert */}
+      <div className="bg-linear-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 md:p-10 border border-blue-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col">
+        <div className="w-16 h-16 bg-[#1E3A8A] rounded-xl flex items-center justify-center mb-6">
+          <Users className="w-8 h-8 text-white" />
         </div>
-      </section>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">File ITR with eTaxMentor</h3>
+        <p className="text-gray-600 mb-8 grow leading-relaxed">
+          Get your ITR filed by expert CAs with secure, accurate, and personalized support for maximum savings.
+        </p>
+        <Link href="/services/itr-filing" className="mt-auto">
+          <Button size="lg" variant="primary" className="w-full font-semibold">
+            File with an Expert
+            <ArrowRight className="w-5 h-5" />
+          </Button>
+        </Link>
+      </div>
+
+      {/* Option 2 - ITR Yourself */}
+      <div className="bg-linear-to-br from-green-50 to-emerald-50 rounded-2xl p-8 md:p-10 border border-green-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col">
+        <div className="w-16 h-16 bg-[#10B981] rounded-xl flex items-center justify-center mb-6">
+          <FileText className="w-8 h-8 text-white" />
+        </div>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">File ITR Yourself</h3>
+        <p className="text-gray-600 mb-8 grow leading-relaxed">
+          Quick and simple ITR filing with step-by-step guidance and complete compliance support — all done online.
+        </p>
+        <Link href="/dashboard/itr/new" className="mt-auto">
+          <Button size="lg" variant="secondary" className="w-full font-semibold">
+            File Your ITR Now
+            <ArrowRight className="w-5 h-5" />
+          </Button>
+        </Link>
+      </div>
+
+      {/* Option 3 - GST */}
+      <div className="bg-linear-to-br from-yellow-50 to-amber-50 rounded-2xl p-8 md:p-10 border border-yellow-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col">
+        <div className="w-16 h-16 bg-[#F59E0B] rounded-xl flex items-center justify-center mb-6">
+          <FileText className="w-8 h-8 text-white" />
+        </div>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">GST Filing</h3>
+        <p className="text-gray-600 mb-8 grow leading-relaxed">
+          Simplify your GST compliance with step-by-step guidance and accurate filing for your business.
+        </p>
+        <Link href="/services/gst-filing" className="mt-auto">
+          <Button size="lg" variant="secondary" className="w-full font-semibold">
+            File GST Now
+            <ArrowRight className="w-5 h-5" />
+          </Button>
+        </Link>
+      </div>
+
+      {/* Option 4 - UAN-EPFO */}
+      <div className="bg-linear-to-br from-purple-50 to-violet-50 rounded-2xl p-8 md:p-10 border border-purple-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col">
+        <div className="w-16 h-16 bg-[#7C3AED] rounded-xl flex items-center justify-center mb-6">
+          <FileText className="w-8 h-8 text-white" />
+        </div>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">UAN / EPFO</h3>
+        <p className="text-gray-600 mb-8 grow leading-relaxed">
+          Manage your EPFO contributions and UAN services easily with our guided support and automation.
+        </p>
+        <Link href="/services/epfo-uan" className="mt-auto">
+          <Button size="lg" variant="secondary" className="w-full font-semibold">
+            Access UAN
+            <ArrowRight className="w-5 h-5" />
+          </Button>
+        </Link>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Why Choose Us */}
       <section className="py-20 md:py-28 bg-gray-50">
