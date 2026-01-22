@@ -1,11 +1,13 @@
 'use client'
 
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   Home, User, FileText, Receipt, Upload,
   CreditCard, Bell, MessageSquare,
-  Settings, LogOut, Calculator
+  Settings, LogOut, Calculator,
+  ChevronLeft, ChevronRight
 } from 'lucide-react'
 import { useAuth } from '@/contexts'
 
@@ -29,25 +31,55 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname()
   const { user, logout } = useAuth()
+  const [isSidebarOpen, setSidebarOpen] = useState(true)
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
 
-      {/* ───────────── SIDEBAR (ALWAYS OPEN) ───────────── */}
-      <aside className="w-64 bg-white border-r flex flex-col">
+      {/* ───────────── SIDEBAR ───────────── */}
+      <aside 
+        className={`${
+          isSidebarOpen ? 'w-64' : 'w-20'
+        } bg-white border-r flex flex-col transition-all duration-300 ease-in-out relative`}
+      >
 
-        {/* Logo */}
-        <div className="h-16 flex items-center gap-3 px-4 border-b">
-          <div className="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold">
-            eT
+        {/* Logo & Toggle */}
+        <div className="h-16 flex items-center justify-between px-4 border-b">
+          <div className={`flex items-center gap-3 ${!isSidebarOpen && 'justify-center w-full'}`}>
+            <div className="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+              eT
+            </div>
+            {isSidebarOpen && (
+              <span className="font-bold text-blue-900 text-lg whitespace-nowrap overflow-hidden">
+                eTaxMentor
+              </span>
+            )}
           </div>
-          <span className="font-bold text-blue-900 text-lg">
-            eTaxMentor
-          </span>
+          
+          {isSidebarOpen && (
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors"
+            >
+              <ChevronLeft size={20} />
+            </button>
+          )}
         </div>
 
+        {/* Closed State Toggle (Centered) */}
+        {!isSidebarOpen && (
+           <div className="flex justify-center py-2 border-b">
+             <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors"
+            >
+              <ChevronRight size={20} />
+            </button>
+           </div>
+        )}
+
         {/* Menu */}
-        <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden p-3 space-y-1">
           {sidebarItems.map(item => {
             const Icon = item.icon
             const active = pathname === item.href
@@ -56,16 +88,21 @@ export default function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
+                title={!isSidebarOpen ? item.label : ''}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors
                 ${active
                   ? 'bg-blue-50 text-blue-700 font-medium'
                   : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                }`}
+                }
+                ${!isSidebarOpen ? 'justify-center' : ''}
+                `}
               >
                 <span className="flex items-center justify-center w-6 h-6 flex-shrink-0">
                   <Icon size={20} />
                 </span>
-                <span className="truncate">{item.label}</span>
+                {isSidebarOpen && (
+                  <span className="truncate">{item.label}</span>
+                )}
               </Link>
             )
           })}
@@ -75,16 +112,18 @@ export default function DashboardLayout({
         <div className="border-t p-3">
           <button
             onClick={logout}
-            className="flex items-center gap-3 text-red-600 w-full px-3 py-2.5 rounded-lg hover:bg-red-50"
+            title={!isSidebarOpen ? 'Logout' : ''}
+            className={`flex items-center gap-3 text-red-600 w-full px-3 py-2.5 rounded-lg hover:bg-red-50 
+              ${!isSidebarOpen ? 'justify-center' : ''}`}
           >
             <LogOut size={20} />
-            Logout
+            {isSidebarOpen && <span>Logout</span>}
           </button>
         </div>
       </aside>
 
       {/* ───────────── RIGHT SECTION ───────────── */}
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 min-w-0">
 
         {/* TOP NAVBAR 1 */}
         <header className="h-16 bg-blue-900 text-white flex items-center px-6">
@@ -92,7 +131,7 @@ export default function DashboardLayout({
         </header>
 
         {/* TOP NAVBAR 2 */}
-        <header className="h-16 bg-white border-b flex items-center justify-between px-6">
+        {/* <header className="h-16 bg-white border-b flex items-center justify-between px-6">
           <span className="capitalize text-gray-600 font-medium">
             {pathname.replace('/dashboard', '') || 'Dashboard'}
           </span>
@@ -100,13 +139,13 @@ export default function DashboardLayout({
           <div className="flex items-center gap-4">
             <Bell size={18} className="text-gray-500" />
             <div className="flex items-center gap-2">
-              <span className="text-sm">{user?.name || 'User'}</span>
+              <span className="text-sm hidden sm:block">{user?.name || 'User'}</span>
               <div className="w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center">
                 {user?.name?.charAt(0) || 'U'}
               </div>
             </div>
           </div>
-        </header>
+        </header> */}
 
         {/* PAGE CONTENT */}
         <main className="flex-1 overflow-y-auto p-6">

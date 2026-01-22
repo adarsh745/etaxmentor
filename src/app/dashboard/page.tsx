@@ -137,7 +137,7 @@ export default function DashboardPage() {
         </div>
         <div>
           <Link href="/dashboard/itr/new">
-            <Button size="default" className="w-full sm:w-auto bg-blue-700 hover:bg-blue-800 shadow-md transition-all">
+            <Button size="md" className="w-full sm:w-auto bg-blue-700 hover:bg-blue-800 shadow-md transition-all">
               <Plus className="w-4 h-4 mr-2" />
               New ITR Filing
             </Button>
