@@ -38,13 +38,13 @@ export default function Header() {
                 </div>
               ) : (
                 <>
-                  <Link href="/login" className="hover:text-blue-200 transition-colors">
+                  {/* <Link href="/login" className="hover:text-blue-200 transition-colors">
                     Login
                   </Link>
                   <span className="text-blue-300">|</span>
                   <Link href="/register" className="hover:text-blue-200 transition-colors">
                     Register
-                  </Link>
+                  </Link> */}
                 </>
               )
             )}
