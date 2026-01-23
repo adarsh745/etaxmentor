@@ -32,6 +32,7 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname()
   const { user, logout } = useAuth()
+  const [isSidebarOpen, setSidebarOpen] = useState(true)
 
   // Map paths to proper titles
   const getPageTitle = () => {
@@ -55,29 +56,27 @@ export default function DashboardLayout({
     <div className={styles.container}>
 
       {/* ───────────── SIDEBAR (ALWAYS OPEN) ───────────── */}
-      <aside className={styles.sidebar}>
+      <aside className={`${styles.sidebar} ${!isSidebarOpen ? styles.sidebarCollapsed : ''}`}>
 
         {/* Logo */}
         <div className={styles.sidebarLogo}>
           <div className={styles.logoIcon}>
             eT
           </div>
-          <span className={styles.logoText}>
-            eTaxMentor
-          </span>
+          {isSidebarOpen && (
+            <span className={styles.logoText}>
+              eTaxMentor
+            </span>
+          )}
+          <button 
+            onClick={() => setSidebarOpen(!isSidebarOpen)}
+            className="ml-auto p-1 rounded hover:bg-gray-100 transition-colors"
+            title={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+          >
+            {isSidebarOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+          </button>
         </div>
 
-        {/* Closed State Toggle (Centered) */}
-        {!isSidebarOpen && (
-           <div className="flex justify-center py-2 border-b">
-             <button
-              onClick={() => setSidebarOpen(true)}
-              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors"
-            >
-              <ChevronRight size={20} />
-            </button>
-           </div>
-        )}
 
         {/* Menu */}
         <nav className={styles.sidebarNav}>
@@ -94,7 +93,7 @@ export default function DashboardLayout({
                 <span className={styles.sidebarIcon}>
                   <Icon size={20} />
                 </span>
-                <span className={styles.sidebarLabel}>{item.label}</span>
+                {isSidebarOpen && <span className={styles.sidebarLabel}>{item.label}</span>}
               </Link>
             )
           })}
@@ -137,7 +136,7 @@ export default function DashboardLayout({
                </div>
              </Link>
           </div>
-        </header> */}
+        </header>
 
         {/* PAGE CONTENT */}
         <main className={styles.pageContent}>

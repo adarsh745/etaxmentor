@@ -206,7 +206,7 @@ export default function ITRFilingsPage() {
           </CardContent>
         </Card>
 
-        </div>
+
         {/* Error Message */}
         {error && (
           <div className={styles.errorMessage}>
@@ -345,7 +345,7 @@ export default function ITRFilingsPage() {
         )}
       </div>
 
-        </div>
+
         
     </div>
   )
