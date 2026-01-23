@@ -4,66 +4,64 @@ import { useState } from 'react'
 import { Shield, Bell, Lock, Mail, Smartphone, Trash2, Eye, EyeOff, CheckCircle, Loader2 } from 'lucide-react'
 import { Button, Input, Card, CardContent } from '@/components/ui'
 import { useAuth } from '@/contexts'
+import styles from './page.module.css'
 
 export default function SettingsPage() {
   const { user, logout } = useAuth()
   const [activeTab, setActiveTab] = useState<'security' | 'notifications' | 'preferences'>('security')
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-          <p className="text-gray-600">Manage your account settings and preferences</p>
+    <div className={styles.container}>
+      <div className={styles.innerContainer}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Settings</h1>
+          <p className={styles.subtitle}>Manage your account settings and preferences</p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-6">
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
+        <div className={styles.gridLayout}>
+          <div className={styles.sidebar}>
             <Card>
-              <CardContent className="p-4">
-                <nav className="space-y-1">
+              <CardContent className={styles.navCard}>
+                <nav className={styles.navList}>
                   <button
                     onClick={() => setActiveTab('security')}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                    className={`${styles.navButton} ${
                       activeTab === 'security'
-                        ? 'bg-[#1E3A8A] text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? styles.navButtonActive
+                        : styles.navButtonInactive
                     }`}
                   >
-                    <Shield className="w-5 h-5" />
-                    <span className="font-medium">Security</span>
+                    <Shield className={styles.navIcon} />
+                    <span className={styles.navLabel}>Security</span>
                   </button>
                   <button
                     onClick={() => setActiveTab('notifications')}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                    className={`${styles.navButton} ${
                       activeTab === 'notifications'
-                        ? 'bg-[#1E3A8A] text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? styles.navButtonActive
+                        : styles.navButtonInactive
                     }`}
                   >
-                    <Bell className="w-5 h-5" />
-                    <span className="font-medium">Notifications</span>
+                    <Bell className={styles.navIcon} />
+                    <span className={styles.navLabel}>Notifications</span>
                   </button>
                   <button
                     onClick={() => setActiveTab('preferences')}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                    className={`${styles.navButton} ${
                       activeTab === 'preferences'
-                        ? 'bg-[#1E3A8A] text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? styles.navButtonActive
+                        : styles.navButtonInactive
                     }`}
                   >
-                    <Mail className="w-5 h-5" />
-                    <span className="font-medium">Preferences</span>
+                    <Mail className={styles.navIcon} />
+                    <span className={styles.navLabel}>Preferences</span>
                   </button>
                 </nav>
               </CardContent>
             </Card>
           </div>
 
-          {/* Content */}
-          <div className="lg:col-span-3">
+          <div className={styles.mainContent}>
             {activeTab === 'security' && <SecuritySettings />}
             {activeTab === 'notifications' && <NotificationSettings />}
             {activeTab === 'preferences' && <PreferencesSettings />}
@@ -124,29 +122,28 @@ function SecuritySettings() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Change Password */}
+    <div className={styles.contentWrapper}>
       <Card>
-        <CardContent className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Lock className="w-5 h-5 text-[#1E3A8A]" />
+        <CardContent className={styles.card}>
+          <h2 className={styles.cardTitle}>
+            <Lock className={styles.cardIcon} />
             Change Password
           </h2>
 
           {success && (
-            <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm flex items-center gap-2">
-              <CheckCircle className="w-5 h-5" />
+            <div className={styles.successAlert}>
+              <CheckCircle className={styles.alertIcon} />
               {success}
             </div>
           )}
           {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <div className={styles.errorAlert}>
               {error}
             </div>
           )}
 
-          <form onSubmit={handleChangePassword} className="space-y-4">
-            <div className="relative">
+          <form onSubmit={handleChangePassword} className={styles.formSection}>
+            <div>
               <Input
                 label="Current Password"
                 type={showPassword ? 'text' : 'password'}
@@ -155,7 +152,7 @@ function SecuritySettings() {
                 required
               />
             </div>
-            <div className="relative">
+            <div>
               <Input
                 label="New Password"
                 type={showPassword ? 'text' : 'password'}
@@ -165,7 +162,7 @@ function SecuritySettings() {
                 required
               />
             </div>
-            <div className="relative">
+            <div>
               <Input
                 label="Confirm New Password"
                 type={showPassword ? 'text' : 'password'}
@@ -175,15 +172,15 @@ function SecuritySettings() {
               />
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className={styles.checkboxWrapper}>
               <input
                 type="checkbox"
                 id="showPassword"
                 checked={showPassword}
                 onChange={(e) => setShowPassword(e.target.checked)}
-                className="w-4 h-4 rounded border-gray-300 text-[#1E3A8A] focus:ring-[#1E3A8A]"
+                className={styles.checkbox}
               />
-              <label htmlFor="showPassword" className="text-sm text-gray-700">
+              <label htmlFor="showPassword" className={styles.checkboxLabel}>
                 Show passwords
               </label>
             </div>
@@ -202,18 +199,19 @@ function SecuritySettings() {
         </CardContent>
       </Card>
 
-      {/* Two-Factor Authentication */}
       <Card>
-        <CardContent className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Smartphone className="w-5 h-5 text-[#1E3A8A]" />
+        <CardContent className={styles.card}>
+          <h2 className={styles.cardTitle}>
+            <Smartphone className={styles.cardIcon} />
             Two-Factor Authentication
           </h2>
-          <p className="text-gray-600 mb-4">
+          <p className={styles.cardSubtitle}>
             Add an extra layer of security to your account by enabling 2FA.
           </p>
-          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600 mb-3">Status: <span className="font-medium text-gray-900">Disabled</span></p>
+          <div className={styles.twoFactorBox}>
+            <p className={styles.twoFactorStatus}>
+              Status: <span className={styles.twoFactorStatusValue}>Disabled</span>
+            </p>
             <Button variant="outline" disabled>
               Enable 2FA (Coming Soon)
             </Button>
@@ -221,23 +219,20 @@ function SecuritySettings() {
         </CardContent>
       </Card>
 
-      {/* Danger Zone */}
       <Card>
-        <CardContent className="p-6">
-          <h2 className="text-xl font-semibold text-red-600 mb-4 flex items-center gap-2">
-            <Trash2 className="w-5 h-5" />
+        <CardContent className={styles.card}>
+          <h2 className={`${styles.cardTitle} ${styles.cardTitleRed}`}>
+            <Trash2 className={styles.cardIconRed} />
             Danger Zone
           </h2>
-          <div className="space-y-4">
-            <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-              <h3 className="font-semibold text-gray-900 mb-2">Delete Account</h3>
-              <p className="text-sm text-gray-600 mb-3">
-                Once you delete your account, there is no going back. Please be certain.
-              </p>
-              <Button variant="outline" className="border-red-300 text-red-600 hover:bg-red-50">
-                Delete My Account
-              </Button>
-            </div>
+          <div className={styles.dangerBox}>
+            <h3 className={styles.dangerTitle}>Delete Account</h3>
+            <p className={styles.dangerText}>
+              Once you delete your account, there is no going back. Please be certain.
+            </p>
+            <Button variant="outline" className={styles.dangerButton}>
+              Delete My Account
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -256,114 +251,113 @@ function NotificationSettings() {
   })
 
   const handleSave = () => {
-    // TODO: API call to save settings
     alert('Settings saved!')
   }
 
   return (
     <Card>
-      <CardContent className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Notification Preferences</h2>
+      <CardContent className={styles.card}>
+        <h2 className={styles.cardTitle}>Notification Preferences</h2>
 
-        <div className="space-y-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="font-medium text-gray-900">Email Notifications</h3>
-              <p className="text-sm text-gray-600 mt-1">Receive notifications via email</p>
+        <div className={styles.notificationsList}>
+          <div className={styles.notificationItem}>
+            <div className={styles.notificationInfo}>
+              <h3>Email Notifications</h3>
+              <p>Receive notifications via email</p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
+            <label className={styles.toggleLabel}>
               <input
                 type="checkbox"
                 checked={settings.emailNotifications}
                 onChange={(e) => setSettings({ ...settings, emailNotifications: e.target.checked })}
-                className="sr-only peer"
+                className={styles.toggleInput}
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E3A8A]"></div>
+              <div className={styles.toggleSwitch}></div>
             </label>
           </div>
 
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="font-medium text-gray-900">Filing Updates</h3>
-              <p className="text-sm text-gray-600 mt-1">Get notified about ITR/GST filing status changes</p>
+          <div className={styles.notificationItem}>
+            <div className={styles.notificationInfo}>
+              <h3>Filing Updates</h3>
+              <p>Get notified about ITR/GST filing status changes</p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
+            <label className={styles.toggleLabel}>
               <input
                 type="checkbox"
                 checked={settings.filingUpdates}
                 onChange={(e) => setSettings({ ...settings, filingUpdates: e.target.checked })}
-                className="sr-only peer"
+                className={styles.toggleInput}
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E3A8A]"></div>
+              <div className={styles.toggleSwitch}></div>
             </label>
           </div>
 
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="font-medium text-gray-900">Payment Reminders</h3>
-              <p className="text-sm text-gray-600 mt-1">Reminders for pending payments</p>
+          <div className={styles.notificationItem}>
+            <div className={styles.notificationInfo}>
+              <h3>Payment Reminders</h3>
+              <p>Reminders for pending payments</p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
+            <label className={styles.toggleLabel}>
               <input
                 type="checkbox"
                 checked={settings.paymentReminders}
                 onChange={(e) => setSettings({ ...settings, paymentReminders: e.target.checked })}
-                className="sr-only peer"
+                className={styles.toggleInput}
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E3A8A]"></div>
+              <div className={styles.toggleSwitch}></div>
             </label>
           </div>
 
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="font-medium text-gray-900">Promotional Emails</h3>
-              <p className="text-sm text-gray-600 mt-1">Receive offers and promotional content</p>
+          <div className={styles.notificationItem}>
+            <div className={styles.notificationInfo}>
+              <h3>Promotional Emails</h3>
+              <p>Receive offers and promotional content</p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
+            <label className={styles.toggleLabel}>
               <input
                 type="checkbox"
                 checked={settings.promotions}
                 onChange={(e) => setSettings({ ...settings, promotions: e.target.checked })}
-                className="sr-only peer"
+                className={styles.toggleInput}
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E3A8A]"></div>
+              <div className={styles.toggleSwitch}></div>
             </label>
           </div>
 
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="font-medium text-gray-900">Weekly Digest</h3>
-              <p className="text-sm text-gray-600 mt-1">Weekly summary of your account activity</p>
+          <div className={styles.notificationItem}>
+            <div className={styles.notificationInfo}>
+              <h3>Weekly Digest</h3>
+              <p>Weekly summary of your account activity</p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
+            <label className={styles.toggleLabel}>
               <input
                 type="checkbox"
                 checked={settings.weeklyDigest}
                 onChange={(e) => setSettings({ ...settings, weeklyDigest: e.target.checked })}
-                className="sr-only peer"
+                className={styles.toggleInput}
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1E3A8A]"></div>
+              <div className={styles.toggleSwitch}></div>
             </label>
           </div>
 
-          <div className="flex items-start justify-between opacity-50">
-            <div>
-              <h3 className="font-medium text-gray-900">SMS Notifications</h3>
-              <p className="text-sm text-gray-600 mt-1">Receive important updates via SMS (Coming Soon)</p>
+          <div className={`${styles.notificationItem} ${styles.notificationItemDisabled}`}>
+            <div className={styles.notificationInfo}>
+              <h3>SMS Notifications</h3>
+              <p>Receive important updates via SMS (Coming Soon)</p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
+            <label className={styles.toggleLabel}>
               <input
                 type="checkbox"
                 checked={settings.smsNotifications}
                 disabled
-                className="sr-only peer"
+                className={styles.toggleInput}
               />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              <div className={styles.toggleSwitch}></div>
             </label>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t">
+        <div className={styles.bottomActions}>
           <Button onClick={handleSave}>Save Preferences</Button>
         </div>
       </CardContent>
@@ -378,16 +372,16 @@ function PreferencesSettings() {
 
   return (
     <Card>
-      <CardContent className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">General Preferences</h2>
+      <CardContent className={styles.card}>
+        <h2 className={styles.cardTitle}>General Preferences</h2>
 
-        <div className="space-y-6">
+        <div className={styles.preferencesSection}>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
+            <label className={styles.fieldLabel}>Language</label>
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
+              className={styles.select}
             >
               <option value="en">English</option>
               <option value="hi" disabled>Hindi (Coming Soon)</option>
@@ -395,11 +389,11 @@ function PreferencesSettings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
+            <label className={styles.fieldLabel}>Timezone</label>
             <select
               value={timezone}
               onChange={(e) => setTimezone(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
+              className={styles.select}
             >
               <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
               <option value="Asia/Dubai">Asia/Dubai (GST)</option>
@@ -408,19 +402,19 @@ function PreferencesSettings() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+            <label className={styles.fieldLabel}>Currency</label>
             <select
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
               disabled
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+              className={`${styles.select} ${styles.selectDisabled}`}
             >
               <option value="INR">₹ INR - Indian Rupee</option>
             </select>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t">
+        <div className={styles.bottomActions}>
           <Button>Save Preferences</Button>
         </div>
       </CardContent>

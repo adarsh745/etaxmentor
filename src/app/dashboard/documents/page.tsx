@@ -14,6 +14,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
   Dialog, DialogContent, DialogHeader, DialogTitle,
 } from '@/components/ui'
+import styles from './page.module.css'
 
 interface Document {
   id: string
@@ -192,26 +193,26 @@ export default function DocumentsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-purple-50 to-indigo-50 py-12">
-        <div className="container mx-auto px-4 max-w-7xl text-center py-24">
-          <RefreshCw className="w-12 h-12 animate-spin text-purple-500 mx-auto mb-4" />
-          <p className="text-gray-600">Loading documents...</p>
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingContent}>
+          <RefreshCw className={styles.loadingSpinner} />
+          <p className={styles.loadingText}>Loading documents...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-purple-50 to-indigo-50 py-8">
-      <div className="container mx-auto px-4 max-w-7xl">
+    <div className={styles.container}>
+      <div className={styles.content}>
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className={styles.header}>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Document Manager</h1>
-            <p className="text-gray-600">Upload, organize, and manage all your tax documents</p>
+            <h1 className={styles.headerTitle}>Document Manager</h1>
+            <p className={styles.headerDescription}>Upload, organize, and manage all your tax documents</p>
           </div>
           <Link href="/dashboard/documents/upload">
-            <Button className="bg-purple-600 hover:bg-purple-700">
+            <Button className={styles.uploadButton}>
               <Upload className="w-4 h-4 mr-2" />
               Upload Documents
             </Button>
@@ -219,90 +220,78 @@ export default function DocumentsPage() {
         </div>
 
         {error && (
-          <Card className="mb-6 border-red-200">
-            <CardContent className="p-4">
-              <div className="flex items-center text-red-600">
-                <AlertTriangle className="w-4 h-4 mr-2" />
-                {error}
-              </div>
+          <Card className={styles.errorCard}>
+            <CardContent className={styles.errorContent}>
+              <AlertTriangle className={styles.errorIcon} />
+              {error}
             </CardContent>
           </Card>
         )}
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <FolderOpen className="w-8 h-8 text-purple-600" />
-                <div className="ml-4">
-                  <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-                  <p className="text-xs text-gray-500">Total Documents</p>
-                </div>
+        <div className={styles.statsGrid}>
+          <Card className={styles.statCard}>
+            <CardContent className={styles.statContent}>
+              <FolderOpen className={styles.statIcon} style={{ color: '#7c3aed' }} />
+              <div>
+                <p className={styles.statValue}>{stats.total}</p>
+                <p className={styles.statLabel}>Total Documents</p>
               </div>
             </CardContent>
           </Card>
           
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <FileText className="w-8 h-8 text-blue-600" />
-                <div className="ml-4">
-                  <p className="text-2xl font-bold text-gray-900">{stats.uploaded}</p>
-                  <p className="text-xs text-gray-500">Uploaded</p>
-                </div>
+          <Card className={styles.statCard}>
+            <CardContent className={styles.statContent}>
+              <FileText className={styles.statIcon} style={{ color: '#3b82f6' }} />
+              <div>
+                <p className={styles.statValue}>{stats.uploaded}</p>
+                <p className={styles.statLabel}>Uploaded</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Clock className="w-8 h-8 text-yellow-600" />
-                <div className="ml-4">
-                  <p className="text-2xl font-bold text-gray-900">{stats.processing}</p>
-                  <p className="text-xs text-gray-500">Processing</p>
-                </div>
+          <Card className={styles.statCard}>
+            <CardContent className={styles.statContent}>
+              <Clock className={styles.statIcon} style={{ color: '#eab308' }} />
+              <div>
+                <p className={styles.statValue}>{stats.processing}</p>
+                <p className={styles.statLabel}>Processing</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <CheckCircle2 className="w-8 h-8 text-green-600" />
-                <div className="ml-4">
-                  <p className="text-2xl font-bold text-gray-900">{stats.verified}</p>
-                  <p className="text-xs text-gray-500">Verified</p>
-                </div>
+          <Card className={styles.statCard}>
+            <CardContent className={styles.statContent}>
+              <CheckCircle2 className={styles.statIcon} style={{ color: '#22c55e' }} />
+              <div>
+                <p className={styles.statValue}>{stats.verified}</p>
+                <p className={styles.statLabel}>Verified</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <AlertTriangle className="w-8 h-8 text-red-600" />
-                <div className="ml-4">
-                  <p className="text-2xl font-bold text-gray-900">{stats.rejected}</p>
-                  <p className="text-xs text-gray-500">Rejected</p>
-                </div>
+          <Card className={styles.statCard}>
+            <CardContent className={styles.statContent}>
+              <AlertTriangle className={styles.statIcon} style={{ color: '#ef4444' }} />
+              <div>
+                <p className={styles.statValue}>{stats.rejected}</p>
+                <p className={styles.statLabel}>Rejected</p>
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Filters */}
-        <Card className="mb-6">
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+        <Card className={styles.filtersCard}>
+          <CardContent className={styles.filtersContent}>
+            <div className={styles.filtersGrid}>
+              <div className={styles.searchContainer}>
+                <Search className={styles.searchIcon} />
                 <Input
                   placeholder="Search documents..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className={styles.searchInput}
                 />
               </div>
               
@@ -349,11 +338,11 @@ export default function DocumentsPage() {
 
         {/* Documents Grid */}
         {documents.length === 0 ? (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <Archive className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Documents Found</h3>
-              <p className="text-gray-600 mb-6">
+          <Card className={styles.emptyCard}>
+            <CardContent className={styles.emptyContent}>
+              <Archive className={styles.emptyIcon} />
+              <h3 className={styles.emptyTitle}>No Documents Found</h3>
+              <p className={styles.emptyDescription}>
                 {searchQuery || statusFilter !== 'all' || typeFilter !== 'all' 
                   ? 'No documents match your current filters.' 
                   : 'Upload your first document to get started.'}
@@ -367,25 +356,25 @@ export default function DocumentsPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className={styles.documentsGrid}>
             {documents.map((doc) => {
               const statusInfo = statusConfig[doc.status] || statusConfig.UPLOADED
               const StatusIcon = statusInfo.icon
               const FileIcon = getFileIcon(doc.mimeType)
 
               return (
-                <Card key={doc.id} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center">
-                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                <Card key={doc.id} className={styles.documentCard}>
+                  <CardContent className={styles.documentContent}>
+                    <div className={styles.documentHeader}>
+                      <div className={styles.documentInfo}>
+                        <div className={styles.documentFileIcon}>
                           <FileIcon className="w-5 h-5 text-gray-600" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-gray-900 truncate">
+                        <div className={styles.documentDetails}>
+                          <p className={styles.documentName}>
                             {doc.originalName}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className={styles.documentType}>
                             {documentTypeLabels[doc.type]}
                           </p>
                         </div>
@@ -393,7 +382,7 @@ export default function DocumentsPage() {
                       
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" className={styles.documentActions}>
                             <MoreHorizontal className="w-4 h-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -419,36 +408,36 @@ export default function DocumentsPage() {
                       </DropdownMenu>
                     </div>
 
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
+                    <div className={styles.documentBody}>
+                      <div className={styles.documentStatus}>
                         <Badge className={statusInfo.color}>
                           <StatusIcon className="w-3 h-3 mr-1" />
                           {statusInfo.label}
                         </Badge>
-                        <span className="text-xs text-gray-500">
+                        <span className={styles.documentSize}>
                           {formatFileSize(doc.size)}
                         </span>
                       </div>
 
                       {doc.financialYear && (
-                        <div className="flex items-center text-sm text-gray-600">
+                        <div className={styles.documentYear}>
                           <Calendar className="w-4 h-4 mr-1" />
                           FY {doc.financialYear}
                         </div>
                       )}
 
                       {doc.rejectionReason && (
-                        <div className="p-2 bg-red-50 border border-red-200 rounded text-sm text-red-600">
+                        <div className={styles.rejectionReason}>
                           {doc.rejectionReason}
                         </div>
                       )}
 
-                      <div className="flex items-center justify-between text-xs text-gray-500">
+                      <div className={styles.documentMeta}>
                         <span>
                           Uploaded {new Date(doc.createdAt).toLocaleDateString()}
                         </span>
                         {doc.verifiedAt && (
-                          <div className="flex items-center">
+                          <div className={styles.verifiedBadge}>
                             <Shield className="w-3 h-3 mr-1" />
                             Verified
                           </div>
@@ -465,54 +454,54 @@ export default function DocumentsPage() {
         {/* Document Details Modal */}
         {selectedDoc && (
           <Dialog open={true} onOpenChange={() => setSelectedDoc(null)}>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>Document Details</DialogTitle>
+            <DialogContent className={styles.modalContent}>
+              <DialogHeader className={styles.modalHeader}>
+                <DialogTitle className={styles.modalTitle}>Document Details</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Original Name</p>
-                    <p className="text-gray-900">{selectedDoc.originalName}</p>
+              <div className={styles.modalBody}>
+                <div className={styles.modalDetails}>
+                  <div className={styles.detailItem}>
+                    <p className={styles.detailLabel}>Original Name</p>
+                    <p className={styles.detailValue}>{selectedDoc.originalName}</p>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Document Type</p>
-                    <p className="text-gray-900">{documentTypeLabels[selectedDoc.type]}</p>
+                  <div className={styles.detailItem}>
+                    <p className={styles.detailLabel}>Document Type</p>
+                    <p className={styles.detailValue}>{documentTypeLabels[selectedDoc.type]}</p>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Status</p>
+                  <div className={styles.detailItem}>
+                    <p className={styles.detailLabel}>Status</p>
                     <Badge className={statusConfig[selectedDoc.status].color}>
                       {statusConfig[selectedDoc.status].label}
                     </Badge>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">File Size</p>
-                    <p className="text-gray-900">{formatFileSize(selectedDoc.size)}</p>
+                  <div className={styles.detailItem}>
+                    <p className={styles.detailLabel}>File Size</p>
+                    <p className={styles.detailValue}>{formatFileSize(selectedDoc.size)}</p>
                   </div>
                   {selectedDoc.financialYear && (
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Financial Year</p>
-                      <p className="text-gray-900">FY {selectedDoc.financialYear}</p>
+                    <div className={styles.detailItem}>
+                      <p className={styles.detailLabel}>Financial Year</p>
+                      <p className={styles.detailValue}>FY {selectedDoc.financialYear}</p>
                     </div>
                   )}
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Uploaded On</p>
-                    <p className="text-gray-900">
+                  <div className={styles.detailItem}>
+                    <p className={styles.detailLabel}>Uploaded On</p>
+                    <p className={styles.detailValue}>
                       {new Date(selectedDoc.createdAt).toLocaleDateString('en-IN')}
                     </p>
                   </div>
                 </div>
                 
                 {selectedDoc.rejectionReason && (
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 mb-2">Rejection Reason</p>
-                    <div className="p-3 bg-red-50 border border-red-200 rounded text-red-700">
+                  <div className={styles.modalRejection}>
+                    <p className={styles.modalRejectionLabel}>Rejection Reason</p>
+                    <div className={styles.modalRejectionContent}>
                       {selectedDoc.rejectionReason}
                     </div>
                   </div>
                 )}
 
-                <div className="flex space-x-3 pt-4">
+                <div className={styles.modalActions}>
                   <Button onClick={() => handleDownload(selectedDoc)}>
                     <Download className="w-4 h-4 mr-2" />
                     Download
@@ -524,7 +513,7 @@ export default function DocumentsPage() {
                         handleDelete(selectedDoc)
                         setSelectedDoc(null)
                       }}
-                      className="text-red-600 hover:text-red-700"
+                      className={styles.modalDeleteButton}
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
                       Delete

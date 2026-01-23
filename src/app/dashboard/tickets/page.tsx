@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { MessageSquare, Plus, Search, Filter, Clock, CheckCircle, XCircle, MessageCircle, Send, Paperclip, ChevronLeft, Loader2 } from 'lucide-react'
 import { Button, Card, CardContent, Input } from '@/components/ui'
 import { useAuth } from '@/contexts'
+import styles from './page.module.css'
 
 interface Ticket {
   id: string
@@ -77,20 +78,20 @@ export default function TicketsPage() {
 
   const getStatusBadge = (status: string) => {
     const normalizedStatus = status.toLowerCase().replace('_', '-')
-    const styles: Record<string, string> = {
-      open: 'bg-blue-100 text-blue-700 border-blue-200',
-      'in-progress': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-      resolved: 'bg-green-100 text-green-700 border-green-200',
-      closed: 'bg-gray-100 text-gray-700 border-gray-200',
+    const badgeClasses: Record<string, string> = {
+      open: styles.statusBadgeOpen,
+      'in-progress': styles.statusBadgeInProgress,
+      resolved: styles.statusBadgeResolved,
+      closed: styles.statusBadgeClosed,
     }
     const icons: Record<string, React.ReactNode> = {
-      open: <Clock className="w-3 h-3" />,
-      'in-progress': <MessageCircle className="w-3 h-3" />,
-      resolved: <CheckCircle className="w-3 h-3" />,
-      closed: <XCircle className="w-3 h-3" />,
+      open: <Clock className={styles.statusBadgeIcon} />,
+      'in-progress': <MessageCircle className={styles.statusBadgeIcon} />,
+      resolved: <CheckCircle className={styles.statusBadgeIcon} />,
+      closed: <XCircle className={styles.statusBadgeIcon} />,
     }
     return (
-      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border ${styles[normalizedStatus] || styles.open}`}>
+      <span className={`${styles.statusBadge} ${badgeClasses[normalizedStatus] || badgeClasses.open}`}>
         {icons[normalizedStatus] || icons.open}
         {status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
       </span>
@@ -99,10 +100,10 @@ export default function TicketsPage() {
 
   const getPriorityColor = (priority: string) => {
     const colors: Record<string, string> = {
-      low: 'text-gray-500',
-      medium: 'text-yellow-600',
-      high: 'text-red-600',
-      urgent: 'text-red-700 font-bold',
+      low: styles.priorityLow,
+      medium: styles.priorityMedium,
+      high: styles.priorityHigh,
+      urgent: styles.priorityUrgent,
     }
     return colors[priority.toLowerCase()] || colors.medium
   }
@@ -173,27 +174,27 @@ export default function TicketsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#1E3A8A]" />
+      <div className={styles.loadingContainer}>
+        <Loader2 className={styles.loadingSpinner} />
       </div>
     )
   }
 
   if (showNewTicket) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className={styles.pageBackground}>
+        <div className={styles.formContainer}>
           <button
             onClick={() => setShowNewTicket(false)}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
+            className={styles.backButton}
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className={styles.backButtonIcon} />
             Back to Tickets
           </button>
 
-          <Card>
-            <CardContent className="p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Create New Ticket</h2>
+          <Card className={styles.formCard}>
+            <CardContent className={styles.formCardContent}>
+              <h2 className={styles.formTitle}>Create New Ticket</h2>
 
               <div className="space-y-6">
                 <Input
@@ -204,13 +205,13 @@ export default function TicketsPage() {
                   required
                 />
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                <div className={styles.formGrid}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLabel}>Category</label>
                     <select
                       value={newTicket.category}
                       onChange={(e) => setNewTicket({ ...newTicket, category: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
+                      className={styles.formSelect}
                     >
                       <option value="General">General</option>
                       <option value="ITR Filing">ITR Filing</option>
@@ -221,12 +222,12 @@ export default function TicketsPage() {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLabel}>Priority</label>
                     <select
                       value={newTicket.priority}
                       onChange={(e) => setNewTicket({ ...newTicket, priority: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
+                      className={styles.formSelect}
                     >
                       <option value="low">Low</option>
                       <option value="medium">Medium</option>
@@ -235,19 +236,19 @@ export default function TicketsPage() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Message</label>
                   <textarea
                     value={newTicket.message}
                     onChange={(e) => setNewTicket({ ...newTicket, message: e.target.value })}
                     rows={6}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
+                    className={styles.formTextarea}
                     placeholder="Describe your issue in detail..."
                     required
                   />
                 </div>
 
-                <div className="flex gap-3">
+                <div className={styles.formActions}>
                   <Button onClick={handleCreateTicket}>
                     <Send className="w-4 h-4 mr-2" />
                     Submit Ticket
@@ -266,27 +267,27 @@ export default function TicketsPage() {
 
   if (selectedTicket) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <div className={styles.pageBackground}>
+        <div className={styles.detailsContainer}>
           <button
             onClick={() => setSelectedTicket(null)}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
+            className={styles.backButton}
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className={styles.backButtonIcon} />
             Back to All Tickets
           </button>
 
-          <Card className="mb-6">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between mb-4">
+          <Card className={styles.detailsHeaderCard}>
+            <CardContent className={styles.detailsHeaderContent}>
+              <div className={styles.detailsHeader}>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedTicket.subject}</h2>
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <span>Ticket ID: <strong>{selectedTicket.id}</strong></span>
-                    <span>•</span>
-                    <span>{selectedTicket.category}</span>
-                    <span>•</span>
-                    <span className={getPriorityColor(selectedTicket.priority)}>
+                  <h2 className={styles.detailsTitle}>{selectedTicket.subject}</h2>
+                  <div className={styles.detailsMeta}>
+                    <span className={styles.detailsMetaItem}>Ticket ID: <strong className={styles.detailsMetaStrong}>{selectedTicket.id}</strong></span>
+                    <span className={styles.detailsMetaItem}>•</span>
+                    <span className={styles.detailsMetaItem}>{selectedTicket.category}</span>
+                    <span className={styles.detailsMetaItem}>•</span>
+                    <span className={`${styles.detailsMetaItem} ${styles[`priority${selectedTicket.priority}`]}`}>
                       {selectedTicket.priority.toUpperCase()} Priority
                     </span>
                   </div>
@@ -296,27 +297,25 @@ export default function TicketsPage() {
             </CardContent>
           </Card>
 
-          <Card className="mb-6">
-            <CardContent className="p-6">
-              <div className="space-y-6 mb-6 max-h-[500px] overflow-y-auto">
+          <Card className={styles.messagesCard}>
+            <CardContent className={styles.messagesCardContent}>
+              <div className={styles.messagesList}>
                 {selectedTicket.messages.map((msg) => {
                   const isUserMessage = msg.senderType === 'USER'
                   return (
                     <div
                       key={msg.id}
-                      className={`flex ${isUserMessage ? 'justify-end' : 'justify-start'}`}
+                      className={`${styles.message} ${isUserMessage ? styles.messageUser : styles.messageSupport}`}
                     >
-                      <div className={`max-w-[70%] ${isUserMessage ? 'order-2' : 'order-1'}`}>
+                      <div className={styles.messageContent}>
                         <div
-                          className={`p-4 rounded-lg ${
-                            isUserMessage
-                              ? 'bg-[#1E3A8A] text-white'
-                              : 'bg-gray-100 text-gray-900'
-                          }`}
+                          className={`${styles.messageBubble} ${isUserMessage
+                            ? styles.messageBubbleUser
+                            : styles.messageBubbleSupport}`}
                         >
                           <p className="text-sm">{msg.message}</p>
                         </div>
-                        <p className="text-xs text-gray-500 mt-1 px-2">
+                        <p className={`${styles.messageMeta} ${isUserMessage ? styles.messageMetaUser : styles.messageMetaSupport}`}>
                           {isUserMessage ? 'You' : 'Support'} • {formatTime(msg.createdAt)}
                         </p>
                       </div>
@@ -326,14 +325,14 @@ export default function TicketsPage() {
               </div>
 
               {selectedTicket.status !== 'CLOSED' && (
-                <div className="flex gap-2 pt-4 border-t">
+                <div className={styles.messageInputContainer}>
                   <input
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                     placeholder="Type your message..."
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
+                    className={styles.messageInput}
                   />
                   <Button onClick={handleSendMessage} disabled={!newMessage.trim()}>
                     <Send className="w-4 h-4" />
@@ -348,12 +347,12 @@ export default function TicketsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="flex items-center justify-between mb-8">
+    <div className={styles.pageBackground}>
+      <div className={styles.container}>
+        <div className={styles.header}>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Support Tickets</h1>
-            <p className="text-gray-600">Get help from our support team</p>
+            <h1 className={styles.headerTitle}>Support Tickets</h1>
+            <p className={styles.headerSubtitle}>Get help from our support team</p>
           </div>
           <Button onClick={() => setShowNewTicket(true)}>
             <Plus className="w-4 h-4 mr-2" />
@@ -361,68 +360,68 @@ export default function TicketsPage() {
           </Button>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6 text-center">
-              <p className="text-sm text-gray-600 mb-1">Total Tickets</p>
-              <p className="text-3xl font-bold text-gray-900">{tickets.length}</p>
+        <div className={styles.statsGrid}>
+          <Card className={styles.statsCard}>
+            <CardContent className={styles.statsCardContent}>
+              <p className={styles.statsLabel}>Total Tickets</p>
+              <p className={styles.statsValue}>{tickets.length}</p>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-6 text-center">
-              <p className="text-sm text-gray-600 mb-1">Open</p>
-              <p className="text-3xl font-bold text-blue-600">
+          <Card className={styles.statsCard}>
+            <CardContent className={styles.statsCardContent}>
+              <p className={styles.statsLabel}>Open</p>
+              <p className={`${styles.statsValue} ${styles.statsValueBlue}`}>
                 {tickets.filter(t => t.status === 'OPEN').length}
               </p>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-6 text-center">
-              <p className="text-sm text-gray-600 mb-1">In Progress</p>
-              <p className="text-3xl font-bold text-yellow-600">
+          <Card className={styles.statsCard}>
+            <CardContent className={styles.statsCardContent}>
+              <p className={styles.statsLabel}>In Progress</p>
+              <p className={`${styles.statsValue} ${styles.statsValueYellow}`}>
                 {tickets.filter(t => t.status === 'IN_PROGRESS').length}
               </p>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-6 text-center">
-              <p className="text-sm text-gray-600 mb-1">Resolved</p>
-              <p className="text-3xl font-bold text-green-600">
+          <Card className={styles.statsCard}>
+            <CardContent className={styles.statsCardContent}>
+              <p className={styles.statsLabel}>Resolved</p>
+              <p className={`${styles.statsValue} ${styles.statsValueGreen}`}>
                 {tickets.filter(t => t.status === 'RESOLVED').length}
               </p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="space-y-4">
+        <div className={styles.ticketsList}>
           {tickets.map((ticket) => (
             <Card
               key={ticket.id}
-              className="hover:shadow-md transition-shadow cursor-pointer"
+              className={styles.ticketCard}
               onClick={() => setSelectedTicket(ticket)}
             >
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
+              <CardContent className={styles.ticketCardContent}>
+                <div className={styles.ticketHeader}>
                   <div className="flex-1">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">{ticket.subject}</h3>
+                    <div className={styles.ticketHeader}>
+                      <h3 className={styles.ticketTitle}>{ticket.subject}</h3>
                       {getStatusBadge(ticket.status)}
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                      <span className="flex items-center gap-1">
-                        <MessageSquare className="w-4 h-4" />
+                    <div className={styles.ticketMeta}>
+                      <span className={styles.ticketMetaItem}>
+                        <MessageSquare className={styles.ticketMetaIcon} />
                         {ticket.id}
                       </span>
                       <span>•</span>
-                      <span>{ticket.category}</span>
+                      <span className={styles.ticketMetaItem}>{ticket.category}</span>
                       <span>•</span>
-                      <span className={getPriorityColor(ticket.priority)}>
+                      <span className={`${styles.ticketMetaItem} ${styles[`priority${ticket.priority}`]}`}>
                         {ticket.priority.toUpperCase()}
                       </span>
                       <span>•</span>
-                      <span>{ticket.messages.length} messages</span>
+                      <span className={styles.ticketMetaItem}>{ticket.messages.length} messages</span>
                     </div>
-                    <p className="text-sm text-gray-500">
+                    <p className={styles.ticketLastReply}>
                       Last reply: {formatTime(ticket.lastReply)}
                     </p>
                   </div>
@@ -433,11 +432,11 @@ export default function TicketsPage() {
         </div>
 
         {tickets.length === 0 && (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No tickets yet</h3>
-              <p className="text-gray-500 mb-6">Create your first support ticket to get help</p>
+          <Card className={styles.emptyStateCard}>
+            <CardContent className={styles.emptyStateCardContent}>
+              <MessageSquare className={styles.emptyStateIcon} />
+              <h3 className={styles.emptyStateTitle}>No tickets yet</h3>
+              <p className={styles.emptyStateDescription}>Create your first support ticket to get help</p>
               <Button onClick={() => setShowNewTicket(true)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Create Ticket
@@ -449,3 +448,5 @@ export default function TicketsPage() {
     </div>
   )
 }
+
+

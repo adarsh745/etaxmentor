@@ -3,20 +3,21 @@
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import DocumentUploader from '@/components/DocumentUploader'
+import styles from './page.module.css'
 
 export default function DocumentUploadPage() {
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-purple-50 to-indigo-50 py-12">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <div className={styles.container}>
+      <div className={styles.content}>
         {/* Header */}
-        <div className="mb-8">
-          <Link href="/dashboard/documents" className="inline-flex items-center text-purple-600 hover:text-purple-800 mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
+        <div className={styles.header}>
+          <Link href="/dashboard/documents" className={styles.backLink}>
+            <ArrowLeft className={styles.backIcon} />
             Back to Documents
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Upload Documents</h1>
-          <p className="text-gray-600">Upload your tax documents securely. Supported formats: PDF, Images, Excel files (Max 10MB each)</p>
+          <h1 className={styles.title}>Upload Documents</h1>
+          <p className={styles.description}>Upload your tax documents securely. Supported formats: PDF, Images, Excel files (Max 10MB each)</p>
         </div>
 
         {/* Document Uploader Component */}

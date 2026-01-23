@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { Button, Input, Card, CardContent } from '@/components/ui'
 import { useAuth } from '@/contexts'
+import styles from './page.module.css'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -84,36 +85,37 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-15">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8">
-        {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">My Profile</h1>
-          <p className="text-slate-500 mt-1">
-            Manage your personal and account information
-          </p>
-        </div>
+    <div className={styles.profilePage}>
+      {/* Page Header */}
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>My Profile</h1>
+        
+        <p className={styles.pageDescription}>
+          Manage your personal and account information
+        </p>
+      </div>
 
-        <Card className="shadow-sm">
-          <CardContent className="p-6 sm:p-8 space-y-8">
+      <div className={styles.cardContainer}>
+        <Card className={styles.profileCard}>
+          <div className={styles.cardContent}>
             {/* Profile Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-              <div className="flex items-center gap-4">
-                <div className="h-20 w-20 rounded-full bg-gradient-to-br from-indigo-700 to-blue-500 flex items-center justify-center text-white text-3xl font-bold">
+            <div className={styles.profileHeader}>
+              <div className={styles.avatarSection}>
+                <div className={styles.avatar}>
                   {user?.name?.charAt(0).toUpperCase() || 'U'}
                 </div>
 
-                <div>
-                  <h2 className="text-xl font-semibold text-slate-900">
+                <div className={styles.userInfo}>
+                  <h2 className={styles.userName}>
                     {user?.name}
                   </h2>
-                  <p className="text-slate-500 text-sm">{user?.email}</p>
+                  <p className={styles.userEmail}>{user?.email}</p>
 
                   <span
-                    className={`inline-block mt-2 rounded-full px-3 py-1 text-xs font-medium ${
+                    className={`${styles.verificationBadge} ${
                       user?.emailVerified
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-yellow-100 text-yellow-700'
+                        ? styles.verified
+                        : styles.unverified
                     }`}
                   >
                     {user?.emailVerified ? 'Verified' : 'Unverified'}
@@ -126,7 +128,7 @@ export default function ProfilePage() {
                   variant="outline"
                   onClick={() => setIsEditing(true)}
                 >
-                  <Edit2 className="h-4 w-4 mr-2" />
+                  <Edit2 className={styles.buttonIcon} />
                   Edit Profile
                 </Button>
               )}
@@ -134,26 +136,26 @@ export default function ProfilePage() {
 
             {/* Alerts */}
             {success && (
-              <div className="rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
+              <div className={`${styles.alert} ${styles.successAlert}`}>
                 {success}
               </div>
             )}
             {error && (
-              <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              <div className={`${styles.alert} ${styles.errorAlert}`}>
                 {error}
               </div>
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-10">
+            <form onSubmit={handleSubmit} className={styles.form}>
               {/* Personal Info */}
-              <section className="space-y-4">
-                <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-900">
-                  <User className="h-5 w-5 text-indigo-700" />
+              <section className={styles.section}>
+                <h3 className={styles.sectionTitle}>
+                  <User className={styles.sectionIcon} />
                   Personal Information
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className={styles.grid}>
                   <Input
                     label="Full Name"
                     value={formData.name}
@@ -185,9 +187,9 @@ export default function ProfilePage() {
               </section>
 
               {/* Address */}
-              <section className="space-y-4">
-                <h3 className="flex items-center gap-2 text-lg font-semibold">
-                  <MapPin className="h-5 w-5 text-indigo-700" />
+              <section className={styles.section}>
+                <h3 className={styles.sectionTitle}>
+                  <MapPin className={styles.sectionIcon} />
                   Address
                 </h3>
 
@@ -200,7 +202,7 @@ export default function ProfilePage() {
                   }
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className={`${styles.grid} ${styles.gridThree}`}>
                   <Input
                     label="City"
                     disabled={!isEditing}
@@ -230,13 +232,13 @@ export default function ProfilePage() {
               </section>
 
               {/* Tax Info */}
-              <section className="space-y-4">
-                <h3 className="flex items-center gap-2 text-lg font-semibold">
-                  <Briefcase className="h-5 w-5 text-indigo-700" />
+              <section className={styles.section}>
+                <h3 className={styles.sectionTitle}>
+                  <Briefcase className={styles.sectionIcon} />
                   Tax Information
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className={styles.grid}>
                   <Input
                     label="PAN Number"
                     disabled={!isEditing}
@@ -266,26 +268,26 @@ export default function ProfilePage() {
 
               {/* Action Buttons */}
               {isEditing && (
-                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 border-t">
+                <div className={styles.actionButtons}>
                   <Button
                     type="button"
                     variant="outline"
                     onClick={handleCancel}
                     disabled={loading}
                   >
-                    <X className="h-4 w-4 mr-2" />
+                    <X className={styles.buttonIcon} />
                     Cancel
                   </Button>
 
                   <Button type="submit" disabled={loading}>
                     {loading ? (
                       <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        <Loader2 className={`${styles.buttonIcon} animate-spin`} />
                         Saving...
                       </>
                     ) : (
                       <>
-                        <Save className="h-4 w-4 mr-2" />
+                        <Save className={styles.buttonIcon} />
                         Save Changes
                       </>
                     )}
@@ -293,7 +295,7 @@ export default function ProfilePage() {
                 </div>
               )}
             </form>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

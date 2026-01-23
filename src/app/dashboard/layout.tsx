@@ -8,6 +8,7 @@ import {
   Settings, LogOut, Calculator
 } from 'lucide-react'
 import { useAuth } from '@/contexts'
+import styles from './layout.module.css'
 
 const sidebarItems = [
   { icon: Home, label: 'Dashboard', href: '/dashboard' },
@@ -30,24 +31,42 @@ export default function DashboardLayout({
   const pathname = usePathname()
   const { user, logout } = useAuth()
 
+  // Map paths to proper titles
+  const getPageTitle = () => {
+    const pathMap: Record<string, string> = {
+      '/dashboard': 'Dashboard',
+      '/dashboard/profile': 'My Profile',
+      '/dashboard/itr': 'ITR Filing',
+      '/dashboard/itr/new': 'New ITR Filing',
+      '/dashboard/gst': 'GST Services',
+      '/dashboard/documents': 'Documents',
+      '/dashboard/notifications': 'Notifications',
+      '/dashboard/tickets': 'Support Tickets',
+      '/dashboard/calculator': 'Tax Calculator',
+      '/dashboard/settings': 'Settings',
+    }
+    
+    return pathMap[pathname] || 'Dashboard'
+  }
+
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className={styles.container}>
 
       {/* ───────────── SIDEBAR (ALWAYS OPEN) ───────────── */}
-      <aside className="w-64 bg-white border-r flex flex-col">
+      <aside className={styles.sidebar}>
 
         {/* Logo */}
-        <div className="h-16 flex items-center gap-3 px-4 border-b bg-pink-50">
-          <div className="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold">
+        <div className={styles.sidebarLogo}>
+          <div className={styles.logoIcon}>
             eT
           </div>
-          <span className="font-bold text-blue-900 text-lg">
+          <span className={styles.logoText}>
             eTaxMentor
           </span>
         </div>
 
         {/* Menu */}
-        <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+        <nav className={styles.sidebarNav}>
           {sidebarItems.map(item => {
             const Icon = item.icon
             const active = pathname === item.href
@@ -56,26 +75,22 @@ export default function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors
-                ${active
-                  ? 'bg-blue-50 text-blue-700 font-medium'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                }`}
+                className={`${styles.sidebarItem} ${active ? styles.sidebarItemActive : ''}`}
               >
-                <span className="flex items-center justify-center w-6 h-6 flex-shrink-0">
+                <span className={styles.sidebarIcon}>
                   <Icon size={20} />
                 </span>
-                <span className="truncate">{item.label}</span>
+                <span className={styles.sidebarLabel}>{item.label}</span>
               </Link>
             )
           })}
         </nav>
 
         {/* Logout */}
-        <div className="border-t p-3">
+        <div className={styles.logoutButtonContainer}>
           <button
             onClick={logout}
-            className="flex items-center gap-3 text-red-600 w-full px-3 py-2.5 rounded-lg hover:bg-red-50"
+            className={styles.logoutButton}
           >
             <LogOut size={20} />
             Logout
@@ -84,32 +99,34 @@ export default function DashboardLayout({
       </aside>
 
       {/* ───────────── RIGHT SECTION ───────────── */}
-      <div className="flex flex-col flex-1">
+      <div className={styles.mainContent}>
 
         {/* TOP NAVBAR 1 */}
         <header className="h-16 bg-blue-900 text-white flex items-center px-6">
-          <h1 className="font-semibold text-lg">Global Header</h1>
-        </header>
+           <h1 className="font-semibold text-lg text-white" style={{ paddingLeft: '2rem' }}>Global Header</h1>
+         </header>
+ 
+         {/* TOP NAVBAR 2 */}
+         <header className={styles.topNavbar}>
+           <span className={styles.pageTitle}>
+             {getPageTitle()}
+           </span>
 
-        {/* TOP NAVBAR 2 */}
-        <header className="h-16 bg-white border-b flex items-center justify-between px-6">
-          <span className="capitalize text-gray-600 font-medium">
-            {pathname.replace('/dashboard', '') || 'Dashboard'}
-          </span>
-
-          <div className="flex items-center gap-4">
-            <Bell size={18} className="text-gray-500" />
-            <div className="flex items-center gap-2">
-              <span className="text-sm">{user?.name || 'User'}</span>
-              <div className="w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center">
-                {user?.name?.charAt(0) || 'U'}
-              </div>
-            </div>
+          <div className={styles.navbarActions}>
+            <Link href="/dashboard/notifications" className={styles.notificationLink}>
+              <Bell size={18} className="text-gray-500" />
+            </Link>
+            <Link href="/dashboard/profile" className={styles.userProfileLink}>
+               <span className={styles.userName}>{user?.name || 'User'}</span>
+               <div className={styles.userAvatar}>
+                 {user?.name?.charAt(0) || 'U'}
+               </div>
+             </Link>
           </div>
         </header>
 
         {/* PAGE CONTENT */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className={styles.pageContent}>
           {children}
         </main>
       </div>

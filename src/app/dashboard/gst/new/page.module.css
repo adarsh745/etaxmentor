@@ -1,0 +1,502 @@
+/* Container */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #fff7ed, #fef9c3);
+  padding: 3rem 0;
+}
+
+.innerContainer {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Header Section */
+.header {
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  color: #ea580c;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: #c2410c;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #4b5563;
+}
+
+/* Progress Steps */
+.progressContainer {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.stepWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.stepCircle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.stepCircleActive {
+  background-color: #ea580c;
+  color: white;
+}
+
+.stepCircleInactive {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.stepConnector {
+  width: 4rem;
+  height: 0.25rem;
+  margin: 0 0.5rem;
+}
+
+.stepConnectorActive {
+  background-color: #ea580c;
+}
+
+.stepConnectorInactive {
+  background-color: #e5e7eb;
+}
+
+/* Alert Messages */
+.errorAlert {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+  display: flex;
+  align-items: flex-start;
+}
+
+.successAlert {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f0fdf4;
+  border-left: 4px solid #22c55e;
+  color: #166534;
+  display: flex;
+  align-items: flex-start;
+}
+
+.alertIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+/* Card Sections */
+.card {
+  margin-bottom: 1.5rem;
+}
+
+.cardContent {
+  padding: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.sectionIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+  color: #ea580c;
+}
+
+.subsectionTitle {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.subsectionTitleOrange {
+  color: #ea580c;
+}
+
+.subsectionTitleBlue {
+  color: #2563eb;
+}
+
+.subsectionTitleGreen {
+  color: #16a34a;
+}
+
+/* Form Sections */
+.formGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.formGridTwoCol {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.fieldWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.fieldHint {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.select {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.select:focus {
+  outline: none;
+  ring: 2px solid #ea580c;
+  border-color: transparent;
+}
+
+/* Sales Section */
+.salesSection {
+  margin-bottom: 2rem;
+}
+
+/* Purchases Section */
+.purchasesSection {
+  margin-bottom: 2rem;
+}
+
+/* Tax Section */
+.taxSection {
+  margin-bottom: 2rem;
+}
+
+/* Summary Box */
+.summaryBox {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #fff7ed;
+  border-radius: 0.5rem;
+}
+
+.summaryTitle {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.summaryContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.summaryValue {
+  font-weight: 600;
+}
+
+.summaryValueGreen {
+  font-weight: 600;
+  color: #16a34a;
+}
+
+.summaryTotal {
+  padding-top: 0.5rem;
+  border-top: 1px solid #fed7aa;
+}
+
+.summaryTotalLabel {
+  font-weight: 600;
+}
+
+.summaryTotalValue {
+  font-weight: 700;
+  color: #ea580c;
+}
+
+/* Document Upload */
+.uploadSection {
+  margin-bottom: 1.5rem;
+}
+
+.uploadBox {
+  border: 2px dashed #d1d5db;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.uploadBox:hover {
+  border-color: #f97316;
+}
+
+.uploadInput {
+  display: none;
+}
+
+.uploadLabel {
+  cursor: pointer;
+}
+
+.uploadIcon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 0.75rem;
+  color: #9ca3af;
+}
+
+.uploadText {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.uploadSubtext {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* File List */
+.fileList {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fileItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.fileInfo {
+  display: flex;
+  align-items: center;
+}
+
+.fileIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  color: #4b5563;
+}
+
+.fileName {
+  font-size: 0.875rem;
+}
+
+.fileSize {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-left: 0.5rem;
+}
+
+.removeButton {
+  color: #ef4444;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.removeButton:hover {
+  color: #dc2626;
+}
+
+/* Remarks Section */
+.remarksSection {
+  margin-bottom: 1.5rem;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  ring: 2px solid #ea580c;
+  border-color: transparent;
+}
+
+/* Info Box */
+.infoBox {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #fefce8;
+  border-left: 4px solid #eab308;
+  display: flex;
+  align-items: flex-start;
+}
+
+.infoIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+  color: #ca8a04;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.infoContent {
+  font-size: 0.875rem;
+  color: #854d0e;
+}
+
+.infoTitle {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.infoList {
+  list-style-type: disc;
+  list-style-position: inside;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+}
+
+/* Button Groups */
+.buttonGroup {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttonGroupSpaced {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonGroupRight {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Loading State */
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 9999px;
+  height: 3rem;
+  width: 3rem;
+  border-top: 2px solid #1e3a8a;
+  border-bottom: 2px solid #1e3a8a;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .formGridTwoCol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Utility Classes */
+.mb2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb4 {
+  margin-bottom: 1rem;
+}
+
+.mb6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb8 {
+  margin-bottom: 2rem;
+}
+
+.mt6 {
+  margin-top: 1.5rem;
+}
+
+.mt8 {
+  margin-top: 2rem;
+}

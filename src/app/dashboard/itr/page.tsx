@@ -8,6 +8,7 @@ import {
   AlertCircle, CheckCircle2, Clock, Send, ArrowLeft, RefreshCw
 } from 'lucide-react'
 import { Button, Card, CardContent, Badge } from '@/components/ui'
+import styles from './page.module.css'
 
 interface ITRFiling {
   id: string
@@ -85,18 +86,18 @@ export default function ITRFilingsPage() {
   const years = Array.from(new Set(filings.map((f) => f.assessmentYear)))
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-12">
-      <div className="container mx-auto px-4 max-w-7xl">
+    <div className={styles.pageBackground}>
+      <div className={styles.container}>
         {/* Header */}
-        <div className="mb-8">
-          <Link href="/dashboard" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
+        <div className={styles.header}>
+          <Link href="/dashboard" className={styles.backLink}>
+            <ArrowLeft className={styles.backLinkIcon} />
             Back to Dashboard
           </Link>
-          <div className="flex items-center justify-between">
+          <div className={styles.headerContent}>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">My ITR Filings</h1>
-              <p className="text-gray-600">Track and manage your income tax returns</p>
+              <h1 className={styles.headerTitle}>My ITR Filings</h1>
+              <p className={styles.headerSubtitle}>Track and manage your income tax returns</p>
             </div>
             <Link href="/dashboard/itr/new">
               <Button size="lg">
@@ -108,77 +109,69 @@ export default function ITRFilingsPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Total Filings</p>
-                  <p className="text-2xl font-bold text-gray-900">{filings.length}</p>
-                </div>
-                <FileText className="w-10 h-10 text-blue-500" />
+        <div className={styles.statsGrid}>
+          <Card className={styles.statsCard}>
+            <CardContent className={styles.statsCardContent}>
+              <div className={styles.statsInfo}>
+                <p className={styles.statsLabel}>Total Filings</p>
+                <p className={styles.statsValue}>{filings.length}</p>
               </div>
+              <FileText className={styles.statsIcon} />
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Completed</p>
-                  <p className="text-2xl font-bold text-green-600">
-                    {filings.filter((f) => f.status === 'COMPLETED' || f.status === 'ACKNOWLEDGED').length}
-                  </p>
-                </div>
-                <CheckCircle2 className="w-10 h-10 text-green-500" />
+          <Card className={styles.statsCard}>
+            <CardContent className={styles.statsCardContent}>
+              <div className={styles.statsInfo}>
+                <p className={styles.statsLabel}>Completed</p>
+                <p className={`${styles.statsValue} ${styles.statsValueGreen}`}>
+                  {filings.filter((f) => f.status === 'COMPLETED' || f.status === 'ACKNOWLEDGED').length}
+                </p>
               </div>
+              <CheckCircle2 className={styles.statsIcon} />
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">In Progress</p>
-                  <p className="text-2xl font-bold text-blue-600">
-                    {filings.filter((f) => 
-                      ['UNDER_REVIEW', 'CA_ASSIGNED', 'PROCESSING'].includes(f.status)
-                    ).length}
-                  </p>
-                </div>
-                <Clock className="w-10 h-10 text-blue-500" />
+          <Card className={styles.statsCard}>
+            <CardContent className={styles.statsCardContent}>
+              <div className={styles.statsInfo}>
+                <p className={styles.statsLabel}>In Progress</p>
+                <p className={`${styles.statsValue} ${styles.statsValueBlue}`}>
+                  {filings.filter((f) => 
+                    ['UNDER_REVIEW', 'CA_ASSIGNED', 'PROCESSING'].includes(f.status)
+                  ).length}
+                </p>
               </div>
+              <Clock className={styles.statsIcon} />
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Drafts</p>
-                  <p className="text-2xl font-bold text-gray-600">
-                    {filings.filter((f) => f.status === 'DRAFT').length}
-                  </p>
-                </div>
-                <FileText className="w-10 h-10 text-gray-400" />
+          <Card className={styles.statsCard}>
+            <CardContent className={styles.statsCardContent}>
+              <div className={styles.statsInfo}>
+                <p className={styles.statsLabel}>Drafts</p>
+                <p className={`${styles.statsValue} ${styles.statsValueGray}`}>
+                  {filings.filter((f) => f.status === 'DRAFT').length}
+                </p>
               </div>
+              <FileText className={styles.statsIcon} />
             </CardContent>
           </Card>
         </div>
 
         {/* Filters */}
-        <Card className="mb-6">
-          <CardContent className="p-6">
-            <div className="grid md:grid-cols-3 gap-4">
+        <Card className={styles.filtersCard}>
+          <CardContent className={styles.filtersCardContent}>
+            <div className={styles.filtersGrid}>
               {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <div className={styles.searchContainer}>
+                <Search className={styles.searchIcon} />
                 <input
                   type="text"
                   placeholder="Search by ITR type, year, or ACK number..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={styles.searchInput}
                 />
               </div>
 
@@ -187,7 +180,7 @@ export default function ITRFilingsPage() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={styles.filterSelect}
                 >
                   <option value="all">All Statuses</option>
                   {Object.entries(statusConfig).map(([key, config]) => (
@@ -201,7 +194,7 @@ export default function ITRFilingsPage() {
                 <select
                   value={yearFilter}
                   onChange={(e) => setYearFilter(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={styles.filterSelect}
                 >
                   <option value="all">All Years</option>
                   {years.map((year) => (
@@ -215,26 +208,26 @@ export default function ITRFilingsPage() {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 flex items-start">
-            <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
+          <div className={styles.errorMessage}>
+            <AlertCircle className={styles.errorIcon} />
             <span>{error}</span>
           </div>
         )}
 
         {/* Filings List */}
         {loading ? (
-          <div className="text-center py-12">
-            <RefreshCw className="w-12 h-12 animate-spin text-blue-500 mx-auto mb-4" />
-            <p className="text-gray-600">Loading your filings...</p>
+          <div className={styles.loadingContainer}>
+            <RefreshCw className={styles.loadingSpinner} />
+            <p className={styles.loadingText}>Loading your filings...</p>
           </div>
         ) : filteredFilings.length === 0 ? (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <Card className={styles.emptyStateCard}>
+            <CardContent className={styles.emptyStateCardContent}>
+              <FileText className={styles.emptyStateIcon} />
+              <h3 className={styles.emptyStateTitle}>
                 {filings.length === 0 ? 'No ITR filings yet' : 'No filings match your filters'}
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className={styles.emptyStateDescription}>
                 {filings.length === 0 
                   ? 'Get started by filing your first Income Tax Return'
                   : 'Try adjusting your search or filters'}
@@ -250,18 +243,18 @@ export default function ITRFilingsPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className={styles.filingsList}>
             {filteredFilings.map((filing) => {
               const statusInfo = statusConfig[filing.status] || statusConfig.DRAFT
               const StatusIcon = statusInfo.icon
 
               return (
-                <Card key={filing.id} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center mb-3">
-                          <h3 className="text-lg font-semibold text-gray-900 mr-3">
+                <Card key={filing.id} className={styles.filingCard}>
+                  <CardContent className={styles.filingCardContent}>
+                    <div className={styles.filingHeader}>
+                      <div className={styles.filingInfo}>
+                        <div className={styles.filingTitleRow}>
+                          <h3 className={styles.filingTitle}>
                             {filing.itrType} - AY {filing.assessmentYear}
                           </h3>
                           <Badge className={statusInfo.color}>
@@ -270,65 +263,65 @@ export default function ITRFilingsPage() {
                           </Badge>
                         </div>
 
-                        <div className="grid md:grid-cols-4 gap-4 mb-4">
+                        <div className={styles.filingDetailsGrid}>
                           {filing.grossIncome !== undefined && (
-                            <div>
-                              <p className="text-xs text-gray-500 mb-1">Gross Income</p>
-                              <p className="text-sm font-medium text-gray-900">
+                            <div className={styles.filingDetail}>
+                              <p className={styles.filingDetailLabel}>Gross Income</p>
+                              <p className={styles.filingDetailValue}>
                                 ₹{filing.grossIncome.toLocaleString('en-IN')}
                               </p>
                             </div>
                           )}
                           
                           {filing.taxableIncome !== undefined && (
-                            <div>
-                              <p className="text-xs text-gray-500 mb-1">Taxable Income</p>
-                              <p className="text-sm font-medium text-gray-900">
+                            <div className={styles.filingDetail}>
+                              <p className={styles.filingDetailLabel}>Taxable Income</p>
+                              <p className={styles.filingDetailValue}>
                                 ₹{filing.taxableIncome.toLocaleString('en-IN')}
                               </p>
                             </div>
                           )}
 
                           {filing.taxPayable !== undefined && (
-                            <div>
-                              <p className="text-xs text-gray-500 mb-1">Tax Payable</p>
-                              <p className="text-sm font-medium text-red-600">
+                            <div className={styles.filingDetail}>
+                              <p className={styles.filingDetailLabel}>Tax Payable</p>
+                              <p className={`${styles.filingDetailValue} ${styles.filingDetailValueRed}`}>
                                 ₹{filing.taxPayable.toLocaleString('en-IN')}
                               </p>
                             </div>
                           )}
 
                           {filing.refundDue !== undefined && filing.refundDue > 0 && (
-                            <div>
-                              <p className="text-xs text-gray-500 mb-1">Refund Due</p>
-                              <p className="text-sm font-medium text-green-600">
+                            <div className={styles.filingDetail}>
+                              <p className={styles.filingDetailLabel}>Refund Due</p>
+                              <p className={`${styles.filingDetailValue} ${styles.filingDetailValueGreen}`}>
                                 ₹{filing.refundDue.toLocaleString('en-IN')}
                               </p>
                             </div>
                           )}
                         </div>
 
-                        <div className="flex items-center space-x-6 text-xs text-gray-500">
-                          <div className="flex items-center">
-                            <Calendar className="w-3 h-3 mr-1" />
+                        <div className={styles.filingMeta}>
+                          <div className={styles.filingMetaItem}>
+                            <Calendar className={styles.filingMetaIcon} />
                             Created {new Date(filing.createdAt).toLocaleDateString('en-IN')}
                           </div>
                           {filing.acknowledgmentNo && (
-                            <div className="flex items-center">
-                              <CheckCircle2 className="w-3 h-3 mr-1" />
+                            <div className={styles.filingMetaItem}>
+                              <CheckCircle2 className={styles.filingMetaIcon} />
                               ACK: {filing.acknowledgmentNo}
                             </div>
                           )}
                           {filing.filedAt && (
-                            <div className="flex items-center">
-                              <Send className="w-3 h-3 mr-1" />
+                            <div className={styles.filingMetaItem}>
+                              <Send className={styles.filingMetaIcon} />
                               Filed {new Date(filing.filedAt).toLocaleDateString('en-IN')}
                             </div>
                           )}
                         </div>
                       </div>
 
-                      <div className="flex items-center space-x-2 ml-4">
+                      <div className={styles.filingActions}>
                         <Link href={`/dashboard/itr/${filing.id}`}>
                           <Button variant="outline" size="sm">
                             <Eye className="w-4 h-4 mr-1" />
@@ -353,3 +346,6 @@ export default function ITRFilingsPage() {
     </div>
   )
 }
+
+
+

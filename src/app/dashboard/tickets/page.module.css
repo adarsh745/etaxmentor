@@ -1,0 +1,549 @@
+/* Tickets Page Styles */
+
+/* Page Background */
+.pageBackground {
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+/* Container */
+.container {
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Loading State */
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.loadingSpinner {
+  width: 2rem;
+  height: 2rem;
+  color: #1e3a8a;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Header Section */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.headerTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.headerSubtitle {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* Back Button */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.backButton:hover {
+  color: #111827;
+}
+
+.backButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.statsCard {
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: white;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.statsCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.statsCardContent {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.statsLabel {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.statsValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.statsValueBlue {
+  color: #2563eb;
+}
+
+.statsValueYellow {
+  color: #d97706;
+}
+
+.statsValueGreen {
+  color: #16a34a;
+}
+
+/* Status Badge */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.statusBadgeOpen {
+  background-color: #dbeafe;
+  color: #1e40af;
+  border-color: #bfdbfe;
+}
+
+.statusBadgeInProgress {
+  background-color: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.statusBadgeResolved {
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.statusBadgeClosed {
+  background-color: #f3f4f6;
+  color: #374151;
+  border-color: #e5e7eb;
+}
+
+.statusBadgeIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+/* Priority Colors */
+.priorityLow {
+  color: #6b7280;
+}
+
+.priorityMedium {
+  color: #d97706;
+}
+
+.priorityHigh {
+  color: #dc2626;
+}
+
+.priorityUrgent {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+/* Tickets List */
+.ticketsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ticketCard {
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: white;
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.ticketCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ticketCardContent {
+  padding: 1.5rem;
+}
+
+.ticketHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.ticketTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-right: 1rem;
+}
+
+.ticketMeta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ticketMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ticketMetaIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ticketLastReply {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+/* Empty State */
+.emptyStateCard {
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: white;
+}
+
+.emptyStateCardContent {
+  padding: 3rem;
+  text-align: center;
+}
+
+.emptyStateIcon {
+  width: 4rem;
+  height: 4rem;
+  color: #d1d5db;
+  margin: 0 auto 1rem;
+}
+
+.emptyStateTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.emptyStateDescription {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+/* Create Ticket Form */
+.formContainer {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.formCard {
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: white;
+}
+
+.formCardContent {
+  padding: 2rem;
+}
+
+.formTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .formGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.formSelect {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.formSelect:focus {
+  outline: none;
+  ring: 2px solid #2563eb;
+  ring-offset: 2px;
+  border-color: #2563eb;
+}
+
+.formTextarea {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  resize: vertical;
+  min-height: 12rem;
+  transition: all 0.2s;
+}
+
+.formTextarea:focus {
+  outline: none;
+  ring: 2px solid #2563eb;
+  ring-offset: 2px;
+  border-color: #2563eb;
+}
+
+.formActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* Ticket Details */
+.detailsContainer {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.detailsHeaderCard {
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: white;
+  margin-bottom: 1.5rem;
+}
+
+.detailsHeaderContent {
+  padding: 1.5rem;
+}
+
+.detailsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .detailsHeader {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.detailsTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.detailsMeta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  flex-wrap: wrap;
+}
+
+.detailsMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.detailsMetaStrong {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Messages Section */
+.messagesCard {
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: white;
+  margin-bottom: 1.5rem;
+}
+
+.messagesCardContent {
+  padding: 1.5rem;
+}
+
+.messagesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  max-height: 31.25rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.message {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.messageUser {
+  justify-content: flex-end;
+}
+
+.messageSupport {
+  justify-content: flex-start;
+}
+
+.messageContent {
+  max-width: 70%;
+}
+
+.messageBubble {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.messageBubbleUser {
+  background-color: #1e3a8a;
+  color: white;
+  border-bottom-right-radius: 0.125rem;
+}
+
+.messageBubbleSupport {
+  background-color: #f3f4f6;
+  color: #111827;
+  border-bottom-left-radius: 0.125rem;
+}
+
+.messageMeta {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  padding: 0 0.25rem;
+}
+
+.messageMetaUser {
+  text-align: right;
+}
+
+.messageMetaSupport {
+  text-align: left;
+}
+
+/* Message Input */
+.messageInputContainer {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.messageInput {
+  flex: 1;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.messageInput:focus {
+  outline: none;
+  ring: 2px solid #2563eb;
+  ring-offset: 2px;
+  border-color: #2563eb;
+}

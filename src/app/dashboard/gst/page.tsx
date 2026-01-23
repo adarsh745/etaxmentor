@@ -9,6 +9,7 @@ import {
   Receipt
 } from 'lucide-react'
 import { Button, Card, CardContent, Badge } from '@/components/ui'
+import styles from './page.module.css'
 
 interface GSTFiling {
   id: string
@@ -94,25 +95,23 @@ export default function GSTFilingsPage() {
     return matchesSearch && matchesStatus && matchesReturnType
   })
 
-  // Calculate stats
   const totalFilings = filings.length
   const completedFilings = filings.filter(f => ['COMPLETED', 'ACKNOWLEDGED'].includes(f.status)).length
   const inProgressFilings = filings.filter(f => ['UNDER_REVIEW', 'CA_ASSIGNED', 'PROCESSING'].includes(f.status)).length
   const draftFilings = filings.filter(f => f.status === 'DRAFT').length
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 py-12">
-      <div className="container mx-auto px-4 max-w-7xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Link href="/dashboard" className="inline-flex items-center text-orange-600 hover:text-orange-800 mb-4">
+    <div className={styles.container}>
+      <div className={styles.innerContainer}>
+        <div className={styles.header}>
+          <Link href="/dashboard" className={styles.backLink}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">My GST Filings</h1>
-              <p className="text-gray-600">Track and manage your GST returns</p>
+          <div className={styles.headerContent}>
+            <div className={styles.headerInfo}>
+              <h1>My GST Filings</h1>
+              <p>Track and manage your GST returns</p>
             </div>
             <Link href="/dashboard/gst/new">
               <Button size="lg">
@@ -124,50 +123,50 @@ export default function GSTFilingsPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className={styles.statsGrid}>
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Receipt className="w-8 h-8 text-blue-600 mr-3" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Total Filings</p>
-                  <p className="text-2xl font-bold text-gray-900">{totalFilings}</p>
+            <CardContent className={styles.statsCard}>
+              <div className={styles.statsCardContent}>
+                <Receipt className={`${styles.statsIcon} ${styles.blueIcon}`} />
+                <div className={styles.statsInfo}>
+                  <p className={styles.statsLabel}>Total Filings</p>
+                  <p className={styles.statsNumber}>{totalFilings}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <CheckCircle2 className="w-8 h-8 text-green-600 mr-3" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Completed</p>
-                  <p className="text-2xl font-bold text-green-600">{completedFilings}</p>
+            <CardContent className={styles.statsCard}>
+              <div className={styles.statsCardContent}>
+                <CheckCircle2 className={`${styles.statsIcon} ${styles.greenIcon}`} />
+                <div className={styles.statsInfo}>
+                  <p className={styles.statsLabel}>Completed</p>
+                  <p className={`${styles.statsNumber} ${styles.statsNumberGreen}`}>{completedFilings}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Clock className="w-8 h-8 text-orange-600 mr-3" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">In Progress</p>
-                  <p className="text-2xl font-bold text-orange-600">{inProgressFilings}</p>
+            <CardContent className={styles.statsCard}>
+              <div className={styles.statsCardContent}>
+                <Clock className={`${styles.statsIcon} ${styles.orangeIcon}`} />
+                <div className={styles.statsInfo}>
+                  <p className={styles.statsLabel}>In Progress</p>
+                  <p className={`${styles.statsNumber} ${styles.statsNumberOrange}`}>{inProgressFilings}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <FileText className="w-8 h-8 text-gray-600 mr-3" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Drafts</p>
-                  <p className="text-2xl font-bold text-gray-600">{draftFilings}</p>
+            <CardContent className={styles.statsCard}>
+              <div className={styles.statsCardContent}>
+                <FileText className={`${styles.statsIcon} ${styles.grayIcon}`} />
+                <div className={styles.statsInfo}>
+                  <p className={styles.statsLabel}>Drafts</p>
+                  <p className={`${styles.statsNumber} ${styles.statsNumberGray}`}>{draftFilings}</p>
                 </div>
               </div>
             </CardContent>
@@ -175,24 +174,24 @@ export default function GSTFilingsPage() {
         </div>
 
         {/* Search and Filters */}
-        <Card className="mb-6">
-          <CardContent className="p-6">
-            <div className="grid md:grid-cols-4 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+        <Card className={styles.filterCard}>
+          <CardContent className={styles.filterContent}>
+            <div className={styles.filterGrid}>
+              <div className={styles.searchWrapper}>
+                <Search className={styles.searchIcon} />
                 <input
                   type="text"
                   placeholder="Search by GSTIN, return type, period..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className={styles.searchInput}
                 />
               </div>
 
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className={styles.select}
               >
                 <option value="all">All Statuses</option>
                 <option value="DRAFT">Draft</option>
@@ -205,7 +204,7 @@ export default function GSTFilingsPage() {
               <select
                 value={returnTypeFilter}
                 onChange={(e) => setReturnTypeFilter(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className={styles.select}
               >
                 <option value="all">All Return Types</option>
                 {returnTypes.map((type) => (
@@ -218,7 +217,7 @@ export default function GSTFilingsPage() {
                 onClick={fetchFilings}
                 disabled={loading}
               >
-                <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`${styles.refreshIcon} ${loading ? styles.refreshIconSpin : ''}`} />
                 Refresh
               </Button>
             </div>
@@ -227,11 +226,11 @@ export default function GSTFilingsPage() {
 
         {/* Error State */}
         {error && (
-          <Card className="mb-6">
-            <CardContent className="p-6 text-center">
-              <AlertCircle className="w-16 h-16 text-red-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Error Loading Filings</h3>
-              <p className="text-gray-600 mb-4">{error}</p>
+          <Card className={styles.errorCard}>
+            <CardContent className={styles.errorContent}>
+              <AlertCircle className={styles.errorIcon} />
+              <h3 className={styles.errorTitle}>Error Loading Filings</h3>
+              <p className={styles.errorMessage}>{error}</p>
               <Button onClick={fetchFilings}>
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Try Again
@@ -243,19 +242,19 @@ export default function GSTFilingsPage() {
         {/* Loading State */}
         {loading ? (
           <Card>
-            <CardContent className="p-12 text-center">
-              <RefreshCw className="w-12 h-12 animate-spin text-orange-500 mx-auto mb-4" />
-              <p className="text-gray-600">Loading your GST filings...</p>
+            <CardContent className={styles.loadingCard}>
+              <RefreshCw className={styles.loadingIcon} />
+              <p className={styles.loadingText}>Loading your GST filings...</p>
             </CardContent>
           </Card>
         ) : filteredFilings.length === 0 ? (
           <Card>
-            <CardContent className="p-12 text-center">
-              <Receipt className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <CardContent className={styles.emptyCard}>
+              <Receipt className={styles.emptyIcon} />
+              <h3 className={styles.emptyTitle}>
                 {filings.length === 0 ? 'No GST Filings Yet' : 'No Matching Filings'}
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className={styles.emptyMessage}>
                 {filings.length === 0 
                   ? 'Start by creating your first GST return filing'
                   : 'Try adjusting your search or filters'}
@@ -271,93 +270,92 @@ export default function GSTFilingsPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className={styles.filingsList}>
             {filteredFilings.map((filing) => {
               const statusInfo = statusConfig[filing.status] || statusConfig.DRAFT
               const StatusIcon = statusInfo.icon
-              const returnTypeInfo = returnTypes.find(t => t.value === filing.returnType)
 
               return (
-                <Card key={filing.id} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center mb-3">
-                          <h3 className="text-lg font-semibold text-gray-900 mr-3">
+                <Card key={filing.id} className={styles.filingCard}>
+                  <CardContent className={styles.filingContent}>
+                    <div className={styles.filingLayout}>
+                      <div className={styles.filingMain}>
+                        <div className={styles.filingHeader}>
+                          <h3 className={styles.filingTitle}>
                             {filing.returnType} - {filing.period}
                           </h3>
                           <Badge className={statusInfo.color}>
-                            <StatusIcon className="w-3 h-3 mr-1" />
+                            <StatusIcon className={styles.badgeIcon} />
                             {statusInfo.label}
                           </Badge>
                         </div>
 
-                        <div className="grid md:grid-cols-4 gap-4 mb-4">
-                          <div>
-                            <p className="text-xs text-gray-500 mb-1">GSTIN</p>
-                            <p className="text-sm font-medium text-gray-900">
+                        <div className={styles.filingGrid}>
+                          <div className={styles.filingField}>
+                            <p className={styles.filingFieldLabel}>GSTIN</p>
+                            <p className={styles.filingFieldValue}>
                               {filing.gstin}
                             </p>
                           </div>
 
                           {filing.tradeName && (
-                            <div>
-                              <p className="text-xs text-gray-500 mb-1">Trade Name</p>
-                              <p className="text-sm font-medium text-gray-900">
+                            <div className={styles.filingField}>
+                              <p className={styles.filingFieldLabel}>Trade Name</p>
+                              <p className={styles.filingFieldValue}>
                                 {filing.tradeName}
                               </p>
                             </div>
                           )}
 
                           {filing.totalSales && (
-                            <div>
-                              <p className="text-xs text-gray-500 mb-1">Total Sales</p>
-                              <p className="text-sm font-medium text-gray-900">
+                            <div className={styles.filingField}>
+                              <p className={styles.filingFieldLabel}>Total Sales</p>
+                              <p className={styles.filingFieldValue}>
                                 ₹{parseFloat(filing.totalSales).toLocaleString('en-IN')}
                               </p>
                             </div>
                           )}
 
                           {filing.taxPayable && (
-                            <div>
-                              <p className="text-xs text-gray-500 mb-1">Tax Payable</p>
-                              <p className="text-sm font-medium text-red-600">
+                            <div className={styles.filingField}>
+                              <p className={styles.filingFieldLabel}>Tax Payable</p>
+                              <p className={styles.filingFieldValueRed}>
                                 ₹{parseFloat(filing.taxPayable).toLocaleString('en-IN')}
                               </p>
                             </div>
                           )}
                         </div>
 
-                        <div className="flex items-center space-x-6 text-xs text-gray-500">
-                          <div className="flex items-center">
-                            <Calendar className="w-3 h-3 mr-1" />
+                        <div className={styles.filingMeta}>
+                          <div className={styles.filingMetaItem}>
+                            <Calendar className={styles.metaIcon} />
                             Created {new Date(filing.createdAt).toLocaleDateString('en-IN')}
                           </div>
                           {filing.acknowledgmentNo && (
-                            <div className="flex items-center">
-                              <CheckCircle2 className="w-3 h-3 mr-1" />
+                            <div className={styles.filingMetaItem}>
+                              <CheckCircle2 className={styles.metaIcon} />
                               ARN: {filing.acknowledgmentNo}
                             </div>
                           )}
                           {filing.filedAt && (
-                            <div className="flex items-center">
-                              <Send className="w-3 h-3 mr-1" />
+                            <div className={styles.filingMetaItem}>
+                              <Send className={styles.metaIcon} />
                               Filed {new Date(filing.filedAt).toLocaleDateString('en-IN')}
                             </div>
                           )}
                         </div>
                       </div>
 
-                      <div className="flex items-center space-x-2 ml-4">
+                      <div className={styles.filingActions}>
                         <Link href={`/dashboard/gst/${filing.id}`}>
-                          <Button variant="outline" size="sm">
-                            <Eye className="w-4 h-4 mr-1" />
+                          <Button variant="outline" size="sm" className={styles.actionButton}>
+                            <Eye className={styles.actionIcon} />
                             View
                           </Button>
                         </Link>
                         {filing.acknowledgmentNo && (
-                          <Button variant="outline" size="sm">
-                            <Download className="w-4 h-4 mr-1" />
+                          <Button variant="outline" size="sm" className={styles.actionButton}>
+                            <Download className={styles.actionIcon} />
                             Download
                           </Button>
                         )}

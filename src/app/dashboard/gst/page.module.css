@@ -1,0 +1,425 @@
+/* Container */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #fff7ed, #fef9c3);
+  padding: 3rem 0;
+}
+
+.innerContainer {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Header Section */
+.header {
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  color: #ea580c;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: #c2410c;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerInfo h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.headerInfo p {
+  color: #4b5563;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.statsCard {
+  padding: 1.5rem;
+}
+
+.statsCardContent {
+  display: flex;
+  align-items: center;
+}
+
+.statsIcon {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.75rem;
+}
+
+.blueIcon {
+  color: #2563eb;
+}
+
+.greenIcon {
+  color: #16a34a;
+}
+
+.orangeIcon {
+  color: #ea580c;
+}
+
+.grayIcon {
+  color: #4b5563;
+}
+
+.statsInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statsLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.statsNumber {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.statsNumberGreen {
+  color: #16a34a;
+}
+
+.statsNumberOrange {
+  color: #ea580c;
+}
+
+.statsNumberGray {
+  color: #4b5563;
+}
+
+/* Filter Section */
+.filterCard {
+  margin-bottom: 1.5rem;
+}
+
+.filterContent {
+  padding: 1.5rem;
+}
+
+.filterGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.searchWrapper {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  width: 1rem;
+  height: 1rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding-left: 2.5rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.searchInput:focus {
+  outline: none;
+  ring: 2px solid #ea580c;
+  border-color: transparent;
+}
+
+.select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.select:focus {
+  outline: none;
+  ring: 2px solid #ea580c;
+  border-color: transparent;
+}
+
+.refreshIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+.refreshIconSpin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error State */
+.errorCard {
+  margin-bottom: 1.5rem;
+}
+
+.errorContent {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.errorIcon {
+  width: 4rem;
+  height: 4rem;
+  color: #fca5a5;
+  margin: 0 auto 1rem;
+}
+
+.errorTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.errorMessage {
+  color: #4b5563;
+  margin-bottom: 1rem;
+}
+
+/* Loading State */
+.loadingCard {
+  padding: 3rem;
+  text-align: center;
+}
+
+.loadingIcon {
+  width: 3rem;
+  height: 3rem;
+  animation: spin 1s linear infinite;
+  color: #f97316;
+  margin: 0 auto 1rem;
+}
+
+.loadingText {
+  color: #4b5563;
+}
+
+/* Empty State */
+.emptyCard {
+  padding: 3rem;
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 4rem;
+  height: 4rem;
+  color: #d1d5db;
+  margin: 0 auto 1rem;
+}
+
+.emptyTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.emptyMessage {
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+}
+
+/* Filings List */
+.filingsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.filingCard {
+  transition: box-shadow 0.3s;
+}
+
+.filingCard:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.filingContent {
+  padding: 1.5rem;
+}
+
+.filingLayout {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.filingMain {
+  flex: 1;
+}
+
+.filingHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filingTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-right: 0.75rem;
+}
+
+.filingGrid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filingField {
+  display: flex;
+  flex-direction: column;
+}
+
+.filingFieldLabel {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.filingFieldValue {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.filingFieldValueRed {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #dc2626;
+}
+
+.filingMeta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  flex-wrap: wrap;
+}
+
+.filingMetaItem {
+  display: flex;
+  align-items: center;
+}
+
+.metaIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.25rem;
+}
+
+.filingActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1rem;
+  flex-shrink: 0;
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.actionIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.25rem;
+}
+
+/* Badge Styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badgeIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.25rem;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .filterGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .filingGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Utility Classes */
+.mb2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb4 {
+  margin-bottom: 1rem;
+}
+
+.mb6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb8 {
+  margin-bottom: 2rem;
+}

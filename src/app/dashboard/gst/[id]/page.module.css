@@ -1,0 +1,520 @@
+/* Container */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #fff7ed, #fef9c3);
+  padding: 3rem 0;
+}
+
+.innerContainer {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Header Section */
+.header {
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  color: #ea580c;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: #c2410c;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerInfo h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.headerInfo p {
+  color: #4b5563;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.deleteButton {
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.deleteButton:hover {
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+/* Loading State */
+.loadingContainer {
+  text-align: center;
+  padding: 6rem 0;
+}
+
+.loadingIcon {
+  width: 3rem;
+  height: 3rem;
+  animation: spin 1s linear infinite;
+  color: #f97316;
+  margin: 0 auto 1rem;
+}
+
+.loadingText {
+  color: #4b5563;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error State */
+.errorCard {
+  padding: 3rem;
+  text-align: center;
+}
+
+.errorIcon {
+  width: 4rem;
+  height: 4rem;
+  color: #fca5a5;
+  margin: 0 auto 1rem;
+}
+
+.errorTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.errorMessage {
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+}
+
+/* Status Card */
+.statusCard {
+  margin-bottom: 2rem;
+  border-width: 2px;
+}
+
+.statusCardContent {
+  padding: 1.5rem;
+}
+
+.statusHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.statusHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statusIconWrapper {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusIconLarge {
+  width: 2rem;
+  height: 2rem;
+}
+
+.statusTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.statusDescription {
+  color: #4b5563;
+}
+
+/* Status Progress */
+.statusProgress {
+  margin-top: 1.5rem;
+}
+
+.progressLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.progressBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.progressStepCircle {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.progressStepActive {
+  background-color: #ea580c;
+  color: white;
+}
+
+.progressStepInactive {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.progressConnector {
+  flex: 1;
+  height: 0.25rem;
+  margin: 0.5rem 0;
+  width: 100%;
+}
+
+.progressConnectorActive {
+  background-color: #ea580c;
+}
+
+.progressConnectorInactive {
+  background-color: #e5e7eb;
+}
+
+/* Acknowledgment Box */
+.acknowledgmentBox {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #f0fdf4;
+  border-left: 4px solid #22c55e;
+  border-radius: 0.25rem;
+}
+
+.acknowledgmentText {
+  font-size: 0.875rem;
+  color: #166534;
+}
+
+.acknowledgmentLabel {
+  font-weight: 600;
+}
+
+/* Grid Layout */
+.gridLayout {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.gridLeft {
+  grid-column: span 2;
+}
+
+/* Filing Summary */
+.summaryCard {
+  padding: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.subsectionTitle {
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.infoSection {
+  margin-bottom: 2rem;
+}
+
+.infoGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.infoField {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoLabel {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.infoValue {
+  font-weight: 500;
+  color: #111827;
+}
+
+/* Breakdown Boxes */
+.breakdownBox {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.breakdownBoxOrange {
+  background-color: #fff7ed;
+}
+
+.breakdownBoxBlue {
+  background-color: #eff6ff;
+}
+
+.breakdownContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.breakdownRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.breakdownLabel {
+  color: #4b5563;
+}
+
+.breakdownValue {
+  font-weight: 500;
+}
+
+.breakdownValueGreen {
+  font-weight: 500;
+  color: #16a34a;
+}
+
+/* Remarks Section */
+.remarksSection {
+  margin-top: 2rem;
+}
+
+.remarksBox {
+  font-size: 0.875rem;
+  color: #4b5563;
+  background-color: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Tax Summary Card */
+.taxSummaryCard {
+  padding: 1.5rem;
+}
+
+.taxSummaryTitle {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.taxSummaryIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+  color: #ea580c;
+}
+
+.taxSummaryContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.taxSummaryItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.taxSummaryLabel {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.taxSummaryValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.taxSummaryValueLarge {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.taxSummaryValueBlue {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.taxSummaryValueGreen {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #16a34a;
+}
+
+.taxSummaryValueOrange {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ea580c;
+}
+
+.taxSummaryDivider {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+}
+
+.taxSummaryHighlight {
+  background-color: #fff7ed;
+  padding: 1rem;
+  border-radius: 0.25rem;
+}
+
+/* Timeline Card */
+.timelineCard {
+  padding: 1.5rem;
+}
+
+.timelineTitle {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.timelineIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+  color: #9333ea;
+}
+
+.timelineContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.timelineItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.timelineDivider {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.75rem;
+}
+
+.timelineLabel {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.timelineValue {
+  font-weight: 500;
+}
+
+/* Action Section */
+.actionSection {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .infoGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .gridLayout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gridLeft {
+    grid-column: span 2;
+  }
+}
+
+/* Utility Classes */
+.mb2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb4 {
+  margin-bottom: 1rem;
+}
+
+.mb6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb8 {
+  margin-bottom: 2rem;
+}
+
+.mt6 {
+  margin-top: 1.5rem;
+}

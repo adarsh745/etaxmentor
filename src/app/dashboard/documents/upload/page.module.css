@@ -1,0 +1,45 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #f5f3ff, #e0e7ff);
+  padding: 3rem 0;
+}
+
+.content {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  color: #7c3aed;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: #6d28d9;
+}
+
+.backIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: #6b7280;
+  line-height: 1.5;
+}

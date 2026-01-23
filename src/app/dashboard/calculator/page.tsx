@@ -3,62 +3,63 @@
 import { useState } from 'react'
 import { Calculator, IndianRupee, TrendingUp, Info, FileText, Download } from 'lucide-react'
 import { Button, Card, CardContent, Input } from '@/components/ui'
+import styles from './page.module.css'
 
 export default function CalculatorPage() {
   const [activeCalculator, setActiveCalculator] = useState<'income-tax' | 'gst' | 'tds'>('income-tax')
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Tax Calculators</h1>
-          <p className="text-gray-600">Calculate your taxes with our easy-to-use tools</p>
+    <div className={styles.container}>
+      <div className={styles.innerContainer}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Tax Calculators</h1>
+          <p className={styles.subtitle}>Calculate your taxes with our easy-to-use tools</p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-1">
+        <div className={styles.gridLayout}>
+          <div className={styles.sidebar}>
             <Card>
-              <CardContent className="p-4">
-                <nav className="space-y-1">
+              <CardContent className={styles.navCard}>
+                <nav className={styles.navList}>
                   <button
                     onClick={() => setActiveCalculator('income-tax')}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                    className={`${styles.navButton} ${
                       activeCalculator === 'income-tax'
-                        ? 'bg-[#1E3A8A] text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? styles.navButtonActive
+                        : styles.navButtonInactive
                     }`}
                   >
-                    <Calculator className="w-5 h-5" />
-                    <span className="font-medium">Income Tax</span>
+                    <Calculator className={styles.navIcon} />
+                    <span className={styles.navLabel}>Income Tax</span>
                   </button>
                   <button
                     onClick={() => setActiveCalculator('gst')}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                    className={`${styles.navButton} ${
                       activeCalculator === 'gst'
-                        ? 'bg-[#1E3A8A] text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? styles.navButtonActive
+                        : styles.navButtonInactive
                     }`}
                   >
-                    <IndianRupee className="w-5 h-5" />
-                    <span className="font-medium">GST</span>
+                    <IndianRupee className={styles.navIcon} />
+                    <span className={styles.navLabel}>GST</span>
                   </button>
                   <button
                     onClick={() => setActiveCalculator('tds')}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                    className={`${styles.navButton} ${
                       activeCalculator === 'tds'
-                        ? 'bg-[#1E3A8A] text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? styles.navButtonActive
+                        : styles.navButtonInactive
                     }`}
                   >
-                    <TrendingUp className="w-5 h-5" />
-                    <span className="font-medium">TDS</span>
+                    <TrendingUp className={styles.navIcon} />
+                    <span className={styles.navLabel}>TDS</span>
                   </button>
                 </nav>
               </CardContent>
             </Card>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className={styles.mainContent}>
             {activeCalculator === 'income-tax' && <IncomeTaxCalculator />}
             {activeCalculator === 'gst' && <GSTCalculator />}
             {activeCalculator === 'tds' && <TDSCalculator />}
@@ -84,7 +85,6 @@ function IncomeTaxCalculator() {
     let slabs: any[] = []
 
     if (regime === 'new') {
-      // New Tax Regime FY 2023-24
       if (taxableIncome <= 300000) {
         slabs.push({ range: '0 - 3L', rate: '0%', amount: 0 })
       } else if (taxableIncome <= 600000) {
@@ -124,7 +124,6 @@ function IncomeTaxCalculator() {
         slabs.push({ range: 'Above 15L', rate: '30%', amount: taxable * 0.30 })
       }
     } else {
-      // Old Tax Regime
       if (taxableIncome <= 250000) {
         slabs.push({ range: '0 - 2.5L', rate: '0%', amount: 0 })
       } else if (taxableIncome <= 500000) {
@@ -166,39 +165,35 @@ function IncomeTaxCalculator() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={styles.spacingY6}>
       <Card>
-        <CardContent className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-            <Calculator className="w-5 h-5 text-[#1E3A8A]" />
+        <CardContent className={styles.calculatorCard}>
+          <h2 className={styles.calculatorTitle}>
+            <Calculator className={styles.calculatorIcon} />
             Income Tax Calculator (FY 2023-24)
           </h2>
 
-          <div className="space-y-6">
+          <div className={styles.formSection}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Select Tax Regime</label>
-              <div className="grid grid-cols-2 gap-4">
+              <label className={styles.fieldLabel}>Select Tax Regime</label>
+              <div className={styles.regimeGrid}>
                 <button
                   onClick={() => setRegime('new')}
-                  className={`p-4 border-2 rounded-lg text-left transition-colors ${
-                    regime === 'new'
-                      ? 'border-[#1E3A8A] bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`${styles.regimeButton} ${
+                    regime === 'new' ? styles.regimeButtonActive : styles.regimeButtonInactive
                   }`}
                 >
-                  <h3 className="font-semibold text-gray-900 mb-1">New Regime</h3>
-                  <p className="text-sm text-gray-600">Lower rates, no deductions</p>
+                  <h3 className={styles.regimeTitle}>New Regime</h3>
+                  <p className={styles.regimeDescription}>Lower rates, no deductions</p>
                 </button>
                 <button
                   onClick={() => setRegime('old')}
-                  className={`p-4 border-2 rounded-lg text-left transition-colors ${
-                    regime === 'old'
-                      ? 'border-[#1E3A8A] bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`${styles.regimeButton} ${
+                    regime === 'old' ? styles.regimeButtonActive : styles.regimeButtonInactive
                   }`}
                 >
-                  <h3 className="font-semibold text-gray-900 mb-1">Old Regime</h3>
-                  <p className="text-sm text-gray-600">Higher rates, with deductions</p>
+                  <h3 className={styles.regimeTitle}>Old Regime</h3>
+                  <p className={styles.regimeDescription}>Higher rates, with deductions</p>
                 </button>
               </div>
             </div>
@@ -235,39 +230,39 @@ function IncomeTaxCalculator() {
       {result && (
         <>
           <Card>
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Tax Breakdown</h3>
-              <div className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">Gross Income</p>
-                    <p className="text-2xl font-bold text-gray-900">₹{result.grossIncome.toLocaleString()}</p>
+            <CardContent className={styles.resultsCard}>
+              <h3 className={styles.resultsTitle}>Tax Breakdown</h3>
+              <div className={styles.resultsContent}>
+                <div className={styles.resultGrid}>
+                  <div className={`${styles.resultBox} ${styles.resultBoxGray}`}>
+                    <p className={`${styles.resultLabel} ${styles.resultLabelGray}`}>Gross Income</p>
+                    <p className={`${styles.resultValue} ${styles.resultValueGray}`}>₹{result.grossIncome.toLocaleString()}</p>
                   </div>
                   {regime === 'old' && result.deductions > 0 && (
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-600 mb-1">Deductions</p>
-                      <p className="text-2xl font-bold text-green-600">- ₹{result.deductions.toLocaleString()}</p>
+                    <div className={`${styles.resultBox} ${styles.resultBoxGray}`}>
+                      <p className={`${styles.resultLabel} ${styles.resultLabelGray}`}>Deductions</p>
+                      <p className={`${styles.resultValue} ${styles.resultValueGreen}`}>- ₹{result.deductions.toLocaleString()}</p>
                     </div>
                   )}
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">Taxable Income</p>
-                    <p className="text-2xl font-bold text-gray-900">₹{result.taxableIncome.toLocaleString()}</p>
+                  <div className={`${styles.resultBox} ${styles.resultBoxGray}`}>
+                    <p className={`${styles.resultLabel} ${styles.resultLabelGray}`}>Taxable Income</p>
+                    <p className={`${styles.resultValue} ${styles.resultValueGray}`}>₹{result.taxableIncome.toLocaleString()}</p>
                   </div>
-                  <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-                    <p className="text-sm text-red-600 mb-1">Total Tax</p>
-                    <p className="text-2xl font-bold text-red-600">₹{result.totalTax.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
+                  <div className={`${styles.resultBox} ${styles.resultBoxRed}`}>
+                    <p className={`${styles.resultLabel} ${styles.resultLabelRed}`}>Total Tax</p>
+                    <p className={`${styles.resultValue} ${styles.resultValueRed}`}>₹{result.totalTax.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t">
-                  <h4 className="font-semibold text-gray-900 mb-3">Tax Slabs Applied:</h4>
-                  <div className="space-y-2">
+                <div className={styles.slabsSection}>
+                  <h4 className={styles.slabsTitle}>Tax Slabs Applied:</h4>
+                  <div className={styles.slabsList}>
                     {result.slabs.map((slab: any, index: number) => (
-                      <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                        <span className="text-sm text-gray-700">{slab.range}</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium text-gray-900">{slab.rate}</span>
-                          <span className="text-sm font-semibold text-[#1E3A8A]">
+                      <div key={index} className={styles.slabItem}>
+                        <span className={styles.slabRange}>{slab.range}</span>
+                        <div className={styles.slabDetails}>
+                          <span className={styles.slabRate}>{slab.rate}</span>
+                          <span className={styles.slabAmount}>
                             ₹{slab.amount.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                           </span>
                         </div>
@@ -276,14 +271,14 @@ function IncomeTaxCalculator() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t grid md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <p className="text-sm text-blue-600 mb-1">Effective Tax Rate</p>
-                    <p className="text-xl font-bold text-blue-700">{result.effectiveRate}%</p>
+                <div className={styles.summarySection}>
+                  <div className={`${styles.resultBox} ${styles.resultBoxBlue}`}>
+                    <p className={`${styles.resultLabel} ${styles.resultLabelBlue}`}>Effective Tax Rate</p>
+                    <p className={`${styles.resultValue} ${styles.resultValueBlue}`}>{result.effectiveRate}%</p>
                   </div>
-                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                    <p className="text-sm text-green-600 mb-1">Net Income (After Tax)</p>
-                    <p className="text-xl font-bold text-green-700">₹{result.netIncome.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
+                  <div className={`${styles.resultBox} ${styles.resultBoxGreenBorder}`}>
+                    <p className={`${styles.resultLabel} ${styles.resultLabelGreen}`}>Net Income (After Tax)</p>
+                    <p className={`${styles.resultValue} ${styles.resultValueGreen}`}>₹{result.netIncome.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
                   </div>
                 </div>
               </div>
@@ -292,19 +287,17 @@ function IncomeTaxCalculator() {
         </>
       )}
 
-      <Card className="border-l-4 border-l-blue-500">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <div className="text-sm text-gray-600">
-              <p className="font-medium text-gray-900 mb-2">Note:</p>
-              <ul className="list-disc list-inside space-y-1">
-                <li>Calculations are based on FY 2023-24 tax slabs</li>
-                <li>4% Health & Education Cess is added to the tax amount</li>
-                <li>Surcharge not included (applicable for income above ₹50L)</li>
-                <li>This is an estimate. Consult a CA for accurate tax planning</li>
-              </ul>
-            </div>
+      <Card className={styles.infoCard}>
+        <CardContent className={styles.infoContent}>
+          <Info className={styles.infoIcon} />
+          <div className={styles.infoText}>
+            <p className={styles.infoTitle}>Note:</p>
+            <ul className={styles.infoList}>
+              <li>Calculations are based on FY 2023-24 tax slabs</li>
+              <li>4% Health & Education Cess is added to the tax amount</li>
+              <li>Surcharge not included (applicable for income above ₹50L)</li>
+              <li>This is an estimate. Consult a CA for accurate tax planning</li>
+            </ul>
           </div>
         </CardContent>
       </Card>
@@ -348,39 +341,35 @@ function GSTCalculator() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={styles.spacingY6}>
       <Card>
-        <CardContent className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-            <IndianRupee className="w-5 h-5 text-[#1E3A8A]" />
+        <CardContent className={styles.calculatorCard}>
+          <h2 className={styles.calculatorTitle}>
+            <IndianRupee className={styles.calculatorIcon} />
             GST Calculator
           </h2>
 
-          <div className="space-y-6">
+          <div className={styles.formSection}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Calculation Mode</label>
-              <div className="grid grid-cols-2 gap-4">
+              <label className={styles.fieldLabel}>Calculation Mode</label>
+              <div className={styles.modeGrid}>
                 <button
                   onClick={() => setMode('exclusive')}
-                  className={`p-4 border-2 rounded-lg text-left transition-colors ${
-                    mode === 'exclusive'
-                      ? 'border-[#1E3A8A] bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`${styles.modeButton} ${
+                    mode === 'exclusive' ? styles.modeButtonActive : styles.modeButtonInactive
                   }`}
                 >
-                  <h3 className="font-semibold text-gray-900 mb-1">GST Exclusive</h3>
-                  <p className="text-sm text-gray-600">Add GST to amount</p>
+                  <h3 className={styles.modeTitle}>GST Exclusive</h3>
+                  <p className={styles.modeDescription}>Add GST to amount</p>
                 </button>
                 <button
                   onClick={() => setMode('inclusive')}
-                  className={`p-4 border-2 rounded-lg text-left transition-colors ${
-                    mode === 'inclusive'
-                      ? 'border-[#1E3A8A] bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`${styles.modeButton} ${
+                    mode === 'inclusive' ? styles.modeButtonActive : styles.modeButtonInactive
                   }`}
                 >
-                  <h3 className="font-semibold text-gray-900 mb-1">GST Inclusive</h3>
-                  <p className="text-sm text-gray-600">Extract GST from amount</p>
+                  <h3 className={styles.modeTitle}>GST Inclusive</h3>
+                  <p className={styles.modeDescription}>Extract GST from amount</p>
                 </button>
               </div>
             </div>
@@ -395,16 +384,14 @@ function GSTCalculator() {
             />
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">GST Rate</label>
-              <div className="grid grid-cols-5 gap-2">
+              <label className={styles.fieldLabel}>GST Rate</label>
+              <div className={styles.rateGrid}>
                 {['5', '12', '18', '28'].map((rate) => (
                   <button
                     key={rate}
                     onClick={() => setGstRate(rate)}
-                    className={`py-3 px-4 rounded-lg font-semibold transition-colors ${
-                      gstRate === rate
-                        ? 'bg-[#1E3A8A] text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    className={`${styles.rateButton} ${
+                      gstRate === rate ? styles.rateButtonActive : styles.rateButtonInactive
                     }`}
                   >
                     {rate}%
@@ -414,7 +401,7 @@ function GSTCalculator() {
                   type="number"
                   value={gstRate}
                   onChange={(e) => setGstRate(e.target.value)}
-                  className="py-3 px-4 border border-gray-300 rounded-lg text-center font-semibold focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
+                  className={styles.rateInput}
                   placeholder="%"
                 />
               </div>
@@ -430,42 +417,42 @@ function GSTCalculator() {
 
       {result && (
         <Card>
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">GST Breakdown</h3>
-            <div className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600 mb-1">Base Amount</p>
-                  <p className="text-2xl font-bold text-gray-900">
+          <CardContent className={styles.resultsCard}>
+            <h3 className={styles.resultsTitle}>GST Breakdown</h3>
+            <div className={styles.resultsContent}>
+              <div className={styles.resultGrid}>
+                <div className={`${styles.resultBox} ${styles.resultBoxGray}`}>
+                  <p className={`${styles.resultLabel} ${styles.resultLabelGray}`}>Base Amount</p>
+                  <p className={`${styles.resultValue} ${styles.resultValueGray}`}>
                     ₹{result.baseAmount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                   </p>
                 </div>
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <p className="text-sm text-blue-600 mb-1">Total GST ({result.rate}%)</p>
-                  <p className="text-2xl font-bold text-blue-700">
+                <div className={`${styles.resultBox} ${styles.resultBoxBlue}`}>
+                  <p className={`${styles.resultLabel} ${styles.resultLabelBlue}`}>Total GST ({result.rate}%)</p>
+                  <p className={`${styles.resultValue} ${styles.resultValueBlue}`}>
                     ₹{result.gstAmount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                   </p>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <p className="text-sm text-green-600 mb-1">CGST ({result.rate / 2}%)</p>
-                  <p className="text-xl font-bold text-green-700">
+              <div className={styles.gstBreakdownGrid}>
+                <div className={`${styles.resultBox} ${styles.resultBoxGreen}`}>
+                  <p className={`${styles.resultLabel} ${styles.resultLabelGreen}`}>CGST ({result.rate / 2}%)</p>
+                  <p className={`${styles.resultValue} ${styles.resultValueGreen}`}>
                     ₹{result.cgst.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                   </p>
                 </div>
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <p className="text-sm text-green-600 mb-1">SGST ({result.rate / 2}%)</p>
-                  <p className="text-xl font-bold text-green-700">
+                <div className={`${styles.resultBox} ${styles.resultBoxGreen}`}>
+                  <p className={`${styles.resultLabel} ${styles.resultLabelGreen}`}>SGST ({result.rate / 2}%)</p>
+                  <p className={`${styles.resultValue} ${styles.resultValueGreen}`}>
                     ₹{result.sgst.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                   </p>
                 </div>
               </div>
 
-              <div className="p-6 bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6] rounded-lg text-white">
-                <p className="text-sm opacity-90 mb-1">Total Amount (Inc. GST)</p>
-                <p className="text-3xl font-bold">
+              <div className={styles.gstTotal}>
+                <p className={styles.gstTotalLabel}>Total Amount (Inc. GST)</p>
+                <p className={styles.gstTotalValue}>
                   ₹{result.totalAmount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                 </p>
               </div>
@@ -480,10 +467,10 @@ function GSTCalculator() {
 function TDSCalculator() {
   return (
     <Card>
-      <CardContent className="p-12 text-center">
-        <TrendingUp className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">TDS Calculator</h3>
-        <p className="text-gray-500">Coming Soon</p>
+      <CardContent className={styles.comingSoon}>
+        <TrendingUp className={styles.comingSoonIcon} />
+        <h3 className={styles.comingSoonTitle}>TDS Calculator</h3>
+        <p className={styles.comingSoonText}>Coming Soon</p>
       </CardContent>
     </Card>
   )

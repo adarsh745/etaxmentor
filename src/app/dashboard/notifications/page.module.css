@@ -1,0 +1,309 @@
+/* Container */
+.container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.innerContainer {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Loading State */
+.loadingContainer {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingIcon {
+  width: 2rem;
+  height: 2rem;
+  animation: spin 1s linear infinite;
+  color: #1e3a8a;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Header Section */
+.header {
+  margin-bottom: 2rem;
+}
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  background-color: #1e3a8a;
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.subtitle {
+  color: #4b5563;
+}
+
+/* Actions Bar */
+.actionsBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Notifications List */
+.notificationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Empty State */
+.emptyCard {
+  padding: 3rem;
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 4rem;
+  height: 4rem;
+  color: #d1d5db;
+  margin: 0 auto 1rem;
+}
+
+.emptyTitle {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.emptyMessage {
+  color: #6b7280;
+}
+
+/* Notification Card */
+.notificationCard {
+  transition: all 0.2s;
+}
+
+.notificationCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.notificationCardUnread {
+  background-color: #eff6ff;
+  border-left: 4px solid #1e3a8a;
+}
+
+.notificationContent {
+  padding: 1rem;
+}
+
+.notificationLayout {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.notificationIconWrapper {
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.iconFiling {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #2563eb;
+}
+
+.iconPayment {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #16a34a;
+}
+
+.iconDocument {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #dc2626;
+}
+
+.iconTicket {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #9333ea;
+}
+
+.iconGeneral {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #4b5563;
+}
+
+.notificationBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificationHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.notificationTitle {
+  font-weight: 600;
+  color: #111827;
+}
+
+.notificationActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.markReadButton {
+  color: #1e3a8a;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.markReadButton:hover {
+  color: #3b82f6;
+}
+
+.deleteButton {
+  color: #dc2626;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.deleteButton:hover {
+  color: #b91c1c;
+}
+
+.actionIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.notificationMessage {
+  color: #4b5563;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.notificationTime {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.timeIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+/* Info Box */
+.infoCard {
+  margin-top: 2rem;
+}
+
+.infoContent {
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.infoIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #1e3a8a;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.infoTitle {
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.infoText {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.infoLink {
+  color: #1e3a8a;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.infoLink:hover {
+  text-decoration: underline;
+}
+
+/* Utility Classes */
+.mb2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb4 {
+  margin-bottom: 1rem;
+}
+
+.mb6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb8 {
+  margin-bottom: 2rem;
+}
+
+.mt8 {
+  margin-top: 2rem;
+}

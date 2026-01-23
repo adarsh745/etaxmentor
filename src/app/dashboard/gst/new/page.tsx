@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { Button, Card, CardContent, Input, Badge } from '@/components/ui'
+import styles from './page.module.css'
 
 const returnTypes = [
   { value: 'GSTR1', label: 'GSTR-1', desc: 'Details of outward supplies' },
@@ -18,14 +19,10 @@ const returnTypes = [
   { value: 'GSTR9C', label: 'GSTR-9C', desc: 'Reconciliation statement' },
 ]
 
-const currentYear = new Date().getFullYear()
 const periods = [
-  // Monthly periods for current FY
   'Apr-2025', 'May-2025', 'Jun-2025', 'Jul-2025', 'Aug-2025', 'Sep-2025',
   'Oct-2025', 'Nov-2025', 'Dec-2025', 'Jan-2026', 'Feb-2026', 'Mar-2026',
-  // Quarterly periods
   'Q1-2025-26', 'Q2-2025-26', 'Q3-2025-26', 'Q4-2025-26',
-  // Previous year
   'Apr-2024', 'May-2024', 'Jun-2024', 'Jul-2024', 'Aug-2024', 'Sep-2024',
   'Oct-2024', 'Nov-2024', 'Dec-2024', 'Jan-2025', 'Feb-2025', 'Mar-2025',
 ]
@@ -42,35 +39,25 @@ function NewGSTFilingContent() {
   const [filingId, setFilingId] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
-    // Basic details
     gstin: '',
     tradeName: '',
     returnType: 'GSTR3B',
     period: 'Jan-2026',
-    
-    // Sales details
     b2bSales: '',
     b2cSales: '',
     exportSales: '',
     exemptSales: '',
-    
-    // Purchase details
     purchases: '',
     importPurchases: '',
-    
-    // Tax details
     igst: '',
     cgst: '',
     sgst: '',
     itcClaimed: '',
-    
-    // Additional info
     remarks: '',
   })
 
   const [documents, setDocuments] = useState<File[]>([])
 
-  // Load existing draft if editing
   useEffect(() => {
     const id = searchParams.get('id')
     if (id) {
@@ -99,7 +86,6 @@ function NewGSTFilingContent() {
         return
       }
 
-      // Populate form with existing data
       setFormData({
         gstin: filing.gstin || '',
         tradeName: filing.tradeName || '',
@@ -127,7 +113,6 @@ function NewGSTFilingContent() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     let value = e.target.value
     
-    // Auto-uppercase GSTIN
     if (e.target.name === 'gstin') {
       value = value.toUpperCase()
     }
@@ -229,70 +214,57 @@ function NewGSTFilingContent() {
   const totals = calculateTotals()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 py-12">
-      <div className="container mx-auto px-4 max-w-4xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Link href="/dashboard/gst" className="inline-flex items-center text-orange-600 hover:text-orange-800 mb-4">
+    <div className={styles.container}>
+      <div className={styles.innerContainer}>
+        <div className={styles.header}>
+          <Link href="/dashboard/gst" className={styles.backLink}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to GST Filings
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{isEditing ? 'Edit GST Filing' : 'New GST Filing'}</h1>
-          <p className="text-gray-600">{isEditing ? 'Update your GST return filing' : 'Complete your GST return filing with expert assistance'}</p>
+          <h1 className={styles.title}>{isEditing ? 'Edit GST Filing' : 'New GST Filing'}</h1>
+          <p className={styles.subtitle}>{isEditing ? 'Update your GST return filing' : 'Complete your GST return filing with expert assistance'}</p>
         </div>
 
-        {/* Progress Steps */}
-        <div className="mb-8 flex items-center justify-center space-x-4">
+        <div className={styles.progressContainer}>
           {[1, 2, 3].map((s) => (
-            <div key={s} className="flex items-center">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                  s <= step
-                    ? 'bg-orange-600 text-white'
-                    : 'bg-gray-200 text-gray-600'
-                }`}
-              >
+            <div key={s} className={styles.stepWrapper}>
+              <div className={`${styles.stepCircle} ${s <= step ? styles.stepCircleActive : styles.stepCircleInactive}`}>
                 {s}
               </div>
               {s < 3 && (
-                <div
-                  className={`w-16 h-1 mx-2 ${
-                    s < step ? 'bg-orange-600' : 'bg-gray-200'
-                  }`}
-                />
+                <div className={`${styles.stepConnector} ${s < step ? styles.stepConnectorActive : styles.stepConnectorInactive}`} />
               )}
             </div>
           ))}
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 flex items-start">
-            <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
+          <div className={styles.errorAlert}>
+            <AlertCircle className={styles.alertIcon} />
             <span>{error}</span>
           </div>
         )}
 
         {success && (
-          <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 flex items-start">
-            <CheckCircle2 className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
+          <div className={styles.successAlert}>
+            <CheckCircle2 className={styles.alertIcon} />
             <span>{success}</span>
           </div>
         )}
 
         <form onSubmit={(e) => handleSubmit(e, false)}>
-          {/* Step 1: Basic Details */}
           {step === 1 && (
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-6 flex items-center">
-                  <Receipt className="w-5 h-5 mr-2 text-orange-600" />
+            <Card className={styles.card}>
+              <CardContent className={styles.cardContent}>
+                <h2 className={styles.sectionTitle}>
+                  <Receipt className={styles.sectionIcon} />
                   Basic Details
                 </h2>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      GSTIN <span className="text-red-500">*</span>
+                <div className={styles.formGridTwoCol}>
+                  <div className={styles.fieldWrapper}>
+                    <label className={styles.fieldLabel}>
+                      GSTIN <span className={styles.required}>*</span>
                     </label>
                     <Input
                       type="text"
@@ -303,11 +275,11 @@ function NewGSTFilingContent() {
                       maxLength={15}
                       required
                     />
-                    <p className="text-xs text-gray-500 mt-1">15-digit GST Identification Number</p>
+                    <p className={styles.fieldHint}>15-digit GST Identification Number</p>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className={styles.fieldWrapper}>
+                    <label className={styles.fieldLabel}>
                       Trade Name
                     </label>
                     <Input
@@ -319,15 +291,15 @@ function NewGSTFilingContent() {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Return Type <span className="text-red-500">*</span>
+                  <div className={styles.fieldWrapper}>
+                    <label className={styles.fieldLabel}>
+                      Return Type <span className={styles.required}>*</span>
                     </label>
                     <select
                       name="returnType"
                       value={formData.returnType}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className={styles.select}
                       required
                     >
                       {returnTypes.map((type) => (
@@ -338,15 +310,15 @@ function NewGSTFilingContent() {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Period <span className="text-red-500">*</span>
+                  <div className={styles.fieldWrapper}>
+                    <label className={styles.fieldLabel}>
+                      Period <span className={styles.required}>*</span>
                     </label>
                     <select
                       name="period"
                       value={formData.period}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className={styles.select}
                       required
                     >
                       {periods.map((period) => (
@@ -356,7 +328,7 @@ function NewGSTFilingContent() {
                   </div>
                 </div>
 
-                <div className="mt-6 flex justify-end">
+                <div className={styles.buttonGroup}>
                   <Button type="button" onClick={() => setStep(2)}>
                     Next: Sales & Purchase Details
                   </Button>
@@ -365,18 +337,16 @@ function NewGSTFilingContent() {
             </Card>
           )}
 
-          {/* Step 2: Sales & Purchase Details */}
           {step === 2 && (
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-6">Sales & Purchase Details</h2>
+            <Card className={styles.card}>
+              <CardContent className={styles.cardContent}>
+                <h2 className={styles.sectionTitle}>Sales & Purchase Details</h2>
 
-                {/* Sales Section */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-medium mb-4 text-orange-600">Sales Details</h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className={styles.salesSection}>
+                  <h3 className={`${styles.subsectionTitle} ${styles.subsectionTitleOrange}`}>Sales Details</h3>
+                  <div className={styles.formGridTwoCol}>
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         B2B Sales (₹)
                       </label>
                       <Input
@@ -390,8 +360,8 @@ function NewGSTFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         B2C Sales (₹)
                       </label>
                       <Input
@@ -405,8 +375,8 @@ function NewGSTFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         Export Sales (₹)
                       </label>
                       <Input
@@ -420,8 +390,8 @@ function NewGSTFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         Exempt Sales (₹)
                       </label>
                       <Input
@@ -437,12 +407,11 @@ function NewGSTFilingContent() {
                   </div>
                 </div>
 
-                {/* Purchases Section */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-medium mb-4 text-blue-600">Purchase Details</h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className={styles.purchasesSection}>
+                  <h3 className={`${styles.subsectionTitle} ${styles.subsectionTitleBlue}`}>Purchase Details</h3>
+                  <div className={styles.formGridTwoCol}>
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         Purchases (₹)
                       </label>
                       <Input
@@ -456,8 +425,8 @@ function NewGSTFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         Import Purchases (₹)
                       </label>
                       <Input
@@ -473,12 +442,11 @@ function NewGSTFilingContent() {
                   </div>
                 </div>
 
-                {/* Tax Section */}
-                <div>
-                  <h3 className="text-lg font-medium mb-4 text-green-600">Tax Details</h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className={styles.taxSection}>
+                  <h3 className={`${styles.subsectionTitle} ${styles.subsectionTitleGreen}`}>Tax Details</h3>
+                  <div className={styles.formGridTwoCol}>
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         IGST (₹)
                       </label>
                       <Input
@@ -492,8 +460,8 @@ function NewGSTFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         CGST (₹)
                       </label>
                       <Input
@@ -507,8 +475,8 @@ function NewGSTFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         SGST (₹)
                       </label>
                       <Input
@@ -522,8 +490,8 @@ function NewGSTFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         ITC Claimed (₹)
                       </label>
                       <Input
@@ -539,34 +507,33 @@ function NewGSTFilingContent() {
                   </div>
                 </div>
 
-                {/* Summary */}
-                <div className="mt-8 p-4 bg-orange-50 rounded-lg">
-                  <h4 className="font-semibold mb-3">Summary</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
+                <div className={styles.summaryBox}>
+                  <h4 className={styles.summaryTitle}>Summary</h4>
+                  <div className={styles.summaryContent}>
+                    <div className={styles.summaryRow}>
                       <span>Total Sales:</span>
-                      <span className="font-semibold">₹{totals.totalSales.toLocaleString('en-IN')}</span>
+                      <span className={styles.summaryValue}>₹{totals.totalSales.toLocaleString('en-IN')}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className={styles.summaryRow}>
                       <span>Total Purchases:</span>
-                      <span className="font-semibold">₹{totals.totalPurchases.toLocaleString('en-IN')}</span>
+                      <span className={styles.summaryValue}>₹{totals.totalPurchases.toLocaleString('en-IN')}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className={styles.summaryRow}>
                       <span>Total Tax:</span>
-                      <span className="font-semibold">₹{totals.totalTax.toLocaleString('en-IN')}</span>
+                      <span className={styles.summaryValue}>₹{totals.totalTax.toLocaleString('en-IN')}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className={styles.summaryRow}>
                       <span>ITC Claimed:</span>
-                      <span className="font-semibold text-green-600">- ₹{Number(formData.itcClaimed || 0).toLocaleString('en-IN')}</span>
+                      <span className={styles.summaryValueGreen}>- ₹{Number(formData.itcClaimed || 0).toLocaleString('en-IN')}</span>
                     </div>
-                    <div className="flex justify-between pt-2 border-t border-orange-200">
-                      <span className="font-semibold">Tax Payable:</span>
-                      <span className="font-bold text-orange-600">₹{totals.taxPayable.toLocaleString('en-IN')}</span>
+                    <div className={`${styles.summaryRow} ${styles.summaryTotal}`}>
+                      <span className={styles.summaryTotalLabel}>Tax Payable:</span>
+                      <span className={styles.summaryTotalValue}>₹{totals.taxPayable.toLocaleString('en-IN')}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-6 flex justify-between">
+                <div className={styles.buttonGroupSpaced}>
                   <Button type="button" variant="outline" onClick={() => setStep(1)}>
                     Back
                   </Button>
@@ -578,54 +545,51 @@ function NewGSTFilingContent() {
             </Card>
           )}
 
-          {/* Step 3: Documents & Submit */}
           {step === 3 && (
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-6 flex items-center">
-                  <Upload className="w-5 h-5 mr-2 text-orange-600" />
+            <Card className={styles.card}>
+              <CardContent className={styles.cardContent}>
+                <h2 className={styles.sectionTitle}>
+                  <Upload className={styles.sectionIcon} />
                   Upload Documents & Additional Info
                 </h2>
 
-                {/* Document Upload */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className={styles.uploadSection}>
+                  <label className={`${styles.fieldLabel} ${styles.mb2}`}>
                     Supporting Documents
                   </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-orange-500 transition-colors">
+                  <div className={styles.uploadBox}>
                     <input
                       type="file"
                       multiple
                       onChange={handleFileUpload}
-                      className="hidden"
+                      className={styles.uploadInput}
                       id="file-upload"
                       accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls"
                     />
-                    <label htmlFor="file-upload" className="cursor-pointer">
-                      <Upload className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-                      <p className="text-sm text-gray-600">
+                    <label htmlFor="file-upload" className={styles.uploadLabel}>
+                      <Upload className={styles.uploadIcon} />
+                      <p className={styles.uploadText}>
                         Click to upload GSTR-2A, Purchase invoices, Bank statements, etc.
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">PDF, JPG, PNG, Excel (Max 10MB each)</p>
+                      <p className={styles.uploadSubtext}>PDF, JPG, PNG, Excel (Max 10MB each)</p>
                     </label>
                   </div>
 
-                  {/* Uploaded Files List */}
                   {documents.length > 0 && (
-                    <div className="mt-4 space-y-2">
+                    <div className={styles.fileList}>
                       {documents.map((file, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                          <div className="flex items-center">
-                            <FileText className="w-4 h-4 mr-2 text-gray-600" />
-                            <span className="text-sm">{file.name}</span>
-                            <span className="text-xs text-gray-500 ml-2">
+                        <div key={index} className={styles.fileItem}>
+                          <div className={styles.fileInfo}>
+                            <FileText className={styles.fileIcon} />
+                            <span className={styles.fileName}>{file.name}</span>
+                            <span className={styles.fileSize}>
                               ({(file.size / 1024).toFixed(1)} KB)
                             </span>
                           </div>
                           <button
                             type="button"
                             onClick={() => removeDocument(index)}
-                            className="text-red-500 hover:text-red-700"
+                            className={styles.removeButton}
                           >
                             <X className="w-4 h-4" />
                           </button>
@@ -635,9 +599,8 @@ function NewGSTFilingContent() {
                   )}
                 </div>
 
-                {/* Remarks */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className={styles.remarksSection}>
+                  <label className={`${styles.fieldLabel} ${styles.mb2}`}>
                     Additional Remarks (Optional)
                   </label>
                   <textarea
@@ -645,17 +608,16 @@ function NewGSTFilingContent() {
                     value={formData.remarks}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className={styles.textarea}
                     placeholder="Any additional information for our GST experts..."
                   />
                 </div>
 
-                {/* Info Box */}
-                <div className="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 flex items-start">
-                  <Info className="w-5 h-5 mr-3 text-yellow-600 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-yellow-800">
-                    <p className="font-medium mb-1">What happens next?</p>
-                    <ul className="list-disc list-inside space-y-1 text-xs">
+                <div className={styles.infoBox}>
+                  <Info className={styles.infoIcon} />
+                  <div className={styles.infoContent}>
+                    <p className={styles.infoTitle}>What happens next?</p>
+                    <ul className={styles.infoList}>
                       <li>Your GST return will be reviewed by our experts</li>
                       <li>You'll receive a call for verification within 24 hours</li>
                       <li>Your return will be filed and you'll get acknowledgment</li>
@@ -664,11 +626,11 @@ function NewGSTFilingContent() {
                   </div>
                 </div>
 
-                <div className="flex justify-between">
+                <div className={styles.buttonGroupSpaced}>
                   <Button type="button" variant="outline" onClick={() => setStep(2)}>
                     Back
                   </Button>
-                  <div className="space-x-3">
+                  <div className={styles.buttonGroupRight}>
                     <Button
                       type="button"
                       variant="outline"
@@ -696,8 +658,8 @@ function NewGSTFilingContent() {
 export default function NewGSTFilingPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1E3A8A]"></div>
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
       </div>
     }>
       <NewGSTFilingContent />

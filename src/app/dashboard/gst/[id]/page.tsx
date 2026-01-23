@@ -9,6 +9,7 @@ import {
   Phone, MapPin, Plus, Share2, RefreshCw, X, Receipt
 } from 'lucide-react'
 import { Button, Card, CardContent, Badge } from '@/components/ui'
+import styles from './page.module.css'
 
 interface GSTFilingDetails {
   id: string
@@ -149,7 +150,6 @@ export default function GSTFilingDetailsPage() {
         throw new Error('Failed to delete filing')
       }
 
-      // Redirect to filings list after successful deletion
       window.location.href = '/dashboard/gst'
     } catch (err: any) {
       setError(err.message)
@@ -160,10 +160,12 @@ export default function GSTFilingDetailsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 py-12">
-        <div className="container mx-auto px-4 max-w-6xl text-center py-24">
-          <RefreshCw className="w-12 h-12 animate-spin text-orange-500 mx-auto mb-4" />
-          <p className="text-gray-600">Loading filing details...</p>
+      <div className={styles.container}>
+        <div className={styles.innerContainer}>
+          <div className={styles.loadingContainer}>
+            <RefreshCw className={styles.loadingIcon} />
+            <p className={styles.loadingText}>Loading filing details...</p>
+          </div>
         </div>
       </div>
     )
@@ -171,17 +173,19 @@ export default function GSTFilingDetailsPage() {
 
   if (error || !filing) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 py-12">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <Link href="/dashboard/gst" className="inline-flex items-center text-orange-600 hover:text-orange-800 mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to GST Filings
-          </Link>
+      <div className={styles.container}>
+        <div className={styles.innerContainer}>
+          <div className={styles.header}>
+            <Link href="/dashboard/gst" className={styles.backLink}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to GST Filings
+            </Link>
+          </div>
           <Card>
-            <CardContent className="p-12 text-center">
-              <AlertCircle className="w-16 h-16 text-red-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Filing Not Found</h3>
-              <p className="text-gray-600 mb-6">{error || 'Could not load this filing'}</p>
+            <CardContent className={styles.errorCard}>
+              <AlertCircle className={styles.errorIcon} />
+              <h3 className={styles.errorTitle}>Filing Not Found</h3>
+              <p className={styles.errorMessage}>{error || 'Could not load this filing'}</p>
               <Link href="/dashboard/gst">
                 <Button>Back to GST Filings</Button>
               </Link>
@@ -202,22 +206,21 @@ export default function GSTFilingDetailsPage() {
   const taxPayableNum = filing.taxPayable ? parseFloat(filing.taxPayable) : 0
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 py-12">
-      <div className="container mx-auto px-4 max-w-6xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Link href="/dashboard/gst" className="inline-flex items-center text-orange-600 hover:text-orange-800 mb-4">
+    <div className={styles.container}>
+      <div className={styles.innerContainer}>
+        <div className={styles.header}>
+          <Link href="/dashboard/gst" className={styles.backLink}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to GST Filings
           </Link>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <div className={styles.headerContent}>
+            <div className={styles.headerInfo}>
+              <h1>
                 {returnInfo.label} Filing - {filing.period}
               </h1>
-              <p className="text-gray-600">Filing ID: {filing.id}</p>
+              <p>Filing ID: {filing.id}</p>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className={styles.headerActions}>
               {(['DRAFT', 'DOCUMENTS_PENDING'].includes(filing.status)) && (
                 <Link href={`/dashboard/gst/new?id=${filing.id}`}>
                   <Button variant="outline">
@@ -231,7 +234,7 @@ export default function GSTFilingDetailsPage() {
                   variant="outline" 
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="text-red-600 hover:text-red-800 border-red-200 hover:border-red-300"
+                  className={styles.deleteButton}
                 >
                   <X className="w-4 h-4 mr-2" />
                   {deleting ? 'Deleting...' : 'Delete'}
@@ -247,42 +250,33 @@ export default function GSTFilingDetailsPage() {
           </div>
         </div>
 
-        {/* Status Card */}
-        <Card className="mb-8 border-2">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-4">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center ${statusInfo.color}`}>
-                  <StatusIcon className="w-8 h-8" />
+        <Card className={styles.statusCard}>
+          <CardContent className={styles.statusCardContent}>
+            <div className={styles.statusHeader}>
+              <div className={styles.statusHeaderLeft}>
+                <div className={`${styles.statusIconWrapper} ${statusInfo.color}`}>
+                  <StatusIcon className={styles.statusIconLarge} />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{statusInfo.label}</h2>
-                  <p className="text-gray-600">{statusInfo.description}</p>
+                  <h2 className={styles.statusTitle}>{statusInfo.label}</h2>
+                  <p className={styles.statusDescription}>{statusInfo.description}</p>
                 </div>
               </div>
               <Badge className={statusInfo.color}>{statusInfo.label}</Badge>
             </div>
 
-            {/* Status Progress */}
-            <div className="mt-6">
-              <p className="text-sm font-medium text-gray-700 mb-3">Filing Progress</p>
-              <div className="flex items-center justify-between">
+            <div className={styles.statusProgress}>
+              <p className={styles.progressLabel}>Filing Progress</p>
+              <div className={styles.progressBar}>
                 {statusFlow.map((status, index) => {
                   const isActive = index <= currentStatusIndex
                   return (
-                    <div key={status} className="flex flex-col items-center flex-1">
-                      <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold ${
-                          isActive ? 'bg-orange-600 text-white' : 'bg-gray-200 text-gray-600'
-                        }`}
-                      >
+                    <div key={status} className={styles.progressStep}>
+                      <div className={`${styles.progressStepCircle} ${isActive ? styles.progressStepActive : styles.progressStepInactive}`}>
                         {index + 1}
                       </div>
                       {index < statusFlow.length - 1 && (
-                        <div
-                          className={`flex-1 h-1 ${isActive ? 'bg-orange-600' : 'bg-gray-200'}`}
-                          style={{ margin: '8px 0', width: '100%' }}
-                        />
+                        <div className={`${styles.progressConnector} ${isActive ? styles.progressConnectorActive : styles.progressConnectorInactive}`} />
                       )}
                     </div>
                   )
@@ -291,103 +285,100 @@ export default function GSTFilingDetailsPage() {
             </div>
 
             {filing.acknowledgmentNo && (
-              <div className="mt-6 p-4 bg-green-50 border-l-4 border-green-500 rounded">
-                <p className="text-sm text-green-700">
-                  <span className="font-semibold">Acknowledgment ARN:</span> {filing.acknowledgmentNo}
+              <div className={styles.acknowledgmentBox}>
+                <p className={styles.acknowledgmentText}>
+                  <span className={styles.acknowledgmentLabel}>Acknowledgment ARN:</span> {filing.acknowledgmentNo}
                 </p>
               </div>
             )}
           </CardContent>
         </Card>
 
-        <div className="grid lg:grid-cols-3 gap-6 mb-8">
-          {/* Filing Summary */}
-          <Card className="lg:col-span-2">
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold mb-6">Filing Summary</h3>
+        <div className={styles.gridLayout}>
+          <Card className={styles.gridLeft}>
+            <CardContent className={styles.summaryCard}>
+              <h3 className={styles.sectionTitle}>Filing Summary</h3>
 
-              {/* Basic Info */}
-              <div className="mb-8">
-                <h4 className="font-medium text-gray-700 mb-4 text-sm">Basic Information</h4>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">GSTIN</p>
-                    <p className="font-medium text-gray-900">{filing.gstin}</p>
+              <div className={styles.infoSection}>
+                <h4 className={styles.subsectionTitle}>Basic Information</h4>
+                <div className={styles.infoGrid}>
+                  <div className={styles.infoField}>
+                    <p className={styles.infoLabel}>GSTIN</p>
+                    <p className={styles.infoValue}>{filing.gstin}</p>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Trade Name</p>
-                    <p className="font-medium text-gray-900">{filing.tradeName || 'Not provided'}</p>
+                  <div className={styles.infoField}>
+                    <p className={styles.infoLabel}>Trade Name</p>
+                    <p className={styles.infoValue}>{filing.tradeName || 'Not provided'}</p>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Return Type</p>
-                    <p className="font-medium text-gray-900">{returnInfo.label}</p>
+                  <div className={styles.infoField}>
+                    <p className={styles.infoLabel}>Return Type</p>
+                    <p className={styles.infoValue}>{returnInfo.label}</p>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Period</p>
-                    <p className="font-medium text-gray-900">{filing.period}</p>
+                  <div className={styles.infoField}>
+                    <p className={styles.infoLabel}>Period</p>
+                    <p className={styles.infoValue}>{filing.period}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Sales & Purchase Breakdown */}
-              <div className="mb-8 p-4 bg-orange-50 rounded-lg">
-                <h4 className="font-medium text-gray-700 mb-4 text-sm">Sales Breakdown</h4>
+              <div className={`${styles.breakdownBox} ${styles.breakdownBoxOrange}`}>
+                <h4 className={styles.subsectionTitle}>Sales Breakdown</h4>
                 {filing.formData && (
-                  <div className="space-y-2 text-sm">
+                  <div className={styles.breakdownContent}>
                     {filing.formData.b2bSales > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">B2B Sales:</span>
-                        <span className="font-medium">₹{filing.formData.b2bSales.toLocaleString('en-IN')}</span>
+                      <div className={styles.breakdownRow}>
+                        <span className={styles.breakdownLabel}>B2B Sales:</span>
+                        <span className={styles.breakdownValue}>₹{filing.formData.b2bSales.toLocaleString('en-IN')}</span>
                       </div>
                     )}
                     {filing.formData.b2cSales > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">B2C Sales:</span>
-                        <span className="font-medium">₹{filing.formData.b2cSales.toLocaleString('en-IN')}</span>
+                      <div className={styles.breakdownRow}>
+                        <span className={styles.breakdownLabel}>B2C Sales:</span>
+                        <span className={styles.breakdownValue}>₹{filing.formData.b2cSales.toLocaleString('en-IN')}</span>
                       </div>
                     )}
                     {filing.formData.exportSales > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Export Sales:</span>
-                        <span className="font-medium">₹{filing.formData.exportSales.toLocaleString('en-IN')}</span>
+                      <div className={styles.breakdownRow}>
+                        <span className={styles.breakdownLabel}>Export Sales:</span>
+                        <span className={styles.breakdownValue}>₹{filing.formData.exportSales.toLocaleString('en-IN')}</span>
                       </div>
                     )}
                     {filing.formData.exemptSales > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Exempt Sales:</span>
-                        <span className="font-medium">₹{filing.formData.exemptSales.toLocaleString('en-IN')}</span>
+                      <div className={styles.breakdownRow}>
+                        <span className={styles.breakdownLabel}>Exempt Sales:</span>
+                        <span className={styles.breakdownValue}>₹{filing.formData.exemptSales.toLocaleString('en-IN')}</span>
                       </div>
                     )}
                   </div>
                 )}
               </div>
 
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-gray-700 mb-4 text-sm">Tax Details</h4>
+              <div className={`${styles.breakdownBox} ${styles.breakdownBoxBlue}`}>
+                <h4 className={styles.subsectionTitle}>Tax Details</h4>
                 {filing.formData && (
-                  <div className="space-y-2 text-sm">
+                  <div className={styles.breakdownContent}>
                     {filing.formData.igst > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">IGST:</span>
-                        <span className="font-medium">₹{filing.formData.igst.toLocaleString('en-IN')}</span>
+                      <div className={styles.breakdownRow}>
+                        <span className={styles.breakdownLabel}>IGST:</span>
+                        <span className={styles.breakdownValue}>₹{filing.formData.igst.toLocaleString('en-IN')}</span>
                       </div>
                     )}
                     {filing.formData.cgst > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">CGST:</span>
-                        <span className="font-medium">₹{filing.formData.cgst.toLocaleString('en-IN')}</span>
+                      <div className={styles.breakdownRow}>
+                        <span className={styles.breakdownLabel}>CGST:</span>
+                        <span className={styles.breakdownValue}>₹{filing.formData.cgst.toLocaleString('en-IN')}</span>
                       </div>
                     )}
                     {filing.formData.sgst > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">SGST:</span>
-                        <span className="font-medium">₹{filing.formData.sgst.toLocaleString('en-IN')}</span>
+                      <div className={styles.breakdownRow}>
+                        <span className={styles.breakdownLabel}>SGST:</span>
+                        <span className={styles.breakdownValue}>₹{filing.formData.sgst.toLocaleString('en-IN')}</span>
                       </div>
                     )}
                     {filing.formData.itcClaimed > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">ITC Claimed:</span>
-                        <span className="font-medium text-green-600">₹{filing.formData.itcClaimed.toLocaleString('en-IN')}</span>
+                      <div className={styles.breakdownRow}>
+                        <span className={styles.breakdownLabel}>ITC Claimed:</span>
+                        <span className={styles.breakdownValueGreen}>₹{filing.formData.itcClaimed.toLocaleString('en-IN')}</span>
                       </div>
                     )}
                   </div>
@@ -395,45 +386,43 @@ export default function GSTFilingDetailsPage() {
               </div>
 
               {filing.remarks && (
-                <div className="mt-8">
-                  <h4 className="font-medium text-gray-700 mb-3">Remarks</h4>
-                  <p className="text-gray-600 text-sm bg-gray-50 p-3 rounded">{filing.remarks}</p>
+                <div className={styles.remarksSection}>
+                  <h4 className={styles.subsectionTitle}>Remarks</h4>
+                  <p className={styles.remarksBox}>{filing.remarks}</p>
                 </div>
               )}
             </CardContent>
           </Card>
 
-          {/* Tax Summary Sidebar */}
-          <div className="space-y-6">
-            {/* Tax Details */}
+          <div className={styles.sidebar}>
             <Card>
-              <CardContent className="p-6">
-                <h3 className="font-semibold mb-4 flex items-center">
-                  <Receipt className="w-5 h-5 mr-2 text-orange-600" />
+              <CardContent className={styles.taxSummaryCard}>
+                <h3 className={styles.taxSummaryTitle}>
+                  <Receipt className={styles.taxSummaryIcon} />
                   GST Summary
                 </h3>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Total Sales</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                <div className={styles.taxSummaryContent}>
+                  <div className={styles.taxSummaryItem}>
+                    <p className={styles.taxSummaryLabel}>Total Sales</p>
+                    <p className={styles.taxSummaryValue}>
                       ₹{totalSalesNum.toLocaleString('en-IN')}
                     </p>
                   </div>
-                  <div className="border-t pt-4">
-                    <p className="text-xs text-gray-500 mb-1">Total Purchases</p>
-                    <p className="text-xl font-semibold text-blue-600">
+                  <div className={`${styles.taxSummaryItem} ${styles.taxSummaryDivider}`}>
+                    <p className={styles.taxSummaryLabel}>Total Purchases</p>
+                    <p className={styles.taxSummaryValueBlue}>
                       ₹{totalPurchasesNum.toLocaleString('en-IN')}
                     </p>
                   </div>
-                  <div className="border-t pt-4">
-                    <p className="text-xs text-gray-500 mb-1">ITC Claimed</p>
-                    <p className="text-xl font-semibold text-green-600">
+                  <div className={`${styles.taxSummaryItem} ${styles.taxSummaryDivider}`}>
+                    <p className={styles.taxSummaryLabel}>ITC Claimed</p>
+                    <p className={styles.taxSummaryValueGreen}>
                       ₹{(filing.itcClaimed ? parseFloat(filing.itcClaimed) : 0).toLocaleString('en-IN')}
                     </p>
                   </div>
-                  <div className="border-t pt-4 bg-orange-50 p-4 rounded">
-                    <p className="text-xs text-gray-500 mb-1">Tax Payable</p>
-                    <p className="text-2xl font-bold text-orange-600">
+                  <div className={`${styles.taxSummaryItem} ${styles.taxSummaryDivider} ${styles.taxSummaryHighlight}`}>
+                    <p className={styles.taxSummaryLabel}>Tax Payable</p>
+                    <p className={styles.taxSummaryValueOrange}>
                       ₹{taxPayableNum.toLocaleString('en-IN')}
                     </p>
                   </div>
@@ -441,22 +430,21 @@ export default function GSTFilingDetailsPage() {
               </CardContent>
             </Card>
 
-            {/* Timeline */}
             <Card>
-              <CardContent className="p-6">
-                <h3 className="font-semibold mb-4 flex items-center">
-                  <Calendar className="w-5 h-5 mr-2 text-purple-600" />
+              <CardContent className={styles.timelineCard}>
+                <h3 className={styles.timelineTitle}>
+                  <Calendar className={styles.timelineIcon} />
                   Timeline
                 </h3>
-                <div className="space-y-3 text-sm">
-                  <div>
-                    <p className="text-xs text-gray-500">Created</p>
-                    <p className="font-medium">{new Date(filing.createdAt).toLocaleDateString('en-IN')}</p>
+                <div className={styles.timelineContent}>
+                  <div className={styles.timelineItem}>
+                    <p className={styles.timelineLabel}>Created</p>
+                    <p className={styles.timelineValue}>{new Date(filing.createdAt).toLocaleDateString('en-IN')}</p>
                   </div>
                   {filing.filedAt && (
-                    <div className="border-t pt-3">
-                      <p className="text-xs text-gray-500">Filed</p>
-                      <p className="font-medium">{new Date(filing.filedAt).toLocaleDateString('en-IN')}</p>
+                    <div className={`${styles.timelineItem} ${styles.timelineDivider}`}>
+                      <p className={styles.timelineLabel}>Filed</p>
+                      <p className={styles.timelineValue}>{new Date(filing.filedAt).toLocaleDateString('en-IN')}</p>
                     </div>
                   )}
                 </div>
@@ -465,9 +453,8 @@ export default function GSTFilingDetailsPage() {
           </div>
         </div>
 
-        {/* Action Buttons */}
         {filing.status === 'DRAFT' && (
-          <div className="mb-8 text-center">
+          <div className={styles.actionSection}>
             <Link href={`/dashboard/gst/new?id=${filing.id}`}>
               <Button size="lg">
                 <Edit className="w-5 h-5 mr-2" />

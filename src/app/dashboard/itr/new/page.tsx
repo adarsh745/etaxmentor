@@ -8,7 +8,9 @@ import {
   AlertCircle, CheckCircle2, Info
 } from 'lucide-react'
 import Link from 'next/link'
-import { Button, Card, CardContent, Input, Badge } from '@/components/ui'
+import { Button, Card, CardContent, Input, Badge, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui'
+import styles from './page.module.css'
+
 
 const itrTypes = [
   { value: 'ITR1', label: 'ITR-1 (Sahaj)', desc: 'Salaried individuals, ₹50L income' },
@@ -36,32 +38,24 @@ function NewITRFilingContent() {
   const [filingId, setFilingId] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
-    // Basic details
     itrType: 'ITR1',
     assessmentYear: '2024-25',
     panNumber: '',
     aadhaar: '',
-    
-    // Income details
     salaryIncome: '',
     housePropertyIncome: '',
     capitalGains: '',
     businessIncome: '',
     otherIncome: '',
-    
-    // Deductions
     section80C: '',
     section80D: '',
     section80G: '',
     homeLoanInterest: '',
-    
-    // Additional info
     remarks: '',
   })
 
   const [documents, setDocuments] = useState<File[]>([])
 
-  // Load existing draft if editing
   useEffect(() => {
     const id = searchParams.get('id')
     if (id) {
@@ -90,7 +84,6 @@ function NewITRFilingContent() {
         return
       }
 
-      // Populate form with existing data
       setFormData({
         itrType: filing.itrType || 'ITR1',
         assessmentYear: filing.assessmentYear || '2024-25',
@@ -117,7 +110,6 @@ function NewITRFilingContent() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     let value = e.target.value
     
-    // Auto-uppercase PAN
     if (e.target.name === 'panNumber') {
       value = value.toUpperCase()
     }
@@ -216,135 +208,127 @@ function NewITRFilingContent() {
   const totals = calculateTotals()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-12">
-      <div className="container mx-auto px-4 max-w-4xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Link href="/dashboard" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4">
+    <div className={styles.container}>
+      <div className={styles.innerContainer}>
+        <div className={styles.header}>
+          <Link href="/dashboard" className={styles.backLink}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{isEditing ? 'Edit ITR Filing' : 'New ITR Filing'}</h1>
-          <p className="text-gray-600">{isEditing ? 'Update your Income Tax Return filing' : 'Complete your Income Tax Return filing with expert assistance'}</p>
+          <div className={styles.headerSpacing} />
+          <h1 className={styles.title}>{isEditing ? 'Edit ITR Filing' : 'New ITR Filing'}</h1>
+          <p className={styles.subtitle}>{isEditing ? 'Update your Income Tax Return filing' : 'Complete your Income Tax Return filing with expert assistance'}</p>
         </div>
+        <div className={styles.headerSpacing} />
 
-        {/* Progress Steps */}
-        <div className="mb-8 flex items-center justify-center space-x-4">
+        <div className={styles.progressContainer}>
           {[1, 2, 3].map((s) => (
-            <div key={s} className="flex items-center">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                  s <= step
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-600'
-                }`}
-              >
+            <div key={s} className={styles.stepWrapper}>
+              <div className={`${styles.stepCircle} ${s <= step ? styles.stepCircleActive : styles.stepCircleInactive}`}>
                 {s}
               </div>
               {s < 3 && (
-                <div
-                  className={`w-16 h-1 mx-2 ${
-                    s < step ? 'bg-blue-600' : 'bg-gray-200'
-                  }`}
-                />
+                <div className={`${styles.stepConnector} ${s < step ? styles.stepConnectorActive : styles.stepConnectorInactive}`} />
               )}
             </div>
           ))}
         </div>
+        <div className={styles.progressSpacing} />
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 flex items-start">
-            <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
+          <div className={styles.errorAlert}>
+            <AlertCircle className={styles.alertIcon} />
             <span>{error}</span>
           </div>
         )}
 
         {success && (
-          <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 flex items-start">
-            <CheckCircle2 className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
+          <div className={styles.successAlert}>
+            <CheckCircle2 className={styles.alertIcon} />
             <span>{success}</span>
           </div>
         )}
 
         <form onSubmit={(e) => handleSubmit(e, false)}>
-          {/* Step 1: Basic Details */}
           {step === 1 && (
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-6 flex items-center">
-                  <FileText className="w-5 h-5 mr-2 text-blue-600" />
+            <Card className={styles.card}>
+              <CardContent className={styles.cardContent}>
+                <h2 className={styles.sectionTitle}>
+                  <FileText className={styles.sectionIcon} />
                   Basic Details
                 </h2>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      ITR Type <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      name="itrType"
-                      value={formData.itrType}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      required
-                    >
-                      {itrTypes.map((type) => (
-                        <option key={type.value} value={type.value}>
-                          {type.label} - {type.desc}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                <div className={styles.formSection}>
+                  <div className={styles.formGridTwoCol}>
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
+                        ITR Type <span className={styles.required}>*</span>
+                      </label>
+                      <Select value={formData.itrType} onValueChange={(value) => setFormData({...formData, itrType: value})}>
+                        <SelectTrigger className={styles.selectTrigger}>
+                          <SelectValue placeholder="Select ITR Type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {itrTypes.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label} - {type.desc}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Assessment Year <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      name="assessmentYear"
-                      value={formData.assessmentYear}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      required
-                    >
-                      {assessmentYears.map((year) => (
-                        <option key={year} value={year}>{year}</option>
-                      ))}
-                    </select>
-                  </div>
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
+                        Assessment Year <span className={styles.required}>*</span>
+                      </label>
+                      <Select value={formData.assessmentYear} onValueChange={(value) => setFormData({...formData, assessmentYear: value})}>
+                        <SelectTrigger className={styles.selectTrigger}>
+                          <SelectValue placeholder="Select Assessment Year" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {assessmentYears.map((year) => (
+                            <SelectItem key={year} value={year}>
+                              {year}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      PAN Number <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      type="text"
-                      name="panNumber"
-                      value={formData.panNumber}
-                      onChange={handleChange}
-                      placeholder="ABCDE1234F"
-                      maxLength={10}
-                      required
-                    />
-                    <p className="text-xs text-gray-500 mt-1">Format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)</p>
-                  </div>
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
+                        PAN Number <span className={styles.required}>*</span>
+                      </label>
+                      <Input
+                        type="text"
+                        name="panNumber"
+                        value={formData.panNumber}
+                        onChange={handleChange}
+                        placeholder="ABCDE1234F"
+                        maxLength={10}
+                        required
+                      />
+                      <p className={styles.fieldHint}>Format: 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)</p>
+                    </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Aadhaar Number
-                    </label>
-                    <Input
-                      type="text"
-                      name="aadhaar"
-                      value={formData.aadhaar}
-                      onChange={handleChange}
-                      placeholder="1234 5678 9012"
-                      maxLength={12}
-                    />
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
+                        Aadhaar Number
+                      </label>
+                      <Input
+                        type="text"
+                        name="aadhaar"
+                        value={formData.aadhaar}
+                        onChange={handleChange}
+                        placeholder="1234 5678 9012"
+                        maxLength={12}
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div className="mt-6 flex justify-end">
+                <div className={styles.buttonGroup}>
                   <Button type="button" onClick={() => setStep(2)}>
                     Next: Income Details
                   </Button>
@@ -353,18 +337,16 @@ function NewITRFilingContent() {
             </Card>
           )}
 
-          {/* Step 2: Income & Deductions */}
           {step === 2 && (
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-6">Income & Deductions</h2>
+            <Card className={styles.card}>
+              <CardContent className={styles.cardContent}>
+                <h2 className={styles.sectionTitle}>Income & Deductions</h2>
 
-                {/* Income Section */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-medium mb-4 text-blue-600">Income Details</h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className={styles.formSection}>
+                  <h3 className={styles.subsectionTitle}>Income Details</h3>
+                  <div className={styles.formGridTwoCol}>
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         Salary Income (₹)
                       </label>
                       <Input
@@ -377,8 +359,8 @@ function NewITRFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         House Property Income (₹)
                       </label>
                       <Input
@@ -390,8 +372,8 @@ function NewITRFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         Capital Gains (₹)
                       </label>
                       <Input
@@ -403,8 +385,8 @@ function NewITRFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         Business/Professional Income (₹)
                       </label>
                       <Input
@@ -416,8 +398,8 @@ function NewITRFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={`${styles.fieldWrapper} ${styles.fullWidth}`}>
+                      <label className={styles.fieldLabel}>
                         Other Income (₹)
                       </label>
                       <Input
@@ -431,13 +413,12 @@ function NewITRFilingContent() {
                   </div>
                 </div>
 
-                {/* Deductions Section */}
-                <div>
-                  <h3 className="text-lg font-medium mb-4 text-green-600">Deductions</h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Section 80C (₹) <span className="text-gray-500 text-xs">Max: 1,50,000</span>
+                <div className={`${styles.formSection} ${styles.mt8}`}>
+                  <h3 className={styles.subsectionTitle}>Deductions</h3>
+                  <div className={styles.formGridTwoCol}>
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
+                        Section 80C (₹) <span className={styles.maxHint}>Max: 1,50,000</span>
                       </label>
                       <Input
                         type="number"
@@ -450,9 +431,9 @@ function NewITRFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Section 80D (₹) <span className="text-gray-500 text-xs">Max: 1,00,000</span>
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
+                        Section 80D (₹) <span className={styles.maxHint}>Max: 1,00,000</span>
                       </label>
                       <Input
                         type="number"
@@ -465,8 +446,8 @@ function NewITRFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         Section 80G (₹)
                       </label>
                       <Input
@@ -479,8 +460,8 @@ function NewITRFilingContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className={styles.fieldWrapper}>
+                      <label className={styles.fieldLabel}>
                         Home Loan Interest (₹)
                       </label>
                       <Input
@@ -495,26 +476,25 @@ function NewITRFilingContent() {
                   </div>
                 </div>
 
-                {/* Summary */}
-                <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-                  <h4 className="font-semibold mb-3">Summary</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
+                <div className={styles.summaryBox}>
+                  <h4 className={styles.summaryTitle}>Summary</h4>
+                  <div className={styles.summaryContent}>
+                    <div className={styles.summaryRow}>
                       <span>Total Income:</span>
-                      <span className="font-semibold">₹{totals.totalIncome.toLocaleString('en-IN')}</span>
+                      <span className={styles.summaryValue}>₹{totals.totalIncome.toLocaleString('en-IN')}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className={styles.summaryRow}>
                       <span>Total Deductions:</span>
-                      <span className="font-semibold text-green-600">- ₹{totals.totalDeductions.toLocaleString('en-IN')}</span>
+                      <span className={styles.summaryDeduction}>- ₹{totals.totalDeductions.toLocaleString('en-IN')}</span>
                     </div>
-                    <div className="flex justify-between pt-2 border-t border-blue-200">
-                      <span className="font-semibold">Taxable Income:</span>
-                      <span className="font-bold text-blue-600">₹{totals.taxableIncome.toLocaleString('en-IN')}</span>
+                    <div className={`${styles.summaryRow} ${styles.summaryTotal}`}>
+                      <span className={styles.summaryTotalLabel}>Taxable Income:</span>
+                      <span className={styles.summaryTotalValue}>₹{totals.taxableIncome.toLocaleString('en-IN')}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-6 flex justify-between">
+                <div className={styles.buttonGroupSpaced}>
                   <Button type="button" variant="outline" onClick={() => setStep(1)}>
                     Back
                   </Button>
@@ -526,54 +506,51 @@ function NewITRFilingContent() {
             </Card>
           )}
 
-          {/* Step 3: Documents & Submit */}
           {step === 3 && (
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-6 flex items-center">
-                  <Upload className="w-5 h-5 mr-2 text-blue-600" />
+            <Card className={styles.card}>
+              <CardContent className={styles.cardContent}>
+                <h2 className={styles.sectionTitle}>
+                  <Upload className={styles.sectionIcon} />
                   Upload Documents & Additional Info
                 </h2>
 
-                {/* Document Upload */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className={styles.uploadSection}>
+                  <label className={`${styles.fieldLabel} ${styles.mb2}`}>
                     Supporting Documents
                   </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
+                  <div className={styles.uploadBox}>
                     <input
                       type="file"
                       multiple
                       onChange={handleFileUpload}
-                      className="hidden"
+                      className={styles.uploadInput}
                       id="file-upload"
                       accept=".pdf,.jpg,.jpeg,.png"
                     />
-                    <label htmlFor="file-upload" className="cursor-pointer">
-                      <Upload className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-                      <p className="text-sm text-gray-600">
+                    <label htmlFor="file-upload" className={styles.uploadLabel}>
+                      <Upload className={styles.uploadIcon} />
+                      <p className={styles.uploadText}>
                         Click to upload Form 16, Form 26AS, Bank Statements, etc.
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">PDF, JPG, PNG (Max 10MB each)</p>
+                      <p className={styles.uploadSubtext}>PDF, JPG, PNG (Max 10MB each)</p>
                     </label>
                   </div>
 
-                  {/* Uploaded Files List */}
                   {documents.length > 0 && (
-                    <div className="mt-4 space-y-2">
+                    <div className={styles.fileList}>
                       {documents.map((file, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                          <div className="flex items-center">
-                            <FileText className="w-4 h-4 mr-2 text-gray-600" />
-                            <span className="text-sm">{file.name}</span>
-                            <span className="text-xs text-gray-500 ml-2">
+                        <div key={index} className={styles.fileItem}>
+                          <div className={styles.fileInfo}>
+                            <FileText className={styles.fileIcon} />
+                            <span className={styles.fileName}>{file.name}</span>
+                            <span className={styles.fileSize}>
                               ({(file.size / 1024).toFixed(1)} KB)
                             </span>
                           </div>
                           <button
                             type="button"
                             onClick={() => removeDocument(index)}
-                            className="text-red-500 hover:text-red-700"
+                            className={styles.removeButton}
                           >
                             <X className="w-4 h-4" />
                           </button>
@@ -583,27 +560,28 @@ function NewITRFilingContent() {
                   )}
                 </div>
 
-                {/* Remarks */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Additional Remarks (Optional)
-                  </label>
-                  <textarea
-                    name="remarks"
-                    value={formData.remarks}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Any additional information for our CA experts..."
-                  />
+                <div className={styles.formSection}>
+                  <h3 className={styles.subsectionTitle}>Additional Information</h3>
+                  <div className={styles.fieldWrapper}>
+                    <label className={styles.fieldLabel}>
+                      Additional Remarks (Optional)
+                    </label>
+                    <textarea
+                      name="remarks"
+                      value={formData.remarks}
+                      onChange={handleChange}
+                      rows={4}
+                      className={styles.textarea}
+                      placeholder="Any additional information for our CA experts..."
+                    />
+                  </div>
                 </div>
 
-                {/* Info Box */}
-                <div className="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 flex items-start">
-                  <Info className="w-5 h-5 mr-3 text-yellow-600 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-yellow-800">
-                    <p className="font-medium mb-1">What happens next?</p>
-                    <ul className="list-disc list-inside space-y-1 text-xs">
+                <div className={styles.infoBox}>
+                  <Info className={styles.infoIcon} />
+                  <div className={styles.infoContent}>
+                    <p className={styles.infoTitle}>What happens next?</p>
+                    <ul className={styles.infoList}>
                       <li>Your filing will be reviewed by our CA experts</li>
                       <li>You'll receive a call for verification within 24 hours</li>
                       <li>Your ITR will be filed and you'll get acknowledgment</li>
@@ -612,11 +590,11 @@ function NewITRFilingContent() {
                   </div>
                 </div>
 
-                <div className="flex justify-between">
+                <div className={styles.buttonGroupSpaced}>
                   <Button type="button" variant="outline" onClick={() => setStep(2)}>
                     Back
                   </Button>
-                  <div className="space-x-3">
+                  <div className={styles.buttonGroupRight}>
                     <Button
                       type="button"
                       variant="outline"
@@ -644,8 +622,8 @@ function NewITRFilingContent() {
 export default function NewITRFilingPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1E3A8A]"></div>
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
       </div>
     }>
       <NewITRFilingContent />

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Bell, CheckCheck, Trash2, Filter, FileText, CreditCard, AlertCircle, Info, Clock, Loader2 } from 'lucide-react'
 import { Button, Card, CardContent } from '@/components/ui'
+import styles from './page.module.css'
 
 interface Notification {
   id: string
@@ -76,16 +77,16 @@ export default function NotificationsPage() {
   const getIcon = (type: string) => {
     switch (type) {
       case 'FILING_UPDATE':
-        return <FileText className="w-5 h-5 text-blue-600" />
+        return <FileText className={styles.iconFiling} />
       case 'PAYMENT_UPDATE':
-        return <CreditCard className="w-5 h-5 text-green-600" />
+        return <CreditCard className={styles.iconPayment} />
       case 'DOCUMENT_REQUEST':
-        return <AlertCircle className="w-5 h-5 text-red-600" />
+        return <AlertCircle className={styles.iconDocument} />
       case 'TICKET_UPDATE':
-        return <Info className="w-5 h-5 text-purple-600" />
+        return <Info className={styles.iconTicket} />
       case 'GENERAL':
       default:
-        return <Bell className="w-5 h-5 text-gray-600" />
+        return <Bell className={styles.iconGeneral} />
     }
   }
 
@@ -105,8 +106,8 @@ export default function NotificationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#1E3A8A]" />
+      <div className={styles.loadingContainer}>
+        <Loader2 className={styles.loadingIcon} />
       </div>
     )
   }
@@ -116,24 +117,22 @@ export default function NotificationsPage() {
     : notifications.filter(n => !n.isRead)
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
+    <div className={styles.container}>
+      <div className={styles.innerContainer}>
+        <div className={styles.header}>
+          <div className={styles.headerTop}>
+            <h1 className={styles.title}>Notifications</h1>
             {unreadCount > 0 && (
-              <span className="px-3 py-1 bg-[#1E3A8A] text-white rounded-full text-sm font-medium">
+              <span className={styles.badge}>
                 {unreadCount} new
               </span>
             )}
           </div>
-          <p className="text-gray-600">Stay updated with your account activity</p>
+          <p className={styles.subtitle}>Stay updated with your account activity</p>
         </div>
 
-        {/* Actions Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-          <div className="flex gap-2">
+        <div className={styles.actionsBar}>
+          <div className={styles.filterButtons}>
             <Button
               variant={filter === 'all' ? 'primary' : 'outline'}
               size="sm"
@@ -161,14 +160,13 @@ export default function NotificationsPage() {
           )}
         </div>
 
-        {/* Notifications List */}
-        <div className="space-y-3">
+        <div className={styles.notificationsList}>
           {filteredNotifications.length === 0 ? (
             <Card>
-              <CardContent className="p-12 text-center">
-                <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No notifications</h3>
-                <p className="text-gray-500">
+              <CardContent className={styles.emptyCard}>
+                <Bell className={styles.emptyIcon} />
+                <h3 className={styles.emptyTitle}>No notifications</h3>
+                <p className={styles.emptyMessage}>
                   {filter === 'unread' 
                     ? "You're all caught up! No unread notifications."
                     : "You don't have any notifications yet."}
@@ -179,44 +177,44 @@ export default function NotificationsPage() {
             filteredNotifications.map((notification) => (
               <Card
                 key={notification.id}
-                className={`transition-all hover:shadow-md ${
-                  !notification.isRead ? 'bg-blue-50 border-l-4 border-l-[#1E3A8A]' : ''
+                className={`${styles.notificationCard} ${
+                  !notification.isRead ? styles.notificationCardUnread : ''
                 }`}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1">
+                <CardContent className={styles.notificationContent}>
+                  <div className={styles.notificationLayout}>
+                    <div className={styles.notificationIconWrapper}>
                       {getIcon(notification.type)}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h3 className="font-semibold text-gray-900">
+                    <div className={styles.notificationBody}>
+                      <div className={styles.notificationHeader}>
+                        <h3 className={styles.notificationTitle}>
                           {notification.title}
                         </h3>
-                        <div className="flex items-center gap-2 flex-shrink-0">
+                        <div className={styles.notificationActions}>
                           {!notification.isRead && (
                             <button
                               onClick={() => markAsRead(notification.id)}
-                              className="text-[#1E3A8A] hover:text-[#3B82F6] text-sm font-medium"
+                              className={styles.markReadButton}
                               title="Mark as read"
                             >
-                              <CheckCheck className="w-4 h-4" />
+                              <CheckCheck className={styles.actionIcon} />
                             </button>
                           )}
                           <button
                             onClick={() => deleteNotification(notification.id)}
-                            className="text-red-600 hover:text-red-700"
+                            className={styles.deleteButton}
                             title="Delete"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className={styles.actionIcon} />
                           </button>
                         </div>
                       </div>
-                      <p className="text-gray-600 text-sm mb-2">
+                      <p className={styles.notificationMessage}>
                         {notification.message}
                       </p>
-                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                        <Clock className="w-3 h-3" />
+                      <div className={styles.notificationTime}>
+                        <Clock className={styles.timeIcon} />
                         <span>{formatTime(notification.createdAt)}</span>
                       </div>
                     </div>
@@ -227,21 +225,18 @@ export default function NotificationsPage() {
           )}
         </div>
 
-        {/* Info Box */}
-        <Card className="mt-8">
-          <CardContent className="p-6">
-            <div className="flex items-start gap-3">
-              <Info className="w-5 h-5 text-[#1E3A8A] flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-medium text-gray-900 mb-1">Notification Settings</h3>
-                <p className="text-sm text-gray-600">
-                  You can manage your notification preferences in the{' '}
-                  <a href="/dashboard/settings" className="text-[#1E3A8A] hover:underline font-medium">
-                    Settings
-                  </a>{' '}
-                  page.
-                </p>
-              </div>
+        <Card className={styles.infoCard}>
+          <CardContent className={styles.infoContent}>
+            <Info className={styles.infoIcon} />
+            <div>
+              <h3 className={styles.infoTitle}>Notification Settings</h3>
+              <p className={styles.infoText}>
+                You can manage your notification preferences in the{' '}
+                <a href="/dashboard/settings" className={styles.infoLink}>
+                  Settings
+                </a>{' '}
+                page.
+              </p>
             </div>
           </CardContent>
         </Card>
