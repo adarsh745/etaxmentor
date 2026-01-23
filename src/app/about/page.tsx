@@ -84,21 +84,26 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative bg-linear-to-br from-[#1E3A8A] via-[#1E40AF] to-[#3B82F6] py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <br/>
+          <div className="w-full flex flex-col items-center justify-center text-white">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center w-full">
               About eTaxMentor
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <br/>
+            <p className="text-xl text-blue-100 mb-8 text-center max-w-4xl mx-auto">
               Your trusted partner in tax compliance and financial success. 
               Since 2008, we&apos;ve been helping individuals and businesses 
               navigate the complex world of taxation with expertise and care.
             </p>
+            <br/>
           </div>
         </div>
       </section>
+            <div style={{height:'1cm'}}></div>
+
 
       {/* Stats Section */}
-      <section className="py-12 -mt-8 relative z-10">
+      <section className="py-12 -mt-8 relative z-10 ">
         <div className="container mx-auto px-4">
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -114,6 +119,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+            <div style={{height:'1cm'}}></div>
+
 
       {/* Mission & Vision */}
       <section className="py-16">
@@ -127,7 +134,7 @@ export default function AboutPage() {
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900">Our Mission</h2>
                 </div>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed ">
                   To democratize access to quality tax and financial services by combining 
                   technology with expert guidance. We aim to make tax compliance simple, 
                   accurate, and stress-free for every Indian taxpayer - from individuals 
@@ -157,14 +164,16 @@ export default function AboutPage() {
       </section>
 
       {/* Our Values */}
+      <div style={{height:'1cm'}}></div>
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 w-full">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Core Values</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-gray-600 text-center w-full">
               These principles guide everything we do at eTaxMentor
             </p>
           </div>
+          <br></br>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, idx) => {
@@ -182,6 +191,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      <div style={{height:'1cm'}}></div>
+
 
       {/* Our Journey */}
       <section className="py-16">
@@ -191,31 +202,127 @@ export default function AboutPage() {
             <p className="text-gray-600">A timeline of growth and excellence</p>
           </div>
 
-          <div className="max-w-3xl mx-auto">
-            <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-[#1E3A8A]/20" />
-              
-              {milestones.map((milestone, idx) => (
-                <div key={idx} className={`relative flex items-center mb-8 ${idx % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
-                  {/* Dot */}
-                  <div className="absolute left-4 md:left-1/2 w-3 h-3 bg-[#1E3A8A] rounded-full -translate-x-1/2" />
-                  
-                  {/* Content */}
-                  <div className={`ml-12 md:ml-0 md:w-1/2 ${idx % 2 === 0 ? 'md:pl-8' : 'md:pr-8 md:text-right'}`}>
-                    <Card className="inline-block">
-                      <CardContent className="p-4">
-                        <div className="text-[#1E3A8A] font-bold text-lg">{milestone.year}</div>
-                        <p className="text-gray-600 text-sm">{milestone.event}</p>
-                      </CardContent>
-                    </Card>
+          <div className="max-w-3xl mx-auto flex justify-center items-center">
+            <div className="relative py-8 w-full" style={{ minHeight: '650px' }}>
+              {/* SVG Snake Curved Path */}
+              <svg 
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none"
+                viewBox="0 0 800 650"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <defs>
+                  <linearGradient id="timelineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#1E3A8A" stopOpacity="0.5" />
+                    <stop offset="50%" stopColor="#3B82F6" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="#10B981" stopOpacity="0.5" />
+                  </linearGradient>
+                </defs>
+                {/* Snake Curved Path - zigzag left to right */}
+                <path
+                  d="M 400 40 
+                     C 250 70, 200 90, 150 130
+                     S 200 180, 300 220
+                     S 500 260, 650 300
+                     S 600 370, 500 410
+                     S 300 450, 200 490
+                     S 250 560, 400 600"
+                  fill="none"
+                  stroke="url(#timelineGradient)"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+
+              {/* Timeline Items */}
+              {milestones.map((milestone, idx) => {
+                // Snake positions - alternating left and right
+                const positions = [
+                  { top: '8%', left: '50%' },     // 2008 - center top
+                  { top: '20%', left: '19%' },    // 2012 - left
+                  { top: '34%', left: '37%' },    // 2015 - center-left
+                  { top: '46%', left: '81%' },    // 2018 - right
+                  { top: '63%', left: '62%' },    // 2020 - center-right
+                  { top: '76%', left: '25%' },    // 2023 - left
+                ];
+                
+                const isLeft = idx % 2 === 1;
+                
+                return (
+                  <div 
+                    key={idx} 
+                    className="absolute transition-all duration-500 hover:scale-105"
+                    style={{ 
+                      top: positions[idx].top,
+                      left: positions[idx].left,
+                      transform: 'translate(-50%, -50%)'
+                    }}
+                  >
+                    {/* Timeline Dot with Glow */}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                      <div className="relative">
+                        <div className="w-5 h-5 bg-[#1E3A8A] rounded-full border-4 border-white shadow-lg relative z-10 hover:scale-125 transition-transform duration-300">
+                          <div className="absolute inset-0 bg-[#3B82F6] rounded-full animate-ping opacity-20"></div>
+                        </div>
+                        <div className="absolute inset-0 w-5 h-5 bg-[#3B82F6]/30 rounded-full blur-md"></div>
+                      </div>
+                    </div>
+
+                    {/* Card */}
+                    <div 
+                      className="absolute"
+                      style={{
+                        width: '280px',
+                        left: '50%',
+                        top: '50%',
+                        marginLeft: '-140px',
+                        marginTop: isLeft ? '45px' : '-210px',
+                        opacity: 1,
+                        animation: `fadeInUp 0.6s ease-out ${idx * 0.15}s both`
+                      }}
+                    >
+                      <Card className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden group">
+                        <CardContent className="p-5">
+                          <div className="flex items-start gap-4">
+                            <div className="flex-1">
+                              <div className="text-xl font-bold text-[#1E3A8A] mb-2 group-hover:text-[#3B82F6] transition-colors">
+                                {milestone.year}
+                              </div>
+                              <p className="text-gray-600 text-sm leading-relaxed">
+                                {milestone.event}
+                              </p>
+                            </div>
+                          </div>
+                          {/* Decorative gradient bar */}
+                          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1E3A8A] via-[#3B82F6] to-[#10B981] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                        </CardContent>
+                      </Card>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
+
+        {/* Keyframe Animation */}
+        <style jsx>{`
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
       </section>
+
+
+
+
 
       {/* Our Team */}
       <section className="py-16 bg-gray-50">

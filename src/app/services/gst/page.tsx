@@ -157,39 +157,53 @@ export default function GSTServicesPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-[linear-gradient(to_bottom_right,#10B981,#059669)] py-20 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <Badge className="bg-white/20 text-white mb-6">
-              <Receipt className="w-4 h-4 mr-1" />
-              Complete GST Solutions
-            </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              GST Services
-            </h1>
-            <p className="text-xl text-green-100 mb-8">
-              End-to-end GST compliance solutions for businesses of all sizes. 
-              From registration to annual returns, we handle it all.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/register">
-                <Button size="lg" className="bg-white text-[#10B981] hover:bg-gray-100">
-                  Get Started
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-[#10B981]">
-                  Talk to Expert
-                </Button>
-              </Link>
-            </div>
-          </div>
+      <section className="relative bg-[linear-gradient(to_bottom_right,#10B981,#059669)] py-20 md:py-32 overflow-hidden min-h-[450px] flex flex-col items-center justify-center text-center">
+        <div className="w-full max-w-4xl px-4 relative z-10 flex flex-col items-center justify-center">
+          <br/>
+          <Badge className="bg-white/20 text-white mb-8 py-2 px-4 flex items-center gap-2 rounded-full backdrop-blur-sm">
+            <Receipt className="w-5 h-5" />
+            <span className="font-medium tracking-wide">Complete GST Solutions</span>
+          </Badge>
+
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 text-white tracking-tight">
+            GST Services
+          </h1>
+          <br/>
+          <p className="text-xl md:text-2xl text-green-50 mb-12 max-w-2xl mx-auto leading-relaxed">
+            End-to-end GST compliance solutions for businesses of all sizes. 
+            From registration to annual returns, we handle it all.
+          </p>
+          <br/>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-y-6 gap-x-6 w-full mt-20">
+  <Link href="/register" className="w-full sm:w-auto">
+    <Button
+      size="xl"
+      className="bg-white text-[#10B981] hover:bg-gray-50 min-w-[220px] shadow-xl group font-bold rounded-full"
+    >
+      Get Started
+      <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+    </Button>
+  </Link>
+
+  <Link href="/contact" className="w-full sm:w-auto">
+    <Button
+      size="xl"
+      variant="outline"
+      className="border-2 border-white text-white hover:bg-white hover:text-[#10B981] min-w-[220px] group font-bold rounded-full"
+    >
+      <HelpCircle className="w-5 h-5 mr-2" />
+      Talk to Expert
+    </Button>
+  </Link>
+</div>
+
         </div>
       </section>
+      <br/>
 
       {/* Quick Stats */}
-      <section className="py-8 bg-gray-50">
+      <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
@@ -213,23 +227,26 @@ export default function GSTServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-20">
+      <div style={{ height: '1cm' }}></div>
+      <section className="py-20 mb-32">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="flex flex-col items-center justify-center text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Our GST Services
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <br />
+            <p className="text-lg text-gray-600">
               Comprehensive GST solutions to keep your business compliant
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div style={{ height: '1cm' }}></div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             {gstServices.map((service) => {
               const Icon = service.icon
               return (
-                <Card key={service.id} className="hover:shadow-xl transition-all">
-                  <CardContent className="p-6">
+                <Card key={service.id} className="flex flex-col h-full hover:shadow-xl transition-all">
+                  <CardContent className="p-10 flex flex-col h-full">
                     <div className={`w-14 h-14 ${service.color} rounded-xl flex items-center justify-center mb-4`}>
                       <Icon className="w-7 h-7 text-white" />
                     </div>
@@ -239,7 +256,7 @@ export default function GSTServicesPage() {
                     <p className="text-gray-600 text-sm mb-4">
                       {service.description}
                     </p>
-                    <ul className="space-y-2 mb-4">
+                    <ul className="space-y-2 mb-4 flex-1">
                       {service.features.map((feature, idx) => (
                         <li key={idx} className="flex items-center gap-2 text-sm text-gray-600">
                           <CheckCircle className="w-4 h-4 text-[#10B981] shrink-0" />
@@ -247,7 +264,7 @@ export default function GSTServicesPage() {
                         </li>
                       ))}
                     </ul>
-                    <div className="pt-4 border-t border-gray-100">
+                    <div className="pt-4 border-t border-gray-100 mt-auto">
                       <p className="text-[#10B981] font-semibold">{service.price}</p>
                     </div>
                   </CardContent>
@@ -259,29 +276,34 @@ export default function GSTServicesPage() {
       </section>
 
       {/* Pricing Packages */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+      <div style={{ height: '1.5cm' }}></div>
+      <section className="py-20 bg-gray-50 my-32">
+        <div className="container mx-auto px-4 items-center">
+          <div className="flex flex-col items-center justify-center text-center mb-16">
+            
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               GST Compliance Packages
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <br/>
+            <p className="text-lg text-gray-600">
               Choose a plan that fits your business needs
             </p>
+            <br/>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="flex justify-center">
+            <div className="grid md:grid-cols-3 gap-12 max-w-6xl items-stretch">
             {packages.map((pkg) => (
               <Card 
                 key={pkg.name} 
-                className={`relative overflow-hidden ${pkg.popular ? 'ring-2 ring-[#10B981] shadow-xl' : ''}`}
+                className={`relative overflow-hidden flex flex-col h-full ${pkg.popular ? 'ring-2 ring-[#10B981] shadow-xl' : ''}`}
               >
                 {pkg.popular && (
-                  <div className="absolute top-0 right-0 bg-[#10B981] text-white text-xs font-bold px-4 py-1 rounded-bl-lg">
+                  <div className="absolute top-0 right-0 bg-[#10B981] text-white text-xs font-bold px-4 py-1 rounded-bl-lg z-10">
                     RECOMMENDED
                   </div>
                 )}
-                <CardContent className="p-8">
+                <CardContent className="p-10 flex flex-col flex-1">
                   <div className="text-center mb-6">
                     <h3 className="text-xl font-bold text-gray-900">{pkg.name}</h3>
                     <p className="text-sm text-gray-500">{pkg.description}</p>
@@ -294,7 +316,7 @@ export default function GSTServicesPage() {
                     </div>
                   </div>
 
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-3 mb-8 flex-1">
                     {pkg.features.map((feature, idx) => (
                       <li key={idx} className="flex items-center gap-3">
                         <CheckCircle className="w-5 h-5 text-[#10B981] shrink-0" />
@@ -309,64 +331,74 @@ export default function GSTServicesPage() {
                     ))}
                   </ul>
 
-                  <Link href="/contact">
-                    <Button 
-                      className="w-full" 
-                      variant={pkg.popular ? 'secondary' : 'outline'}
-                      size="lg"
-                    >
-                      Get Started
-                    </Button>
-                  </Link>
+                  <div className="mt-auto">
+                    <Link href="/contact">
+                      <Button 
+                        className="w-full" 
+                        variant={pkg.popular ? 'secondary' : 'outline'}
+                        size="lg"
+                      >
+                        Get Started
+                      </Button>
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
             ))}
+          </div>
           </div>
         </div>
       </section>
 
       {/* Deadlines */}
-      <section className="py-16">
+      <div style={{ height: '1.5cm' }}></div>
+      <section className="py-20 my-32">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                <Calendar className="inline w-8 h-8 mr-2 text-[#10B981]" />
-                GST Return Deadlines
-              </h2>
-              <p className="text-gray-600">Don&apos;t miss these important due dates</p>
-            </div>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <Calendar className="inline w-8 h-8 mr-2 text-[#10B981]" />
+              GST Return Deadlines
+            </h2>
+            <br/>
+            <p className="text-gray-600">Don&apos;t miss these important due dates</p>
+          </div>
+          <br/>
 
-            <Card className="overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-[#10B981] text-white">
-                      <th className="text-left p-4">Return Type</th>
-                      <th className="text-left p-4">Due Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {deadlines.map((item, idx) => (
-                      <tr key={idx} className="border-b last:border-0 hover:bg-gray-50">
-                        <td className="p-4 font-medium text-gray-900">{item.return}</td>
-                        <td className="p-4 text-gray-600">{item.deadline}</td>
+          <div className="flex justify-center">
+            <div className="max-w-3xl w-full">
+              <Card className="overflow-hidden">
+                <div className="overflow-x-auto bg-pink-50 border rounded-2xl">
+                  <table className="w-full border border-gray-500 border-collapse">
+                    <thead className='border border-gray-500 px-10 py-2 font-bold text-center'>
+                      <tr className="bg-[#10B981] text-white ">
+                        <th className="text-left p-4">Return Type</th>
+                        <th className="text-left p-4">Due Date</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Card>
+                    </thead>
+                    <tbody>
+                      {deadlines.map((item, idx) => (
+                        <tr key={idx} className="border-b last:border-0 hover:bg-gray-50">
+                          <td className="p-4 font-medium text-gray-900">{item.return}</td>
+                          <td className="p-4 text-gray-600">{item.deadline}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+              <br/>
 
-            <p className="text-center text-sm text-gray-500 mt-4">
-              * Late filing attracts interest @ 18% p.a. and late fee of ₹50/day (₹20 for NIL return)
-            </p>
+              <p className="text-center text-sm text-gray-500 mt-4">
+                * Late filing attracts interest @ 18% p.a. and late fee of ₹50/day (₹20 for NIL return)
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-16 bg-[linear-gradient(to_bottom_right,#10B981/5,#059669/5)]">
+      <div  style={{height:'1.5cm'}}></div>
+      <section className="py-20 bg-[linear-gradient(to_bottom_right,#10B981/5,#059669/5)] my-32">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -433,14 +465,17 @@ export default function GSTServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[linear-gradient(to_right,#1E3A8A,#3B82F6)]">
-        <div className="container mx-auto px-4 text-center">
+      <div style={{height:'1.5cm'}}></div>
+      <section className="py-20 bg-[linear-gradient(to_right,#1E3A8A,#3B82F6)]">
+        <div className="container mx-auto px-4 flex flex-col items-center justify-center text-center">
+          <br/>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Simplify Your GST Compliance?
           </h2>
-          <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-blue-100 text-lg mb-8">
             Let our experts handle your GST while you focus on growing your business.
           </p>
+          <br/>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/register">
               <Button size="lg" className="bg-white text-[#1E3A8A] hover:bg-gray-100">
@@ -454,6 +489,7 @@ export default function GSTServicesPage() {
               </Button>
             </Link>
           </div>
+          <br/>
         </div>
       </section>
     </div>

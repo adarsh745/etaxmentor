@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { 
+import {
   FileText, Users, Briefcase, Building2, Home, TrendingUp,
   CheckCircle, ArrowRight, Clock, Shield, Calculator,
   AlertCircle, Calendar, Download
@@ -126,6 +126,24 @@ const itrTypes = [
     icon: Building2,
     color: 'bg-indigo-500',
   },
+  {
+    id: 'itr-7',
+    name: 'ITR-7',
+    description: 'For political claims',
+    eligibility: [
+      'Political party claiming exemption',
+      'Trust/institution',
+      'Assessee claiming exemption',
+    ],
+    notFor: [
+      'Exemption is not applicable on income from business & professional',
+      'Income from capital gains',
+    ],
+    price: 7999,
+    popular: false,
+    icon: Building2,
+    color: 'bg-teal-500',
+  },
 ]
 
 const process = [
@@ -162,44 +180,42 @@ const deadlines = [
   { type: 'Revised Return', deadline: 'December 31, 2024', extended: false },
 ]
 
-export default function ITRFilingPage() {
+
+  export default function ITRFilingPage() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#1E3A8A] via-[#1E40AF] to-[#3B82F6] py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <Badge className="bg-white/20 text-white mb-6">
-              <Clock className="w-4 h-4 mr-1" />
-              File Before July 31st - Avoid Late Fees
-            </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Income Tax Return Filing
-            </h1>
-            <p className="text-xl text-blue-100 mb-8">
-              Expert CA-assisted ITR filing for all types. Get maximum refund 
-              with accurate filing. Starting at just ₹499.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/register">
-                <Button size="lg" className="bg-white text-[#1E3A8A] hover:bg-gray-100">
-                  File ITR Now
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-[#1E3A8A]">
-                  Talk to Expert
-                </Button>
-              </Link>
-            </div>
+      {/* HERO */}
+      <section className="flex items-center justify-center bg-gradient-to-br from-[#1E3A8A] via-[#1E40AF] to-[#3B82F6] py-20 text-center">
+        <div className="max-w-4xl text-white">
+          <Badge className="mb-6 bg-white/20">
+            <Clock className="w-4 h-4 mr-1" />
+            File Before July 31st
+          </Badge>
+
+          <h1 className="text-5xl font-bold mb-6">
+            Income Tax Return Filing
+          </h1>
+
+          <p className="text-xl text-blue-100 mb-8">
+            Expert CA-assisted ITR filing. Starting at just ₹499.
+          </p>
+            <div className="h-4"></div> {/* Added space */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <Link href="/register">
+              <Button size="lg" className="bg-white text-[#1E3A8A]">
+                File ITR Now <ArrowRight />
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button size="lg" variant="outline" className="border-white text-white">
+                Talk to Expert
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* Quick Stats */}
-      <section className="py-8 bg-gray-50">
+       {/* Quick Stats */}
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
@@ -223,84 +239,100 @@ export default function ITRFilingPage() {
       </section>
 
       {/* ITR Types */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Choose Your ITR Type
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Not sure which ITR form applies to you? Don&apos;t worry - our experts 
-              will help you choose the right form based on your income sources.
-            </p>
-          </div>
+     <section className="py-24">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        Choose Your ITR Type
+      </h2>
+      <p className="text-lg text-gray-600 text-center whitespace-nowrap mx-auto">
+  Not sure which ITR form applies to you? Don&apos;t worry - our experts will help you choose the right form based on your income sources.
+</p>
+<div className="h-4"></div> {/* Added space */}
+    </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {itrTypes.map((itr) => {
-              const Icon = itr.icon
-              return (
-                <Card key={itr.id} className={`relative overflow-hidden hover:shadow-xl transition-all ${itr.popular ? 'ring-2 ring-[#1E3A8A]' : ''}`}>
-                  {itr.popular && (
-                    <div className="absolute top-0 right-0 bg-[#1E3A8A] text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                      MOST COMMON
-                    </div>
-                  )}
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className={`w-12 h-12 ${itr.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-900">{itr.name}</h3>
-                        <p className="text-sm text-gray-600">{itr.description}</p>
-                      </div>
-                    </div>
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {itrTypes.map((itr) => {
+        const Icon = itr.icon
+        return (
+          <Card
+            key={itr.id}
+            className={`relative overflow-hidden transition-all transform hover:scale-105 hover:shadow-2xl hover:ring-2 hover:ring-[#1E3A8A]`}
+          >
+            {itr.popular && (
+              <div className="absolute top-0 right-0 bg-[#1E3A8A] text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                MOST COMMON
+              </div>
+            )}
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4 mb-4">
+                <div
+                  className={`w-12 h-12 ${itr.color} rounded-xl flex items-center justify-center flex-shrink-0`}
+                >
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">{itr.name}</h3>
+                  <p className="text-sm text-gray-600">{itr.description}</p>
+                </div>
+              </div>
 
-                    <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Eligible For:</h4>
-                      <ul className="space-y-1">
-                        {itr.eligibility.slice(0, 3).map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-gray-600">
-                            <CheckCircle className="w-4 h-4 text-[#10B981] flex-shrink-0 mt-0.5" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-900 mb-2">Eligible For:</h4>
+                <ul className="space-y-1">
+                  {itr.eligibility.slice(0, 3).map((item, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2 text-sm text-gray-600"
+                    >
+                      <CheckCircle className="w-4 h-4 text-[#10B981] flex-shrink-0 mt-0.5" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-                    <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Not For:</h4>
-                      <ul className="space-y-1">
-                        {itr.notFor.slice(0, 2).map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-gray-400">
-                            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-900 mb-2">Not For:</h4>
+                <ul className="space-y-1">
+                  {itr.notFor.slice(0, 2).map((item, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2 text-sm text-gray-400"
+                    >
+                      <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-                    <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                      <div>
-                        <span className="text-2xl font-bold text-[#1E3A8A]">₹{itr.price}</span>
-                        <span className="text-gray-500 text-sm ml-1">onwards</span>
-                      </div>
-                      <Link href="/register">
-                        <Button variant={itr.popular ? 'primary' : 'outline'} size="sm">
-                          File Now
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-            })}
-          </div>
-        </div>
-      </section>
+              <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                <div>
+                  <span className="text-2xl font-bold text-[#1E3A8A]">₹{itr.price}</span>
+                  <span className="text-gray-500 text-sm ml-1">onwards</span>
+                </div>
+                <Link href="/register">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="px-10 py-4 text-lg w-full sm:w-auto text-center" // increased width horizontally
+                  >
+                    File Now
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        )
+      })}
+    </div>
+  </div>
+</section>
+
 
       {/* How It Works */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -319,7 +351,7 @@ export default function ITRFilingPage() {
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
                   <p className="text-gray-600 text-sm">{step.description}</p>
-                  
+
                   {step.step < 4 && (
                     <div className="hidden lg:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-[#1E3A8A]/20" />
                   )}
@@ -331,77 +363,107 @@ export default function ITRFilingPage() {
       </section>
 
       {/* Deadlines */}
-      <section className="py-16">
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                <Calendar className="inline w-8 h-8 mr-2 text-[#EF4444]" />
-                ITR Filing Deadlines
-              </h2>
-              <p className="text-gray-600">Don&apos;t miss these important dates</p>
-            </div>
-
-            <Card className="overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-[#1E3A8A] text-white">
-                      <th className="text-left p-4">Category</th>
-                      <th className="text-left p-4">Deadline</th>
-                      <th className="text-center p-4">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {deadlines.map((item, idx) => (
-                      <tr key={idx} className="border-b last:border-0">
-                        <td className="p-4 font-medium text-gray-900">{item.type}</td>
-                        <td className="p-4 text-gray-600">{item.deadline}</td>
-                        <td className="p-4 text-center">
-                          <Badge variant={item.extended ? 'success' : 'warning'}>
-                            {item.extended ? 'Extended' : 'Upcoming'}
-                          </Badge>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          <div className="flex flex-col items-center">
+            <div className="w-full max-w-5xl">
+              <div className="text-center mb-8">
+                <div className="h-4"></div> {/* Added space */}
+                <h2 className="text-3xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-2">
+                  <Calendar className="w-8 h-8 text-[#EF4444]" />
+                  ITR Filing Deadlines
+                </h2>
+                <p className="text-gray-600">Don&apos;t miss these important dates</p>
               </div>
-            </Card>
 
-            <p className="text-center text-sm text-gray-500 mt-4">
-              * Late filing attracts penalty of ₹5,000 (₹1,000 if income &lt; ₹5 lakhs)
-            </p>
+              <Card className="overflow-hidden shadow-lg border-gray-200">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-[#1E3A8A] text-white">
+                        <th className="text-left p-4 pl-6">Category</th>
+                        <th className="text-left p-4">Deadline</th>
+                        <th className="text-center p-4 pr-6">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {deadlines.map((item, idx) => (
+                        <tr
+                          key={idx}
+                          className="border-b last:border-0 hover:bg-gray-50 transition-colors"
+                        >
+                          <td className="p-4 pl-6 font-medium text-gray-900">
+                            {item.type}
+                          </td>
+                          <td className="p-4 text-gray-600">
+                            {item.deadline}
+                          </td>
+                          <td className="p-4 pr-6 text-center">
+                            <Badge
+                              className={
+                                item.extended
+                                  ? "bg-green-100 text-green-800 border border-green-200 hover:bg-green-100"
+                                  : "bg-yellow-100 text-yellow-800 border border-yellow-200 hover:bg-yellow-100"
+                              }
+                            >
+                              {item.extended ? "Extended" : "Upcoming"}
+                            </Badge>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+
+              <p className="text-center text-sm text-gray-500 mt-6">
+                * Late filing attracts penalty of ₹5,000 (₹1,000 if income &lt; ₹5 lakhs)
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits */}
-      <section className="py-16 bg-gradient-to-br from-[#1E3A8A]/5 to-[#3B82F6]/5">
+
+      {/* Benefits Section */}
+      {/* Benefits Section */}
+      <section className="py-24 bg-gradient-to-br from-[#1E3A8A]/5 to-[#3B82F6]/5">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+          <div className="flex flex-col gap-16">
+
+            {/* Part 1: Why File with eTaxMentor */}
+            <div className="w-full">
+              <div className="h-4"></div> {/* Added space */}
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
                 Why File with eTaxMentor?
               </h2>
-              <div className="space-y-4">
+              <div className="h-4"></div> {/* Added space */}
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                 {[
                   { icon: Shield, title: 'Expert CA Team', desc: 'Qualified professionals ensure accurate filing' },
-                  { icon: TrendingUp, title: 'Maximum Refund', desc: 'We identify all deductions you\'re eligible for' },
+                  { icon: TrendingUp, title: 'Maximum Refund', desc: 'We identify all deductions available' },
                   { icon: Clock, title: 'Quick Processing', desc: 'Most returns filed within 24-48 hours' },
                   { icon: Home, title: 'Convenience', desc: 'File from home - no office visits needed' },
-                  { icon: CheckCircle, title: 'Error-Free', desc: '99.9% accuracy rate with multiple review layers' },
+                  { icon: CheckCircle, title: 'Error-Free', desc: '99.9% accuracy rate with review layers' },
                   { icon: Users, title: 'Post-Filing Support', desc: 'Help with notices and queries after filing' },
                 ].map((item, idx) => {
                   const Icon = item.icon
                   return (
-                    <div key={idx} className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-[#10B981]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-5 h-5 text-[#10B981]" />
+                    <div
+                      key={idx}
+                      className="flex flex-col items-center text-center gap-3 p-4 rounded-xl bg-white/50 hover:bg-white transition-colors"
+                    >
+                      <div className="w-12 h-12 bg-[#10B981]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-6 h-6 text-[#10B981]" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900">{item.title}</h3>
-                        <p className="text-sm text-gray-600">{item.desc}</p>
+                        <h3 className="font-semibold text-gray-900 mb-1 leading-tight">
+                          {item.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          {item.desc}
+                        </p>
                       </div>
                     </div>
                   )
@@ -409,46 +471,59 @@ export default function ITRFilingPage() {
               </div>
             </div>
 
-            <Card className="bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6] text-white">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-6">Documents Required</h3>
-                <ul className="space-y-3 mb-8">
-                  {[
-                    'PAN Card',
-                    'Aadhaar Card',
-                    'Form 16 (from employer)',
-                    'Bank Statements',
-                    'Investment Proofs (80C, 80D, etc.)',
-                    'Property documents (if applicable)',
-                    'Capital gains statements',
-                    'Previous year ITR (if any)',
-                  ].map((doc, idx) => (
-                    <li key={idx} className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                      <span className="text-blue-100">{doc}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/register">
-                  <Button className="w-full bg-white text-[#1E3A8A] hover:bg-gray-100">
-                    Start Filing Now
-                    <ArrowRight className="w-5 h-5" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+            {/* Part 2: Documents Required */}
+            <div className="flex justify-center w-full">
+              <div className="w-full max-w-5xl">
+                <Card className="bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6] text-white shadow-xl">
+                  <CardContent className="p-8">
+                    <h3 className="text-2xl font-bold mb-8 text-center">
+                      Documents Required
+                    </h3>
+
+                    <div className="grid md:grid-cols-2 gap-x-12 gap-y-4 mb-8 px-4 md:px-12">
+                      {[
+                        'PAN Card',
+                        'Aadhaar Card',
+                        'Form 16 (from employer)',
+                        'Bank Statements',
+                        'Investment Proofs (80C, 80D, etc.)',
+                        'Property documents (if applicable)',
+                        'Capital gains statements',
+                        'Previous year ITR (if any)',
+                      ].map((doc, idx) => (
+                        <div key={idx} className="flex items-center gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                          <span className="text-blue-100 text-lg">{doc}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex justify-center pt-4">
+                      <Link href="/register">
+                        <Button className="bg-white text-[#1E3A8A] hover:bg-gray-100 font-semibold text-lg px-8 py-6 h-auto rounded-full">
+                          Start Filing Now
+                          <ArrowRight className="w-5 h-5 ml-2" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
+
       {/* CTA */}
-      <section className="py-16 bg-gradient-to-r from-[#10B981] to-[#059669]">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-24 bg-gradient-to-r from-[#10B981] to-[#059669]">
+        <div className="container mx-auto px-4 flex flex-col items-center justify-center text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to File Your Income Tax Return?
           </h2>
-          <p className="text-green-100 text-lg mb-8 max-w-2xl mx-auto">
-            Join 10,000+ taxpayers who trust eTaxMentor. Get started today 
+          <p className="text-green-100 text-lg mb-8 max-w-3xl mx-auto text-center">
+            Join 10,000+ taxpayers who trust eTaxMentor. Get started today
             and file before the deadline!
           </p>
           <div className="flex flex-wrap justify-center gap-4">

@@ -30,12 +30,12 @@ export const NAV_LINKS = {
     { name: 'Contact', href: '/contact' },
   ],
   services: [
-    { name: 'ITR Filing', href: '/services/itr-filing', description: 'File your income tax returns with expert CA assistance' },
-    { name: 'GST Filing', href: '/services/gst', description: 'GST registration and compliance services' },
-    { name: 'Tax Advisory', href: '/services', description: 'Expert tax consultation and planning' },
-    { name: 'Business Setup', href: '/services', description: 'Company incorporation and registration' },
-    { name: 'Accounting', href: '/services', description: 'Bookkeeping and financial management' },
-    { name: 'Compliance', href: '/services', description: 'ROC filings and statutory compliance' },
+    { name: 'UAN-EPFO', href: '/services/uan-epfo' },
+    { name: 'GST-Services', href: '/services/gst' },
+    { name: 'Advisory Services', href: '/services/advisory' },
+    { name: 'CFO Services', href: '/services/cfo' },
+    { name: 'Tax Services', href: '/services/tax' },
+    { name: 'Structuring services', href: '/services/structuring' },
   ],
   footer: {
     information: [
