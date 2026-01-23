@@ -27,7 +27,7 @@ export default function Header() {
               <span>{APP_CONFIG.email}</span>
             </a>
           </div>
-          <div className="flex items-center gap-4">
+          {/* <div className="flex items-center gap-4">
             {!isLoading && (
               isAuthenticated && user ? (
                 <div className="flex items-center gap-3">
@@ -48,7 +48,7 @@ export default function Header() {
                 </>
               )
             )}
-          </div>
+          </div> */}
         </div>
       </div>
 

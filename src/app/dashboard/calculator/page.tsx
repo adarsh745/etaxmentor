@@ -166,15 +166,15 @@ function IncomeTaxCalculator() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-16">
       <Card>
-        <CardContent className="p-6">
+        <CardContent className="p-12 bg-green-50 ">
           <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
             <Calculator className="w-5 h-5 text-[#1E3A8A]" />
             Income Tax Calculator (FY 2023-24)
           </h2>
 
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Select Tax Regime</label>
               <div className="grid grid-cols-2 gap-4">

@@ -108,7 +108,8 @@ export default function ITRFilingsPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
+        <div className=''>
+          <div className="grid md:grid-cols-4 gap-8 mb-8 bg-pink-50 ">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -167,7 +168,8 @@ export default function ITRFilingsPage() {
         </div>
 
         {/* Filters */}
-        <Card className="mb-6">
+        <div className='mt-10'>
+          <Card className="bg-pink-50">
           <CardContent className="p-6">
             <div className="grid md:grid-cols-3 gap-4">
               {/* Search */}
@@ -213,6 +215,7 @@ export default function ITRFilingsPage() {
           </CardContent>
         </Card>
 
+        </div>
         {/* Error Message */}
         {error && (
           <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 flex items-start">
@@ -350,6 +353,9 @@ export default function ITRFilingsPage() {
           </div>
         )}
       </div>
+
+        </div>
+        
     </div>
   )
 }

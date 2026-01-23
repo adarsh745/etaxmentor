@@ -1,12 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import {
   User,
   MapPin,
   Briefcase,
-  Calendar,
   Edit2,
   Save,
   X,
@@ -16,7 +14,6 @@ import { Button, Input, Card, CardContent } from '@/components/ui'
 import { useAuth } from '@/contexts'
 
 export default function ProfilePage() {
-  const router = useRouter()
   const { user } = useAuth()
 
   const [isEditing, setIsEditing] = useState(false)
@@ -84,20 +81,22 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-15">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8">
-        {/* Page Header */}
-        <div className="mb-8">
+    /* ✅ TOP-ALIGNED PAGE (NO GAP) */
+    <div className="min-h-screen bg-slate-50 flex justify-center px-4 pt-6">
+      <div className="w-full max-w-5xl">
+        {/* PAGE HEADER */}
+        <div className="mb-6 text-center">
           <h1 className="text-3xl font-bold text-slate-900">My Profile</h1>
           <p className="text-slate-500 mt-1">
             Manage your personal and account information
           </p>
         </div>
 
-        <Card className="shadow-sm">
-          <CardContent className="p-6 sm:p-8 space-y-8">
-            {/* Profile Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+        {/* CARD */}
+        <Card className="shadow-sm rounded-2xl">
+          <CardContent className="p-6 sm:p-8">
+            {/* PROFILE HEADER */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
               <div className="flex items-center gap-4">
                 <div className="h-20 w-20 rounded-full bg-gradient-to-br from-indigo-700 to-blue-500 flex items-center justify-center text-white text-3xl font-bold">
                   {user?.name?.charAt(0).toUpperCase() || 'U'}
@@ -122,33 +121,30 @@ export default function ProfilePage() {
               </div>
 
               {!isEditing && (
-                <Button
-                  variant="outline"
-                  onClick={() => setIsEditing(true)}
-                >
+                <Button variant="outline" onClick={() => setIsEditing(true)}>
                   <Edit2 className="h-4 w-4 mr-2" />
                   Edit Profile
                 </Button>
               )}
             </div>
 
-            {/* Alerts */}
+            {/* ALERTS */}
             {success && (
-              <div className="rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
+              <div className="mb-4 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
                 {success}
               </div>
             )}
             {error && (
-              <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
                 {error}
               </div>
             )}
 
-            {/* Form */}
+            {/* FORM */}
             <form onSubmit={handleSubmit} className="space-y-10">
-              {/* Personal Info */}
+              {/* PERSONAL INFO */}
               <section className="space-y-4">
-                <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+                <h3 className="flex items-center gap-2 text-lg font-semibold">
                   <User className="h-5 w-5 text-indigo-700" />
                   Personal Information
                 </h3>
@@ -161,7 +157,6 @@ export default function ProfilePage() {
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    required
                   />
 
                   <Input
@@ -184,7 +179,7 @@ export default function ProfilePage() {
                 </div>
               </section>
 
-              {/* Address */}
+              {/* ADDRESS */}
               <section className="space-y-4">
                 <h3 className="flex items-center gap-2 text-lg font-semibold">
                   <MapPin className="h-5 w-5 text-indigo-700" />
@@ -220,7 +215,6 @@ export default function ProfilePage() {
                   <Input
                     label="Pincode"
                     disabled={!isEditing}
-                    maxLength={6}
                     value={formData.pincode}
                     onChange={(e) =>
                       setFormData({ ...formData, pincode: e.target.value })
@@ -229,7 +223,7 @@ export default function ProfilePage() {
                 </div>
               </section>
 
-              {/* Tax Info */}
+              {/* TAX INFO */}
               <section className="space-y-4">
                 <h3 className="flex items-center gap-2 text-lg font-semibold">
                   <Briefcase className="h-5 w-5 text-indigo-700" />
@@ -240,7 +234,6 @@ export default function ProfilePage() {
                   <Input
                     label="PAN Number"
                     disabled={!isEditing}
-                    maxLength={10}
                     value={formData.panNumber}
                     onChange={(e) =>
                       setFormData({
@@ -252,7 +245,6 @@ export default function ProfilePage() {
                   <Input
                     label="Aadhaar Number"
                     disabled={!isEditing}
-                    maxLength={12}
                     value={formData.aadhaarNumber}
                     onChange={(e) =>
                       setFormData({
@@ -264,9 +256,9 @@ export default function ProfilePage() {
                 </div>
               </section>
 
-              {/* Action Buttons */}
+              {/* ACTION BUTTONS */}
               {isEditing && (
-                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 border-t">
+                <div className="flex justify-end gap-3 pt-6 border-t">
                   <Button
                     type="button"
                     variant="outline"
