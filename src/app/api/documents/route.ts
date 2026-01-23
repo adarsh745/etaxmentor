@@ -3,23 +3,37 @@ import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { writeFile, mkdir } from 'fs/promises'
 import path from 'path'
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'crypto'
 
-// Force dynamic rendering to avoid build-time database access
+// Force dynamic rendering to avoid build-time execution
 export const dynamic = 'force-dynamic'
 
-// Document upload validation schema
+/* ---------------------------------- */
+/* ZOD SCHEMAS */
+/* ---------------------------------- */
+
+// Document upload validation
 const documentUploadSchema = z.object({
   type: z.enum([
-    'PAN_CARD', 'AADHAAR', 'FORM_16', 'FORM_26AS', 'AIS_TIS',
-    'BANK_STATEMENT', 'INVESTMENT_PROOF', 'SALARY_SLIP', 'CAPITAL_GAINS',
-    'RENTAL_AGREEMENT', 'LOAN_CERTIFICATE', 'GST_CERTIFICATE', 'OTHER'
+    'PAN_CARD',
+    'AADHAAR',
+    'FORM_16',
+    'FORM_26AS',
+    'AIS_TIS',
+    'BANK_STATEMENT',
+    'INVESTMENT_PROOF',
+    'SALARY_SLIP',
+    'CAPITAL_GAINS',
+    'RENTAL_AGREEMENT',
+    'LOAN_CERTIFICATE',
+    'GST_CERTIFICATE',
+    'OTHER',
   ]),
   financialYear: z.string().optional(),
   assessmentYear: z.string().optional(),
 })
 
-// Document query filters
+// Query filters
 const documentQuerySchema = z.object({
   type: z.string().optional(),
   status: z.enum(['UPLOADED', 'VERIFIED', 'REJECTED', 'PROCESSING']).optional(),
@@ -29,42 +43,35 @@ const documentQuerySchema = z.object({
   limit: z.string().default('50'),
 })
 
-// Mock user ID for development - replace with real auth
+// ⚠️ Replace with real auth later
 const MOCK_USER_ID = 'user_123'
 
-// GET - List user documents
+/* ---------------------------------- */
+/* GET – LIST DOCUMENTS */
+/* ---------------------------------- */
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
+
     const query = documentQuerySchema.parse({
       type: searchParams.get('type') || undefined,
-      status: searchParams.get('status') as any || undefined,
+      status: searchParams.get('status') || undefined,
       financialYear: searchParams.get('financialYear') || undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') || '1',
       limit: searchParams.get('limit') || '50',
     })
 
-    const page = parseInt(query.page)
-    const limit = parseInt(query.limit)
+    const page = Number(query.page)
+    const limit = Number(query.limit)
     const skip = (page - 1) * limit
 
-    // Build where clause
-    const where: any = {
-      userId: MOCK_USER_ID,
-    }
+    const where: any = { userId: MOCK_USER_ID }
 
-    if (query.type) {
-      where.type = query.type
-    }
-
-    if (query.status) {
-      where.status = query.status
-    }
-
-    if (query.financialYear) {
-      where.financialYear = query.financialYear
-    }
+    if (query.type) where.type = query.type
+    if (query.status) where.status = query.status
+    if (query.financialYear) where.financialYear = query.financialYear
 
     if (query.search) {
       where.OR = [
@@ -73,7 +80,6 @@ export async function GET(request: NextRequest) {
       ]
     }
 
-    // Get documents with pagination
     const [documents, total] = await Promise.all([
       prisma.document.findMany({
         where,
@@ -99,7 +105,6 @@ export async function GET(request: NextRequest) {
       prisma.document.count({ where }),
     ])
 
-    // Get summary statistics
     const stats = await prisma.document.groupBy({
       by: ['status'],
       where: { userId: MOCK_USER_ID },
@@ -107,7 +112,7 @@ export async function GET(request: NextRequest) {
     })
 
     const statusStats = {
-      total: total,
+      total,
       uploaded: stats.find(s => s.status === 'UPLOADED')?._count.id || 0,
       verified: stats.find(s => s.status === 'VERIFIED')?._count.id || 0,
       rejected: stats.find(s => s.status === 'REJECTED')?._count.id || 0,
@@ -125,15 +130,16 @@ export async function GET(request: NextRequest) {
       },
       stats: statusStats,
     })
-
   } catch (error) {
-    console.error('Documents API Error:', error)
+    console.error('Documents GET Error:', error)
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { success: false, message: 'Invalid query parameters', errors: error.issues },
         { status: 400 }
       )
     }
+
     return NextResponse.json(
       { success: false, message: 'Failed to fetch documents' },
       { status: 500 }
@@ -141,11 +147,15 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Upload document
+/* ---------------------------------- */
+/* POST – UPLOAD DOCUMENT */
+/* ---------------------------------- */
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
-    const file = formData.get('file') as File
+
+    const file = formData.get('file') as File | null
     const type = formData.get('type') as string
     const financialYear = formData.get('financialYear') as string
     const assessmentYear = formData.get('assessmentYear') as string
@@ -157,23 +167,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate document metadata
     const metadata = documentUploadSchema.parse({
       type,
       financialYear: financialYear || undefined,
       assessmentYear: assessmentYear || undefined,
     })
 
-    // Validate file
     const maxSize = 10 * 1024 * 1024 // 10MB
     if (file.size > maxSize) {
       return NextResponse.json(
-        { success: false, message: 'File too large. Maximum size is 10MB' },
+        { success: false, message: 'File too large (max 10MB)' },
         { status: 400 }
       )
     }
 
-    // Allowed file types
     const allowedTypes = [
       'application/pdf',
       'image/jpeg',
@@ -185,25 +192,21 @@ export async function POST(request: NextRequest) {
 
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
-        { success: false, message: 'Invalid file type. Only PDF, images, and Excel files are allowed' },
+        { success: false, message: 'Invalid file type' },
         { status: 400 }
       )
     }
 
-    // Generate unique filename
     const fileExtension = path.extname(file.name)
-    const fileName = `${uuidv4()}${fileExtension}`
+    const fileName = `${randomUUID()}${fileExtension}`
     const uploadDir = path.join(process.cwd(), 'uploads', MOCK_USER_ID)
     const filePath = path.join(uploadDir, fileName)
 
-    // Create upload directory if it doesn't exist
     await mkdir(uploadDir, { recursive: true })
 
-    // Save file
     const buffer = Buffer.from(await file.arrayBuffer())
     await writeFile(filePath, buffer)
 
-    // Save document record to database
     const document = await prisma.document.create({
       data: {
         userId: MOCK_USER_ID,
@@ -232,15 +235,16 @@ export async function POST(request: NextRequest) {
         createdAt: document.createdAt,
       },
     })
-
   } catch (error) {
-    console.error('Document Upload Error:', error)
+    console.error('Document POST Error:', error)
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { success: false, message: 'Invalid document data', errors: error.issues },
         { status: 400 }
       )
     }
+
     return NextResponse.json(
       { success: false, message: 'Failed to upload document' },
       { status: 500 }

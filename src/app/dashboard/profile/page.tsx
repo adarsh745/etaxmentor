@@ -1,12 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import {
   User,
   MapPin,
   Briefcase,
-  Calendar,
   Edit2,
   Save,
   X,
@@ -17,7 +15,6 @@ import { useAuth } from '@/contexts'
 import styles from './page.module.css'
 
 export default function ProfilePage() {
-  const router = useRouter()
   const { user } = useAuth()
 
   const [isEditing, setIsEditing] = useState(false)
@@ -134,7 +131,7 @@ export default function ProfilePage() {
               )}
             </div>
 
-            {/* Alerts */}
+            {/* ALERTS */}
             {success && (
               <div className={`${styles.alert} ${styles.successAlert}`}>
                 {success}
@@ -163,7 +160,6 @@ export default function ProfilePage() {
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    required
                   />
 
                   <Input
@@ -222,7 +218,6 @@ export default function ProfilePage() {
                   <Input
                     label="Pincode"
                     disabled={!isEditing}
-                    maxLength={6}
                     value={formData.pincode}
                     onChange={(e) =>
                       setFormData({ ...formData, pincode: e.target.value })
@@ -242,7 +237,6 @@ export default function ProfilePage() {
                   <Input
                     label="PAN Number"
                     disabled={!isEditing}
-                    maxLength={10}
                     value={formData.panNumber}
                     onChange={(e) =>
                       setFormData({
@@ -254,7 +248,6 @@ export default function ProfilePage() {
                   <Input
                     label="Aadhaar Number"
                     disabled={!isEditing}
-                    maxLength={12}
                     value={formData.aadhaarNumber}
                     onChange={(e) =>
                       setFormData({
@@ -266,7 +259,7 @@ export default function ProfilePage() {
                 </div>
               </section>
 
-              {/* Action Buttons */}
+              {/* ACTION BUTTONS */}
               {isEditing && (
                 <div className={styles.actionButtons}>
                   <Button

@@ -1,11 +1,13 @@
 'use client'
 
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   Home, User, FileText, Receipt, Upload,
   CreditCard, Bell, MessageSquare,
-  Settings, LogOut, Calculator
+  Settings, LogOut, Calculator,
+  ChevronLeft, ChevronRight
 } from 'lucide-react'
 import { useAuth } from '@/contexts'
 import styles from './layout.module.css'
@@ -65,6 +67,18 @@ export default function DashboardLayout({
           </span>
         </div>
 
+        {/* Closed State Toggle (Centered) */}
+        {!isSidebarOpen && (
+           <div className="flex justify-center py-2 border-b">
+             <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors"
+            >
+              <ChevronRight size={20} />
+            </button>
+           </div>
+        )}
+
         {/* Menu */}
         <nav className={styles.sidebarNav}>
           {sidebarItems.map(item => {
@@ -93,7 +107,7 @@ export default function DashboardLayout({
             className={styles.logoutButton}
           >
             <LogOut size={20} />
-            Logout
+            {isSidebarOpen && <span>Logout</span>}
           </button>
         </div>
       </aside>
@@ -123,7 +137,7 @@ export default function DashboardLayout({
                </div>
              </Link>
           </div>
-        </header>
+        </header> */}
 
         {/* PAGE CONTENT */}
         <main className={styles.pageContent}>
